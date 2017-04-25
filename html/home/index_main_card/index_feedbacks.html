@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/global.css" />
+		<link rel="stylesheet" href="../../../css/index_account.css" />
+		<link rel="stylesheet" href="../../../css/swiper.min.css">
+		<link rel="stylesheet" href="../../../css/index_feedbacks.css">
+		<style>
+			html,
+			body {
+				background-color: ;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<header class="mui-bar mui-bar-nav nav_header">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">意见反馈</h1>
+			</header>
+
+			<div class="text_bg">
+				<textarea class="text_area" rows='3' placeholder="请输入反馈，我们将为您不断改进！"></textarea>
+				<img class="img_upload" src="../../../images/164px_164px_chanpin_xing.png" alt="" />
+				<img id="img_upload_icon" class="img_upload_icon" src="../../../images/70px_54px_p.png" alt="" />
+
+			</div>
+
+			<div class="suggestion">
+				详细描述您遇到的问题，有助于我们快速了解并解决问题，或留下您宝贵的意见和建议，我们会加速改进
+			</div>
+
+			<button class="btn" id="btn">问题提交</button>
+
+			<div class="list_head">
+				我的反馈
+			</div>
+			<form action="" enctype="multipart/form-data" method="post" id="lala" />
+			<!--<input id='one' type="text" name='member_id' />
+				<input id="two" type="text" name='store_id' />
+				<input id="three" type="text" name='device_info' />
+				<input id="four" type="text" name='type' value="0" />
+				<input id="five" name='img_la' class="input_img" type="file" accept="image/*" />
+				<input id="six" name='content' type="text" />
+				<input id="submit" type="submit" value="提交" style="display: none;" />-->
+			</form>
+			<form id="uploadForm">
+				<!--<input name='img_la' style="display: block;" type="file" accept="image/*" />
+				<input type="button" value="上传" onclick="doUpload()" />-->
+				<input id='one' type="text" name='member_id' />
+				<input id="two" type="text" name='store_id' />
+				<input id="three" type="text" name='device_info' />
+				<input id="four" type="text" name='type' value="0" />
+				<input id="five" name='img_la' class="input_img" type="file" accept="image/*" />
+				<input id="six" name='content' type="text" />
+				<input id="new_up_img" type="button" onclick="doUpload()" value="提交" style="display: none;" />
+			</form>
+
+			<div class="feedbacks_div">
+				<!--<div class="list_area">
+					<span class="question">活动太少了，老板</span>
+					<span class="question_status">已回复</span>
+				</div>
+				<div class="list_area">
+					<span class="question">活动太少了，老板</span>
+					<span class="question_status">已回复</span>
+				</div>-->
+			</div>
+
+		</div>
+	</body>
+	<script src="../../../js/mui.min.js"></script>
+	<script src="../../../js/config/web_config.js"></script>
+	<script src="../../../js/jquery-1.11.3.js"></script>
+	<script src="../../../js/common/bdapp.js"></script>
+	<script src="../../../js/plugin/spark-md5.js"></script>
+	<!--<script src="../../../js/plugin/upload.js"></script>
+	<script src="../../../js/plugin/zepto.min.js"></script>-->
+	<script>
+		if(navigator.userAgent.indexOf("Html5Plus") < 0) { //不支持5+ API
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			$('.img_upload').hide();
+			var store_id = GetQueryString('store_id');
+			var logo_img = GetQueryString('logo_img');
+
+			var member_id;
+			var token = GetQueryString('token');
+			var GetInfo_url = test_url + '/api/aliwx/GetInfo';
+
+			function GetInfo(GetInfo_url, token) {
+				mui.ajax(GetInfo_url, {
+					data: {
+						token: token,
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//							var Member = '';
+						//							var phone = '';
+						//							var thumb = '';
+						//							var member_name = '';
+						//							var birthday = '';
+						var UserID = data.Data.UserID;
+						member_id = UserID;
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+
+			};
+
+			GetInfo(GetInfo_url, token);
+
+			var addfeedback_url = test_url + '/api/store/AddFeedBack';
+			$('#lala').attr('action', addfeedback_url + '?token=' + token);
+			//			console.log($('#lala').attr('action'));
+
+			var getfeedback_url = test_url + '/api/StoreMessage/GetFeedBack';
+
+			var page_num = 1;
+			var page_size = 20;
+			var type = 2;
+
+			function GetFeedBack(getfeedback_url, store_id, type, member_id, page_num, page_size, token) {
+				mui.ajax(getfeedback_url, {
+					data: {
+						store_id: store_id,
+						type: type,
+						member_id: member_id,
+						page_num: page_num,
+						page_size: page_size,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log('获取意见反馈展示接口返回数据:' + JSON.stringify(data));
+						var FeedBacks = data.Data.FeedBacks;
+						for(var i = 0; i < FeedBacks.length; i++) {
+							var content = FeedBacks[i].content;
+							var reply_content = FeedBacks[i].reply_content;
+							var add_time = FeedBacks[i].add_time;
+							var member_thumb = FeedBacks[i].member_thumb;
+							var add_time = FeedBacks[i].add_time;
+							var reply_time = FeedBacks[i].reply_time;
+							var feedbacks_div =
+								'<div class="list_area" content="' + content + '" reply_content="' + reply_content + '" add_time="' + add_time + '" reply_time="' + reply_time + '">' +
+								'<span class="question">' + content + '</span>' +
+								'<span class="question_status">已回复</span>' +
+								'</div>';
+							$('.feedbacks_div').append(feedbacks_div);
+						}
+
+						mui(".feedbacks_div").on('tap', '.list_area', function() {
+							var content = $(this).attr('content');
+							var reply_content = $(this).attr('reply_content');
+							var add_time = $(this).attr('add_time');
+							var member_thumb = $(this).attr('member_thumb');
+							var add_time = $(this).attr('add_time');
+							var reply_time = $(this).attr('reply_time');
+							//							var webview = mui.openWindow({
+							//								id: 'index_feedbacks_detail',
+							//								url: 'index_feedbacks_detail.html',
+							//								extras: {
+							//									logo_img: logo_img,
+							//									content: content,
+							//									reply_content: reply_content,
+							//									add_time: add_time,
+							//									reply_time: reply_time
+							//								},
+							//								createNew: true
+							//							});
+							window.location.href = 'index_feedbacks_detail.html?logo_img=' + logo_img + '&content=' + content + '&reply_content=' + reply_content + '&add_time=' + add_time + '&reply_time=' + reply_time;
+						})
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+
+			}
+			GetFeedBack(getfeedback_url, store_id, type, member_id, page_num, page_size, token);
+
+			function AddFeedBack(addfeedback_url, member_id, store_id, content, device_info, type) {
+				mui.ajax(addfeedback_url, {
+					data: {
+						member_id: member_id,
+						store_id: store_id,
+						content: content,
+						device_info: device_info,
+						type: type
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'token': token
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						console.log('获取上传图片接口返回数据:' + JSON.stringify(data));
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+
+			var uploadimage_url = test_url + '/api/ActivityCommon/UploadImage?token=' + token;
+			//			console.log(uploadimage_url);
+
+			function UploadImage(uploadimage_url, img_data) {
+				mui.ajax(uploadimage_url, {
+					data: {
+						img_data: img_data
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+
+			addfeedback_url = addfeedback_url + '?token=' + token;
+			//			console.log(addfeedback_url);
+
+			function doUpload() {
+				device_info = 'webapp';
+				var content = $('.text_area').val();
+				$('#one').val(member_id);
+				$('#two').val(store_id);
+				$('#three').val(device_info);
+				$('#six').val(content);
+				var formData = new FormData($("#uploadForm")[0]);
+				$.ajax({
+					url: addfeedback_url,
+					type: 'POST',
+					data: formData,
+					async: false,
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(returndata) {
+						console.log(returndata);
+						if(returndata.IsError == false) {
+							Alert('问题提交成功');
+						} else {
+							var ErrorMessage = returndata.ErrorMessage;
+							Alert(ErrorMessage);
+						}
+					},
+					error: function(returndata) {
+						alert(returndata);
+					}
+				});
+			}
+
+			document.getElementById('btn').addEventListener('tap', function() {
+				device_info = 'webapp';
+				var content = $('.text_area').val();
+				$('#one').val(member_id);
+				$('#two').val(store_id);
+				$('#three').val(device_info);
+				$('#six').val(content);
+				$('#new_up_img').click();
+				//				$('#submit').click();
+				//				var img_data = $('.input_img').val();
+				//				UploadImage(uploadimage_url, img_data);
+				//				window.location.href='https://www.baidu.com/';
+			})
+
+		}
+	</script>
+
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+
+</html>
