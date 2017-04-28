@@ -60,37 +60,68 @@
 			//		createBarcode('Barcode','251322301300730880','B')
 
 			var member_id;
-		
+
 			var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 			var token = GetQueryString('token');
 
-			function GetInfo(GetInfo_url, token) {
-				mui.ajax(GetInfo_url, {
+			//			function GetInfo(GetInfo_url, token) {
+			//				mui.ajax(GetInfo_url, {
+			//					data: {
+			//						token: token,
+			//					},
+			//					dataType: 'json', //服务器返回json格式数据
+			//					type: 'get', //HTTP请求类型
+			//					timeout: 10000, //超时时间设置为10秒；
+			//					async: false,
+			//					success: function(data) {
+			//
+			//						//服务器返回响应，根据响应结果，分析是否登录成功；
+			//						console.log(data);
+			//						var phone = data.Data.Phone;
+			//						var member_name = data.Data.member_name;
+			//						var birthday = data.Data.birthday;
+			//						birthday = birthday.slice(0, 10);
+			//						var UserID = data.Data.UserID;
+			//						member_id = UserID;
+			//						var thumb = data.Data.thumb;
+			//						if(thumb == "" || !thumb) {
+			//							thumb = '../../images/146px_146px_moren.png';
+			//						}
+			//						$('#member_name').text(member_name);
+			//						$('#phone').text(phone);
+			//						$('#birthday').text(birthday);
+			//						$('#thumb').attr('src', thumb);
+			//
+			//					},
+			//					error: function(xhr, type, errorThrown) {
+			//						//异常处理；
+			//						console.log(type);
+			//					}
+			//				});
+			//
+			//			};
+			//			GetInfo(GetInfo_url, token);
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
 					data: {
-						token: token,
+
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
 					success: function(data) {
-
 						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log('需要的token：' + token);
 						console.log(data);
-						var phone = data.Data.Phone;
-						var member_name = data.Data.member_name;
-						var birthday = data.Data.birthday;
-						birthday = birthday.slice(0, 10);
-						var UserID = data.Data.UserID;
-						member_id = UserID;
-						var thumb = data.Data.thumb;
-						if(thumb == "" || !thumb) {
-							thumb = '../../images/146px_146px_moren.png';
-						}
-						$('#member_name').text(member_name);
-						$('#phone').text(phone);
-						$('#birthday').text(birthday);
-						$('#thumb').attr('src', thumb);
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
 
 					},
 					error: function(xhr, type, errorThrown) {
@@ -98,9 +129,8 @@
 						console.log(type);
 					}
 				});
-
-			};
-			GetInfo(GetInfo_url, token);
+			}
+			GetMemberInfo(GetMemberInfo_url, token);
 
 			console.log(member_id);
 			console.log(token);

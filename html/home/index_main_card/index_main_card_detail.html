@@ -202,26 +202,58 @@
 			var token = GetQueryString('token');
 			var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 
-			function GetInfo(GetInfo_url, token) {
-				mui.ajax(GetInfo_url, {
+			//			function GetInfo(GetInfo_url, token) {
+			//				mui.ajax(GetInfo_url, {
+			//					data: {
+			//						token: token,
+			//					},
+			//					dataType: 'json', //服务器返回json格式数据
+			//					type: 'get', //HTTP请求类型
+			//					timeout: 10000, //超时时间设置为10秒；
+			//					async: false,
+			//					success: function(data) {
+			//
+			//						//服务器返回响应，根据响应结果，分析是否登录成功；
+			//						console.log(data);
+			//						//							var Member = '';
+			//						//							var phone = '';
+			//						//							var thumb = '';
+			//						//							var member_name = '';
+			//						//							var birthday = '';
+			//						var UserID = data.Data.UserID;
+			//						member_id = UserID;
+			//
+			//					},
+			//					error: function(xhr, type, errorThrown) {
+			//						//异常处理；
+			//						console.log(type);
+			//					}
+			//				});
+			//
+			//			};
+			//
+			//			GetInfo(GetInfo_url, token);
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
 					data: {
-						token: token,
+
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
 					success: function(data) {
-
 						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log('需要的token：' + token);
 						console.log(data);
-						//							var Member = '';
-						//							var phone = '';
-						//							var thumb = '';
-						//							var member_name = '';
-						//							var birthday = '';
-						var UserID = data.Data.UserID;
-						member_id = UserID;
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
 
 					},
 					error: function(xhr, type, errorThrown) {
@@ -229,10 +261,9 @@
 						console.log(type);
 					}
 				});
+			}
+			GetMemberInfo(GetMemberInfo_url, token);
 
-			};
-
-			GetInfo(GetInfo_url, token);
 			var getvipinfo_url = test_url + '/api/member/getvipinfo';
 
 			function getvipinfo(getvipinfo_url, vip_id, token) {
@@ -277,8 +308,8 @@
 						var close_time = data.Data.Store.close_time;
 						var store_time = '营业时间' + open_time + '——' + close_time;
 						var address = data.Data.Store.address;
-//						var logo_img = data.Data.Store.logo_img;
-//						$('#feedbacks').attr('logo_img', logo_img);
+						//						var logo_img = data.Data.Store.logo_img;
+						//						$('#feedbacks').attr('logo_img', logo_img);
 						$('#store_name').text(store_name);
 						$('#store_time').text(store_time);
 						$('#address').text(address);
@@ -343,7 +374,7 @@
 
 						//					托管
 						document.getElementById('index_deposit').addEventListener('tap', function() {
-							window.location.href = 'index_deposit.html?token=' + token + '&store_id=' + store_id  + '&vip_id=' + vip_id;
+							window.location.href = 'index_deposit.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
 						})
 						//					交易拍照
 						document.getElementById('index_photo').addEventListener('tap', function() {
@@ -360,7 +391,7 @@
 						})
 						//						意见反馈
 						document.getElementById('feedbacks').addEventListener('tap', function() {
-//							var logo_img = $(this).attr('logo_img');
+							//							var logo_img = $(this).attr('logo_img');
 							//							var webview = mui.openWindow({
 							//								url: 'index_feedbacks.html',
 							//								id: 'index_feedbacks',

@@ -127,26 +127,58 @@
 			var token = GetQueryString('token');
 			var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 
-			function GetInfo(GetInfo_url, token) {
-				mui.ajax(GetInfo_url, {
+			//			function GetInfo(GetInfo_url, token) {
+			//				mui.ajax(GetInfo_url, {
+			//					data: {
+			//						token: token,
+			//					},
+			//					dataType: 'json', //服务器返回json格式数据
+			//					type: 'get', //HTTP请求类型
+			//					timeout: 10000, //超时时间设置为10秒；
+			//					async: false,
+			//					success: function(data) {
+			//
+			//						//服务器返回响应，根据响应结果，分析是否登录成功；
+			//						console.log(data);
+			//						//							var Member = '';
+			//						//							var phone = '';
+			//						//							var thumb = '';
+			//						//							var member_name = '';
+			//						//							var birthday = '';
+			//						var UserID = data.Data.UserID;
+			//						member_id = UserID;
+			//
+			//					},
+			//					error: function(xhr, type, errorThrown) {
+			//						//异常处理；
+			//						console.log(type);
+			//					}
+			//				});
+			//
+			//			}
+			//
+			//			GetInfo(GetInfo_url, token);
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
 					data: {
-						token: token,
+
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
 					success: function(data) {
-
 						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log('需要的token：' + token);
 						console.log(data);
-						//							var Member = '';
-						//							var phone = '';
-						//							var thumb = '';
-						//							var member_name = '';
-						//							var birthday = '';
-						var UserID = data.Data.UserID;
-						member_id = UserID;
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
 
 					},
 					error: function(xhr, type, errorThrown) {
@@ -154,11 +186,8 @@
 						console.log(type);
 					}
 				});
-
 			}
-
-			GetInfo(GetInfo_url, token);
-
+			GetMemberInfo(GetMemberInfo_url, token);
 			var getactivitycommonlist_url = test_url + '/api/ActivityCommon/GetActivityCommonList';
 			var page_num = 1;
 			var page_size = 10;

@@ -92,13 +92,46 @@
 		});
 	</script>
 	<script>
-		var storeid = GetQueryString('storeid');
-		var memberid = GetQueryString('member_id');
-		var token = GetQueryString('token');
+		
+		
+		
 		var content_name_status = false;
 		var content_tel_status = false;
 		var content_ver_status = false;
 		var ver_status = true;
+
+		var member_id;
+		var storeid = GetQueryString('storeid');
+		var GetInfo_url = test_url + '/api/aliwx/GetInfo';
+		var token = GetQueryString('token');
+
+	
+
+		function GetInfo(GetInfo_url, token) {
+			mui.ajax(GetInfo_url, {
+				data: {
+					token: token,
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				async: false,
+				success: function(data) {
+
+					//服务器返回响应，根据响应结果，分析是否登录成功；
+					console.log(data);
+					memberid = data.Data.UserID;
+
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log(type);
+					
+				}
+			});
+
+		};
+		GetInfo(GetInfo_url, token);
 
 		function dianji() {
 			var num = 60
@@ -202,7 +235,7 @@
 						Alert('信息完善成功');
 						var member_name = encodeURI(username);
 						$('#btn_sure').unbind();
-						window.location.href = '../home/index_main_mine.html?member_id=' + memberid + '&token=' + token + '&phone=' + phone + '&thumb=' + '&birthday=' + birth + '&member_name=' + member_name;
+						window.location.href = '../home/index_main_mine.html?token=' + token + '&phone=' + phone + '&birthday=' + birth + '&member_name=' + member_name;
 					} else {
 						var ErrorMessage = data.Data.ErrorMessage;
 						Alert(ErrorMessage);
