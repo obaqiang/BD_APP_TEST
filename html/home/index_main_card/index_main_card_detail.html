@@ -430,6 +430,7 @@
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取载入会员卡优惠券显示接口接口返回数据:' + JSON.stringify(data));
 						//						console.log(data);
+						console.log(data);
 						var Tickets = data.Data.Tickets;
 						for(var i = 0; i < Tickets.length; i++) {
 							var ticket_money = Tickets[i].ticket_money;

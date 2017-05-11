@@ -120,17 +120,25 @@
 			</div>
 
 		</div>
-		<div class="service_area" style="display: none;">
-			<img class="icon_close" id="icon_close" src="../../images/55px_55px_X.png" alt="图片不存在" />
-			<img class="icon_b" src="../../images/98px_98px_logo.png" alt="图片不存在" />
-			<div class="area_text">
-				<span>优惠信息实时共享</span><br />
-				<span>真正体验贵宾服务</span>
-			</div>
-			<div class="use_now">
-				立即使用
-			</div>
+		<div id="isFol" style="display: none;">
+			<div class="service_area">
+				<img class="icon_close" id="icon_close" src="../../images/55px_55px_X.png" alt="图片不存在" />
+				<img class="icon_b" src="../../images/98px_98px_logo.png" alt="图片不存在" />
+				<div class="area_text">
+					<span>关注BD贵宾卡公众号</span><br />
+					<span>实时接收消息便捷实用</span>
+				</div>
+				<div class="use_now">
+					立即关注
+				</div>
 
+			</div>
+			<div class="see_img">
+
+				<img class="see_img_1" src="../../images/600px_436px_er.png" alt="" />
+				<img class="see_img_2" src="../../images/56px_56px_X.png" alt="" />
+			</div>
+			<div class="bl_mask"></div>
 		</div>
 
 		<script src="../../js/mui.min.js"></script>
@@ -239,26 +247,27 @@
 				//
 				//				GetInfo(GetInfo_url, token);
 				var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
-				function GetMemberInfo(GetMemberInfo_url,token) {
+
+				function GetMemberInfo(GetMemberInfo_url, token) {
 					mui.ajax(GetMemberInfo_url, {
 						data: {
-							
+
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers:{
-							'Content-Type':'application/json',
-							'token':token
+						headers: {
+							'Content-Type': 'application/json',
+							'token': token
 						},
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
-							console.log('需要的token：'+token);
+							console.log('需要的token：' + token);
 							console.log(data);
 							var MemberInfo = data.Data.MemberInfo;
 							member_id = MemberInfo.id;
-							
+
 						},
 						error: function(xhr, type, errorThrown) {
 							//异常处理；
@@ -266,7 +275,39 @@
 						}
 					});
 				}
-				GetMemberInfo(GetMemberInfo_url,token);
+				GetMemberInfo(GetMemberInfo_url, token);
+
+
+	
+				var checkuserhasfollowed_url = test_url+'/api/Member/CheckUserHasFollowed';
+				
+				function CheckUserHasFollowed(checkuserhasfollowed_url,member_id) {
+					mui.ajax(checkuserhasfollowed_url, {
+						data: {
+							memberid:member_id
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'get', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: false,
+						
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+					
+							console.log(data);
+							if(data.IsError==false&&data.Data.HasFollowed==false){
+								$('#isFol').show();
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
+							console.log('需要的链接：'+checkuserhasfollowed_url)
+							//异常处理；
+							console.log(type);
+						}
+					});
+				}
+				CheckUserHasFollowed(checkuserhasfollowed_url,member_id);
 
 				//				var member_id = GetQueryString('member_id');
 				//				console.log(member_id);
@@ -450,6 +491,21 @@
 						window.location.href = 'index_main_setting.html?token=' + token;
 					}
 				});
+
+				$('.see_img_2').click(function() {
+					$('.see_img').hide();
+					$('.bl_mask').hide();
+
+				})
+
+				$('use_now').click(function() {
+					$('.see_img').show();
+					$('.bl_mask').show();
+				})
+
+				$('.icon_close').click(function() {
+					$('.service_area').hide();
+				})
 
 			}
 		</script>

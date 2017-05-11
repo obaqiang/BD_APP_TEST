@@ -175,10 +175,10 @@ function unix_to_datetime(unix) {
 function cutstr(str, len) {
 	var str_length = 0;
 	var str_len = 0;
-	str_cut = new String();
+	var str_cut = new String();
 	str_len = str.length;
 	for(var i = 0; i < str_len; i++) {
-		a = str.charAt(i);
+		var a = str.charAt(i);
 		str_length++;
 		if(escape(a).length > 4) {
 			//中文字符的长度经编码之后大于4
