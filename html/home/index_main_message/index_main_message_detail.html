@@ -326,7 +326,8 @@
 						} else if(status == 2) {
 							status_text = '已确认';
 						} else if(status == 3) {
-							status_text = '已超时';
+							status_text = '未确认';
+							$('.detail_nav_bot').show();
 						} else if(status == 4) {
 							status_text = '已取消';
 						} else if(status == 5) {
@@ -366,8 +367,12 @@
 						if(IsError == false) {
 							if(type == 2) {
 								Alert('确定成功');
+								$('#status_text').text('已确认');
+								$('.detail_nav_bot').hide();
 							} else if(type == 4) {
 								Alert('取消成功');
+								$('#status_text').text('已取消');
+								$('.detail_nav_bot').hide();
 							}
 
 						} else {

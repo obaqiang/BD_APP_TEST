@@ -182,7 +182,8 @@
 						page_index: page_index,
 						page_size: page_size,
 						begin_time: begin_time,
-						end_time: end_time
+						end_time: end_time,
+						type:'001'
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
@@ -192,7 +193,13 @@
 						//						console.log('结束时间：'+unix_to_datetime(end_time));
 						//						console.log('开始时间:'+unix_to_datetime(begin_time));
 						//						console.log('获取签单统计接口返回数据:' + JSON.stringify(data));
-
+//						console.log(store_id)
+//						console.log(vip_id)
+//						console.log(page_index)
+//						console.log(page_size)
+//						console.log(begin_time)
+//						console.log(end_time)
+//						console.log(data);
 						if(page_index == 1) {
 							var table_div = '<tr><th>名称</th><th>金额</th><th>时间</th></tr>'
 							$('.bill_table').empty();

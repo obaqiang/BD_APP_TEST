@@ -168,11 +168,18 @@
 										var goods_name = Items[i].goods_name;
 										var price = Items[i].price;
 										var origin_price = Items[i].origin_price;
+										var type = Items[i].type;
+										var use_time_text = '';
+										if(type=='001'){
+											use_time_text ='(剩余'+Items[i].mayuse_qty+'次)'
+										}
+//										console.log(type)
+//										console.log(use_time_text)
 										div_in +=
 											"<div class=\"list_inner\" style=\"display:none;\">" +
 											"<div class=\"list_inner_left\">" +
 											"<div class=\"list_inner_left_name\">" +
-											goods_name +
+											goods_name +use_time_text+
 											"</div>" +
 											"<div class=\"list_inner_left_prize\">" +
 											"原价￥" + origin_price +

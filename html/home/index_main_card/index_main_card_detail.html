@@ -264,6 +264,59 @@
 			}
 			GetMemberInfo(GetMemberInfo_url, token);
 
+			var getstoreshopinfo_url = test_url + '/api/Store/GetStoreShopInfo'
+
+			function GetStoreShopInfo(getstoreshopinfo_url, store_id, store_tel, token) {
+				mui.ajax(getstoreshopinfo_url, {
+					data: {
+						store_id: store_id,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: true,
+
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+
+						console.log(data);
+						if(data.Data.store_shop.length == 0) {
+
+							if(store_tel == '') {
+								Alert('此商家无联系电话');
+							} else {
+								var tel_status = store_tel.indexOf('，');
+								if(tel_status > 0) { //此状态表示有两个号码
+
+									var see_tel = store_tel.split('，');
+									showTel(see_tel);
+									mui(".show_tel").on('tap', '.tel', function() {
+										var tel_href = $(this).text();
+										window.location.href = 'tel:' + tel_href;
+									})
+									document.getElementById('tel_cancel').addEventListener('tap', function() {
+										$('.show_tel').hide();
+									});
+								} else {
+									window.location.href = 'tel:' + store_tel;
+								}
+
+							}
+						} else {
+							console.log(2222)
+							window.location.href = 'index_shop_message.html?token=' + token + '&store_id=' + store_id;
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+
 			var getvipinfo_url = test_url + '/api/member/getvipinfo';
 
 			function getvipinfo(getvipinfo_url, vip_id, token) {
@@ -283,22 +336,27 @@
 						var points = data.Data.Vip.end_integral; //剩余积分
 						var vip_phone = data.Data.Vip.vip_phone;
 						var tel = data.Data.Store.tel;
-						var tel_status = tel.indexOf(',');
-						document.getElementById('tel').addEventListener('tap', function() {
-							if(tel_status > 0) { //此状态表示有两个号码
+						//						var tel_status = tel.indexOf('，');
+						var store_id = data.Data.Store.id;
 
-								var see_tel = tel.split(',');
-								showTel(see_tel);
-								mui(".show_tel").on('tap', '.tel', function() {
-									var tel_href = $(this).text();
-									window.location.href = 'tel:' + tel_href;
-								})
-								document.getElementById('tel_cancel').addEventListener('tap', function() {
-									$('.show_tel').hide();
-								});
-							} else {
-								window.location.href = 'tel:' + tel;
-							}
+			
+
+						document.getElementById('tel').addEventListener('tap', function() {
+							GetStoreShopInfo(getstoreshopinfo_url, store_id, tel);
+//							if(tel_status > 0) { //此状态表示有两个号码
+//
+//								var see_tel = tel.split('，');
+//								showTel(see_tel);
+//								mui(".show_tel").on('tap', '.tel', function() {
+//									var tel_href = $(this).text();
+//									window.location.href = 'tel:' + tel_href;
+//								})
+//								document.getElementById('tel_cancel').addEventListener('tap', function() {
+//									$('.show_tel').hide();
+//								});
+//							} else {
+//								window.location.href = 'tel:' + tel;
+//							}
 						});
 						$('#balance').text(balance);
 						$('#points').text(points);

@@ -53,7 +53,7 @@
 					<img class="list_info_img" src="../../../images/38px_38px_icon1.png" alt="" />
 					<span class="list_info_title">商家环境</span>
 					<div class="list_info_see">
-						<div class="swiper-container">
+						<div class="swiper-container swiper_1">
 							<div class="swiper-wrapper" id="image_div">
 								<!--<img src="../../../images/140px_120px_background.png" alt="" />
 								<img src="../../../images/140px_120px_background.png" alt="" />
@@ -69,6 +69,39 @@
 			</div>
 
 		</div>
+
+		<div style="position: fixed;width: 100%; top: 20%;left: 0;z-index: 2;" id="img_big">
+			<div style="position: fixed;width: 100%;height: 100%;opacity: 0.2;background: #000000;top: 0;" id="img_big_bg"></div>
+			<!--<div class="swiper-container swiper_2">
+				<div class="swiper-wrapper">
+					<img src="../../../images/140px_120px_background.png" alt="" />
+					<img src="../../../images/140px_120px_background.png" alt="" />
+					<img src="../../../images/140px_120px_background.png" alt="" />
+					<img src="../../../images/140px_120px_background.png" alt="" />
+
+				</div>
+			</div>-->
+			<div class="swiper-container swiper_2">
+				<div class="swiper-wrapper" id="swiper_2">
+					<!--<div class="swiper-slide" style="text-align: center;">
+						<img style="width: 80%;" src="../../../images/140px_120px_background.png" alt="" />
+					</div>
+					<div class="swiper-slide" style="text-align: center;">
+						<img style="width: 80%;" src="../../../images/140px_120px_background.png" alt="" />
+					</div>
+					<div class="swiper-slide" style="text-align: center;">
+						<img style="width: 80%;" src="../../../images/140px_120px_background.png" alt="" />
+					</div>
+					<div class="swiper-slide" style="text-align: center;">
+						<img style="width: 80%;" src="../../../images/140px_120px_background.png" alt="" />
+					</div>-->
+
+				</div>
+				<!-- Add Pagination -->
+				<!--<div class="swiper-pagination"></div>-->
+			</div>
+		</div>
+
 	</body>
 	<script src="../../../js/mui.min.js"></script>
 	<script src="../../../js/config/web_config.js"></script>
@@ -84,6 +117,7 @@
 			var vip_id = GetQueryString('vip_id');
 			var token = GetQueryString('token');
 			var getvipinfo_url = test_url + '/api/member/getvipinfo';
+
 			function getvipinfo(getvipinfo_url, vip_id, token) {
 				mui.ajax(getvipinfo_url, {
 					data: {
@@ -104,9 +138,31 @@
 						var Images = data.Data.Images;
 						for(var i = 0; i < Images.length; i++) {
 							var thumb_url = Images[i].thumb_url;
-							var image_div = '<img src="' + thumb_url + '" alt="" />';
+							var image_div = '<img data-index="'+i+'" src="' + thumb_url + '" alt="" />';
+
+							var image_div_2 = '<div class="swiper-slide" style="text-align: center;">' +
+								'<img style="width: 80%;height:300px;" src="' + thumb_url + '" alt="" />' +
+								'</div>';
 							$('#image_div').append(image_div);
+							$('#swiper_2').append(image_div_2);
 						}
+						var swiper_2 = new Swiper('.swiper_2', {
+							//							pagination: '.swiper-pagination',
+							//							paginationClickable: true,
+							//							spaceBetween: 30,
+
+						});
+						$('#img_big').hide();
+						$('#image_div img').click(function() {
+							$('#img_big').show();
+							var index = $(this).attr('data-index');
+//							console.log($(this).attr('data-index'));
+//							console.log(index)
+							swiper_2.slideTo(index, 1000, false);
+						})
+						$('#img_big_bg').click(function(){
+							$('#img_big').hide();
+						})
 
 					},
 					error: function(xhr, type, errorThrown) {
@@ -120,13 +176,14 @@
 		}
 	</script>
 	<script>
-		var swiper = new Swiper('.swiper-container', {
+		var swiper_1 = new Swiper('.swiper_1', {
 			pagination: '.swiper-pagination',
 			paginationClickable: true,
 
 			slidesPerView: 3.5,
 
 		});
+
 		//各个屏幕大小适配
 		(function(doc, win) {
 			var docEl = doc.documentElement,

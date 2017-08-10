@@ -278,7 +278,7 @@
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
-						
+
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
 							console.log(data);
@@ -309,9 +309,9 @@
 								//					console.log('../home/index_main_anzhuo.html?member_id='+member_id+'&token='+token+'&Member='+Member);
 								member_name = encodeURI(member_name);
 								birthday = encodeURI(birthday);
-//								window.location.href = '../home/index_main_card.html?member_id=' + member_id + '&token=' + token + '&member_name=' + member_name + '&birthday=' + birthday + '&thumb=' + thumb + '&phone=' + phone + '&storeid=' + store_id;
+								//								window.location.href = '../home/index_main_card.html?member_id=' + member_id + '&token=' + token + '&member_name=' + member_name + '&birthday=' + birthday + '&thumb=' + thumb + '&phone=' + phone + '&storeid=' + store_id;
 								console.log(token);
-								window.location.href = '../home/index_main_card.html?token='+token;
+								window.location.href = '../home/index_main_card.html?token=' + token;
 							} else if(data.ErrorCode == 4) {
 								var errorMsg = data.ErrorMessage;
 								Alert(errorMsg);
@@ -338,60 +338,60 @@
 					});
 				}
 
-//				function verifycode(url_login, account, pwd, VerifyCode, pwd_hook_status) {
-//					$.getJSON(url_login + '?account=' + account + '&pwd=' + pwd + '&VerifyCode=' + VerifyCode,
-//						function(data) {
-//							console.log(data);
-//							if(data.Data.ErrorCode == 0) {
-//								//								UserInfo.username(data_list.account);
-//								setCookie('username', account);
-//
-//								//								UserInfo.password(data_list.pwd);
-//								setCookie('pwd', pwd);
-//								//								UserInfo.member_id(data.Data.Member.id);
-//								var member_id = data.Data.Member.id;
-//								setCookie('member_id', member_id);
-//								//								UserInfo.token(data.Data.Token);
-//								var token = data.Data.Token;
-//								setCookie('token', token);
-//								//								UserInfo.pwd_hook_status(data_list.pwd_hook_status);
-//								//								alert('即将要缓存的pwd_hook_status：'+pwd_hook_status);
-//								setCookie('pwd_hook_status', pwd_hook_status);
-//								var member_id = data.Data.Member.id;
-//								var token = data.Data.Token;
-//								var Member = data.Data.Member;
-//								var member_name = Member.member_name;
-//								var phone = Member.phone;
-//								var birthday = Member.birthday;
-//								birthday = birthday.slice(0, 10);
-//								var thumb = Member.thumb;
-//								//								console.log(member_name)
-//								//					console.log('../home/index_main_anzhuo.html?member_id='+member_id+'&token='+token+'&Member='+Member);
-//								member_name = encodeURI(member_name);
-//								birthday = encodeURI(birthday);
-//								window.location.href = '../home/index_main_card.html?member_id=' + member_id + '&token=' + token + '&member_name=' + member_name + '&birthday=' + birthday + '&thumb=' + thumb + '&phone=' + phone + '&storeid=' + store_id;
-//
-//							} else if(data.ErrorCode == 4) {
-//								var errorMsg = data.ErrorMessage;
-//								Alert(errorMsg);
-//								$('#identify').show();
-//								var tel = $('#account').val();
-//								var tel_url = test_url + '/api/member/verifycode?deviceToken=&phone=';
-//								var identify_url = tel_url + tel + '&t=' + new Date().getTime();
-//								$('#identify_img').attr('src', identify_url);
-//								document.getElementById('identify_img').addEventListener('tap', function() {
-//									var tel = $('#account').val();
-//									var tel_url = test_url + '/api/member/verifycode?deviceToken=&phone=';
-//									var identify_url = tel_url + tel + '&t=' + new Date().getTime();
-//									$('.identify_img').attr('src', identify_url);
-//								});
-//							} else {
-//								var errorMsg = data.ErrorMessage;
-//								Alert(errorMsg);
-//							}
-//
-//						});
-//				}
+				//				function verifycode(url_login, account, pwd, VerifyCode, pwd_hook_status) {
+				//					$.getJSON(url_login + '?account=' + account + '&pwd=' + pwd + '&VerifyCode=' + VerifyCode,
+				//						function(data) {
+				//							console.log(data);
+				//							if(data.Data.ErrorCode == 0) {
+				//								//								UserInfo.username(data_list.account);
+				//								setCookie('username', account);
+				//
+				//								//								UserInfo.password(data_list.pwd);
+				//								setCookie('pwd', pwd);
+				//								//								UserInfo.member_id(data.Data.Member.id);
+				//								var member_id = data.Data.Member.id;
+				//								setCookie('member_id', member_id);
+				//								//								UserInfo.token(data.Data.Token);
+				//								var token = data.Data.Token;
+				//								setCookie('token', token);
+				//								//								UserInfo.pwd_hook_status(data_list.pwd_hook_status);
+				//								//								alert('即将要缓存的pwd_hook_status：'+pwd_hook_status);
+				//								setCookie('pwd_hook_status', pwd_hook_status);
+				//								var member_id = data.Data.Member.id;
+				//								var token = data.Data.Token;
+				//								var Member = data.Data.Member;
+				//								var member_name = Member.member_name;
+				//								var phone = Member.phone;
+				//								var birthday = Member.birthday;
+				//								birthday = birthday.slice(0, 10);
+				//								var thumb = Member.thumb;
+				//								//								console.log(member_name)
+				//								//					console.log('../home/index_main_anzhuo.html?member_id='+member_id+'&token='+token+'&Member='+Member);
+				//								member_name = encodeURI(member_name);
+				//								birthday = encodeURI(birthday);
+				//								window.location.href = '../home/index_main_card.html?member_id=' + member_id + '&token=' + token + '&member_name=' + member_name + '&birthday=' + birthday + '&thumb=' + thumb + '&phone=' + phone + '&storeid=' + store_id;
+				//
+				//							} else if(data.ErrorCode == 4) {
+				//								var errorMsg = data.ErrorMessage;
+				//								Alert(errorMsg);
+				//								$('#identify').show();
+				//								var tel = $('#account').val();
+				//								var tel_url = test_url + '/api/member/verifycode?deviceToken=&phone=';
+				//								var identify_url = tel_url + tel + '&t=' + new Date().getTime();
+				//								$('#identify_img').attr('src', identify_url);
+				//								document.getElementById('identify_img').addEventListener('tap', function() {
+				//									var tel = $('#account').val();
+				//									var tel_url = test_url + '/api/member/verifycode?deviceToken=&phone=';
+				//									var identify_url = tel_url + tel + '&t=' + new Date().getTime();
+				//									$('.identify_img').attr('src', identify_url);
+				//								});
+				//							} else {
+				//								var errorMsg = data.ErrorMessage;
+				//								Alert(errorMsg);
+				//							}
+				//
+				//						});
+				//				}
 				var username = getCookie('username');
 				//				console.log('缓存中的username：'+username);
 				if(username != null && username != undefined) { //判断是否已经登陆过
@@ -453,6 +453,8 @@
 				})
 
 			}
+
+			
 		</script>
 
 		<script>

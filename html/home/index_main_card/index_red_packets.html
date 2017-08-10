@@ -215,11 +215,13 @@
 							}
 							var Items = data.Data.Items;
 							var InMoney = data.Data.InMoney;
+							InMoney_text = InMoney.toFixed(2);
 							var OutMoney = data.Data.OutMoney;
 							var total_money = InMoney + OutMoney;
-							$('#InMoney').text(InMoney);
+							total_money_text = total_money.toFixed(2);
+							$('#InMoney').text(InMoney_text);
 							$('#OutMoney').text(OutMoney);
-							$('#total_money').text(total_money);
+							$('#total_money').text(total_money_text);
 							if(Items == '') {
 
 							} else {

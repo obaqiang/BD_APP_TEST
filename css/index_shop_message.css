@@ -1,0 +1,42 @@
+
+.shop_area{
+	margin-top: 0.5rem;
+}
+.shop_list{
+	background: #fff;
+	padding-left: 0.2rem;
+	padding-top: 0.1rem;
+	position: relative;
+	padding-bottom: 0.2rem;
+	border-bottom: 1px solid #ddd;
+}
+.list_1{
+	font-size: 0.12rem;
+	color: #393939;
+}
+.list_2{
+	font-size: 0.12rem;
+	color: #a4a4a4;
+}
+.list_3{
+	font-size: 0.12rem;
+	color: #a4a4a4;
+	display: inline-block;
+	width: 80%;
+}
+.list_4{
+	position: absolute;
+	background: #efeff4;
+	padding: 0.05rem 0.1rem;
+	border-radius: 0.058rem;
+	font-size: 0.12rem;
+	color: #b8b8b8;
+	top: 0.1rem;
+	right:0.2rem;
+}
+.list_5{
+	width: 0.4rem;
+	position: absolute;
+	top: 0.2rem;
+	right: 0.2rem;
+}

@@ -277,37 +277,46 @@
 				}
 				GetMemberInfo(GetMemberInfo_url, token);
 
+				var checkuserhasfollowed_url = test_url + '/api/Member/CheckUserHasFollowed';
 
-	
-				var checkuserhasfollowed_url = test_url+'/api/Member/CheckUserHasFollowed';
-				
-				function CheckUserHasFollowed(checkuserhasfollowed_url,member_id) {
+				function isWeiXin() {
+					var ua = window.navigator.userAgent.toLowerCase();
+					if(ua.match(/MicroMessenger/i) == 'micromessenger') { //如果是微信登陆才做判断
+						CheckUserHasFollowed(checkuserhasfollowed_url, member_id);
+						//						return true;
+					} else {
+
+						//						return false;
+					}
+				}
+				isWeiXin();
+
+				function CheckUserHasFollowed(checkuserhasfollowed_url, member_id) {
 					mui.ajax(checkuserhasfollowed_url, {
 						data: {
-							memberid:member_id
+							memberid: member_id
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						
+
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
-					
+
 							console.log(data);
-							if(data.IsError==false&&data.Data.HasFollowed==false){
+							if(data.IsError == false && data.Data.HasFollowed == false) {
 								$('#isFol').show();
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
-							console.log('需要的链接：'+checkuserhasfollowed_url)
+							console.log('需要的链接：' + checkuserhasfollowed_url)
 							//异常处理；
 							console.log(type);
 						}
 					});
 				}
-				CheckUserHasFollowed(checkuserhasfollowed_url,member_id);
 
 				//				var member_id = GetQueryString('member_id');
 				//				console.log(member_id);
@@ -326,6 +335,59 @@
 				//				member_name = decodeURI(member_name);
 				//
 				//				birthday = decodeURI(birthday);
+
+				var getstoreshopinfo_url = test_url + '/api/Store/GetStoreShopInfo'
+
+				function GetStoreShopInfo(getstoreshopinfo_url, store_id, store_tel,token) {
+					mui.ajax(getstoreshopinfo_url, {
+						data: {
+							store_id: store_id,
+							token:token
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'get', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: true,
+
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+					
+							console.log(data);
+							if(data.Data.store_shop.length == 0) {
+							
+								if(store_tel == '') {
+									Alert('此商家无联系电话');
+								} else {
+									var tel_status = store_tel.indexOf('，');
+									if(tel_status > 0) { //此状态表示有两个号码
+
+										var see_tel = store_tel.split('，');
+										showTel(see_tel);
+										mui(".show_tel").on('tap', '.tel', function() {
+											var tel_href = $(this).text();
+											window.location.href = 'tel:' + tel_href;
+										})
+										document.getElementById('tel_cancel').addEventListener('tap', function() {
+											$('.show_tel').hide();
+										});
+									} else {
+										window.location.href = 'tel:' + store_tel;
+									}
+
+								}
+							}else{
+								console.log(2222)
+								window.location.href = 'index_main_card/index_shop_message.html?token=' + token + '&store_id=' + store_id;
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
+
+							//异常处理；
+							console.log(type);
+						}
+					});
+				}
 
 				var getvips_url = test_url + '/api/member/GetVips';
 				var getstoreshopinfo_url = test_url + '/api/Store/GetStoreShopInfo';
@@ -394,32 +456,17 @@
 								window.location.href = 'index_main_card/index_main_card_detail.html?token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id;
 
 							});
-							mui(".card_area").on('tap', '.card_shop_tel_c,.card_shop_tel', function() {
-								var store_tel = $(this).attr('store_tel');
-								if(store_tel == '') {
-									Alert('此商家无联系电话');
-								} else {
-									var tel_status = store_tel.indexOf(',');
-									if(tel_status > 0) { //此状态表示有两个号码
-
-										var see_tel = store_tel.split(',');
-										showTel(see_tel);
-										mui(".show_tel").on('tap', '.tel', function() {
-											var tel_href = $(this).text();
-											window.location.href = 'tel:' + tel_href;
-										})
-										document.getElementById('tel_cancel').addEventListener('tap', function() {
-											$('.show_tel').hide();
-										});
-									} else {
-										window.location.href = 'tel:' + store_tel;
-									}
-
-								}
-
-							})
 
 						}
+
+						mui(".card_area").on('tap', '.card_shop_tel_c,.card_shop_tel', function() {
+							var store_id = $(this).parent().attr('store_id');
+							var store_tel = $(this).attr('store_tel');
+							GetStoreShopInfo(getstoreshopinfo_url, store_id, store_tel);
+			
+
+						})
+
 					}
 
 				}
