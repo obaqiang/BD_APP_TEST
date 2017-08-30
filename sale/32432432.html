@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+	<script>
+		QueryString(item){
+			var svalue = '?code=32343434543543534&x=123&y=456'.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+			return svalue ? svalue[1] : svalue;
+		}
+		//		var lala = 'www.dsklfjdskl.com?code=32343434543543534'
+		var code = QueryString('code')
+
+		//		var code = lala.substring(a + 5)
+		console.log(code)
+		console.log(QueryString('x'))
+		console.log(QueryString('y'))
+	</script>
+
+</html>

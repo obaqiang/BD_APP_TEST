@@ -154,6 +154,34 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="address">
+				收货地址
+				<img src="../../images/16px_26px_V.png" alt="" />
+			</div>
+			<div class="order_show">
+				<div class="order_show_list" onclick="ordershowJump(0)" data_status="0">
+					<img src="../../sale/img/44px_44px_quanbudingdan.png" alt="" />
+					全部订单
+				</div>
+				<div class="order_show_list" onclick="ordershowJump(1)" data_status="1">
+					<img src="../../sale/img/44px_44px_daifukuan.png" alt="" />
+					待付款
+				</div>
+				<div class="order_show_list" onclick="ordershowJump(2)" data_status="2">
+					<img src="../../sale/img/44px_44px_weiwancheng.png" alt="" />
+					未完成
+				</div>
+				<div class="order_show_list" onclick="ordershowJump(3)"data_status="3">
+					<img src="../../sale/img/44px_44px_yiquhuo.png" alt="" />
+					已完成
+				</div>
+				<!--<div class="order_show_list">
+					<img src="../../sale/img/44px_44px_yishouhuo.png" alt="" />
+					已收货
+				</div>-->
+			</div>
+			
 			<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted mine_bg_list">
 				<li class="mui-table-view-cell" id="change_tel">
 					<a class="mui-navigate-right mine_list_head">
@@ -289,6 +317,7 @@
 				}
 
 				var member_id;
+				var open_id;
 				var storeid = GetQueryString('storeid');
 				var phone = GetQueryString('phone');
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
@@ -357,7 +386,7 @@
 							console.log(data);
 							var MemberInfo = data.Data.MemberInfo;
 							member_id = MemberInfo.id;
-							
+							open_id = MemberInfo.open_id;
 							var phone = MemberInfo.phone;
 							var member_name = MemberInfo.member_name;
 							var birthday = MemberInfo.birthday;
@@ -537,6 +566,15 @@
 						window.location.href = 'index_main_setting.html?token=' + token;
 					}
 				});
+				
+				function ordershowJump(e){
+					var status=e
+					console.log(status)
+					window.location.href='../../sale/order_show.html?token=' + token+'&open_id='+open_id+'&status='+status;
+				}
+				
+				
+				
 
 			}
 		</script>

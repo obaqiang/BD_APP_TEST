@@ -173,7 +173,14 @@
 	color: #fff;
 	font-size: 0.15rem;
 }
-
+.bot_pay_no {
+	float: right;
+	background: #999999;
+	text-align: center;
+	width: 1rem;
+	color: #fff;
+	font-size: 0.15rem;
+}
 .bot_info_show {
 	margin-left: 0.6rem;
 	font-size: 0.13rem;
@@ -382,4 +389,47 @@
 	color: #6bbd00;
 	float: right;
 	margin-right: 0.1rem;
+}
+
+.buy_modal {
+	position: fixed;
+	width: 100%;
+	z-index: 2;
+	background: #fff;
+	bottom: 0;
+}
+.buy_modal_list_area{
+	height: 1.6rem;
+	overflow-y: scroll;
+}
+.buy_modal_list {
+	font-size: 0.14rem;
+	line-height: 0.5rem;
+	border-bottom: 1px solid #ddd;
+}
+
+.buy_modal_list_left {
+	color: #333333;
+	margin-left: 0.33rem;
+}
+
+.buy_modal_list_right {
+	color: #FF5202;
+	float: right;
+	margin-right: 0.33rem;
+}
+
+.buy_modal_foot {
+	text-align: center;
+	font-size: 0.15rem;
+	line-height: 0.5rem;
+	background: #F02015;
+	color: #fff;
+}
+.buy_cho{
+	background: #FEEFEE !important;
+	
+}
+.buy_cho span{
+	color: #FF5202 !important;
 }

@@ -354,3 +354,131 @@ body {
 	font-size: 0.14rem;
 	line-height: 0.4rem;
 }
+.follow_modal{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	text-align: center;
+	z-index: 2;
+}
+.login_modal{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	text-align: center;
+	z-index: 2;
+}
+.fo_img_1{
+	width: 3rem;
+	height: 3.5rem;
+	margin-top: 1.5rem;
+}
+.fo_img_2{
+	position: absolute;
+	width: 0.6rem;
+	right: 0.2rem;
+	top: 1rem;
+}
+.login_img_1{
+	width: 2.5rem;
+	height: 2.8rem;
+	margin-top: 1.5rem;
+	z-index: 2;
+}
+.login_img_2{
+	position: absolute;
+	width: 0.6rem;
+	right: 0.3rem;
+	top: 1.4rem;
+}
+.input_tel{
+	position: absolute;
+	top: 3.1rem;
+	left: 0.8rem;
+	width: 2.2rem;
+	font-size: 0.13rem;
+	line-height: 0.4rem;
+	border-radius: 0.05rem;
+	outline: none;
+	border: none;
+	padding-left: 0.1rem;
+}
+.input_ver{
+	position: absolute;
+	top: 3.6rem;
+	left: 0.8rem;
+	width: 2.2rem;
+	font-size: 0.13rem;
+	line-height: 0.4rem;
+	border-radius: 0.05rem;
+	outline: none;
+	border: none;
+	padding-left: 0.1rem;
+}
+.ver_btn{
+	position: absolute;
+	top: 3.7rem;
+	left: 2.2rem;
+	font-size: 0.12rem;
+	background: #FE4445;
+	border: none;
+	line-height: 0.22rem;
+	color: #fff;
+	border-radius: 0.05rem;
+}
+.login_btn{
+
+	position: absolute;
+	top: 4.3rem;
+	left: 0.7rem;
+	font-size: 0.18rem;
+	background: #FE4445;
+	border: none;
+	line-height: 0.4rem;
+	color: #fff;
+	border-radius: 0.07rem;
+	width: 2.5rem;
+}
+.buy_modal {
+	position: fixed;
+	width: 100%;
+	z-index: 2;
+	background: #fff;
+	bottom: 0;
+}
+.buy_modal_list_area{
+	height: 1.6rem;
+	overflow-y: scroll;
+}
+.buy_modal_list {
+	font-size: 0.14rem;
+	line-height: 0.5rem;
+	border-bottom: 1px solid #ddd;
+}
+
+.buy_modal_list_left {
+	color: #333333;
+	margin-left: 0.33rem;
+}
+
+.buy_modal_list_right {
+	color: #FF5202;
+	float: right;
+	margin-right: 0.33rem;
+}
+
+.buy_modal_foot {
+	text-align: center;
+	font-size: 0.15rem;
+	line-height: 0.5rem;
+	background: #F02015;
+	color: #fff;
+}
+
+.buy_cho{
+	background: #FEEFEE !important;
+	
+}
+.buy_cho span{
+	color: #FF5202 !important;
+}

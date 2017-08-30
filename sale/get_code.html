@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="format-detection" content="telephone=no" />
+		<title>折上折</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/action_detail.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/global.css">
+
+		<script src="js/html5shiv.min.js"></script>
+	</head>
+	<style>
+		html,
+		body {
+			background: #f2f2f2;
+		}
+	</style>
+
+	<body>
+
+		<script src="js/jquery-1.11.3.min.js "></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common/bdapp.js"></script>
+		<script src="../js/config/web_config.js"></script>
+
+		<script src="js/bootstrap.js "></script>
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+		<script>
+			var CheckUserHasFollowed_Extend_url = test_url + '/api/Member/CheckUserHasFollowed_Extend'
+
+			function CheckUserHasFollowed_Extend(CheckUserHasFollowed_Extend_url) {
+				$.ajax({
+					url: CheckUserHasFollowed_Extend_url,
+					type: 'get',
+					dataType: 'json',
+					data: {},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+//						alert('CheckUserHasFollowed_Extend接口开始')
+////						
+////						
+//						alert(JSON.stringify(data))
+						window.location.href = data.Data.Data
+					},
+					error: function(xhr, type, errorThrown) {
+//						alert('CheckUserHasFollowed_Extend接口出错')
+//						alert(errorThrown)
+//						alert(xhr)
+						console.log('需要的链接：' + CheckUserHasFollowed_Extend_url)
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			CheckUserHasFollowed_Extend(CheckUserHasFollowed_Extend_url)
+		</script>
+	</body>
+
+</html>

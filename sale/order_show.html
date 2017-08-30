@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="format-detection" content="telephone=no" />
+		<title>活动订单</title>
+		<link rel="stylesheet" href="css/global.css" />
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/order_confirm.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/global.css" />
+		<link href="css/order_show.css" rel="stylesheet">
+		<script src="js/html5shiv.min.js"></script>
+	</head>
+	<style>
+		html,
+		body {
+			background: #f2f2f2;
+		}
+	</style>
+
+	<body>
+		<header>
+			<div class="img_area" onclick="goBack()">
+				<img src="img/50px_50px_cao.png" alt="" />
+			</div>
+
+			活动订单
+		</header>
+
+		<div class="order_show_head">
+			<span class="head_list" onclick="showList(0)">全部订单</span>
+			<span class="head_list" onclick="showList(1)">待付款</span>
+			<span class="head_list" onclick="showList(2)">未完成</span>
+			<span class="head_list" onclick="showList(3)">已完成</span>
+
+		</div>
+
+		<div class="goods_area">
+			<!--<div class="goods_list">
+				<div class="goods_list_head">
+					<img class="goods_list_head_img" src="img/36px_36px_shangjia.png" alt="" />
+					<span class="goods_list_head_shop_name">麦田香草城北路店</span>
+					<span class="goods_list_head_status_1">待付款</span>
+				</div>
+				<div class="goods_list_body">
+					<img class="goods_list_body_img" src="img/750px_620px_chanpintu.png" alt="" />
+					<span class="goods_list_body_text">超级无敌好吃的美味慕斯小蛋糕绝对吃了 还想吃吃吃吃吃吃</span>
+					<span class="goods_list_body_price">￥19.8</span>
+					<span class="goods_list_body_zhe">折上折</span>
+					<span class="goods_list_body_num">x3</span>
+				</div>
+				<div class="goods_list_foot">
+					<span class="goods_list_foot_cancel">取消订单</span>
+					<span class="goods_list_foot_pay">付款</span>
+					<span class="goods_list_foot_info">共3件商品 合计:￥19.80</span>
+				</div>
+			</div>
+			<div class="goods_list">
+				<div class="goods_list_head">
+					<img class="goods_list_head_img" src="img/36px_36px_shangjia.png" alt="" />
+					<span class="goods_list_head_shop_name">麦田香草城北路店</span>
+					<span class="goods_list_head_status_1">待付款</span>
+				</div>
+				<div class="goods_list_body">
+					<img class="goods_list_body_img" src="img/750px_620px_chanpintu.png" alt="" />
+					<span class="goods_list_body_text">超级无敌好吃的美味慕斯小蛋糕绝对吃了 还想吃吃吃吃吃吃</span>
+					<span class="goods_list_body_price">￥19.8</span>
+					<span class="goods_list_body_zhe">折上折</span>
+					<span class="goods_list_body_num">x3</span>
+				</div>
+				<div class="goods_list_foot">
+					<span class="goods_list_foot_cancel">取消订单</span>
+					<span class="goods_list_foot_pay">付款</span>
+					<span class="goods_list_foot_info">共3件商品 合计:￥19.80</span>
+				</div>
+			</div>-->
+
+		</div>
+
+		<div class="no_goods_area" style="display: none;">
+			<img src="img/82px_82px_zanwushuju.png" alt="" /> 暂无数据
+		</div>
+		<script src="js/jquery-1.11.3.min.js "></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common/bdapp.js"></script>
+		<script src="../js/config/web_config.js"></script>
+
+		<script src="js/bootstrap.js "></script>
+		<script src="js/code128.js"></script>
+		<script src="js/qrcode.js"></script>
+		<script>
+			var token = GetQueryString('token');
+			var open_id = GetQueryString('open_id');
+			var status = GetQueryString('status');
+
+			var GetOrdersForDiscount_url = test_url + '/api/OrderV2/GetOrdersForDiscount'
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
+			var page_num = 1
+			var page_size = 10
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(token)
+
+						console.log(data);
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('需要的token：' + token);
+						console.log(type);
+					}
+				});
+			}
+			GetMemberInfo(GetMemberInfo_url, token)
+
+			function GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size) {
+				mui.ajax(GetOrdersForDiscount_url, {
+					data: {
+						open_id: open_id,
+						type: 0,
+						pay_status: 0,
+						status: status,
+						page_num: page_num,
+						page_size: page_size,
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: {
+
+						'Token': token,
+
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(open_id);
+						console.log(data);
+						if(page_num == 1) {
+							$('.goods_area').empty();
+
+						}
+						var Orders = data.Data.Orders;
+						for(var i = 0; i < Orders.length; i++) {
+							var qty = Orders[i].Items[0].qty
+							var price = Orders[i].Items[0].price
+							var total_price = qty * price
+
+							var div =
+								'<div class="goods_list"  >' +
+								'<div class="goods_list_head">' +
+								'<img class="goods_list_head_img" src="img/36px_36px_shangjia.png" alt="" />' +
+								'<span class="goods_list_head_shop_name">' + Orders[i].store_name + '</span>' +
+								'<span class="goods_list_head_status_1">' + Orders[i].order_status + '</span>' +
+								'</div>' +
+								'<div class="goods_list_body">' +
+								'<img class="goods_list_body_img" src="' + Orders[i].thumb + '" alt="" />' +
+								'<span class="goods_list_body_text">' + Orders[i].goods_names + '</span>' +
+								'<span class="goods_list_body_price">￥' + price + '</span>' +
+								'<span class="goods_list_body_zhe">折上折</span>' +
+								'<span class="goods_list_body_num">x' + qty + '</span>' +
+								'</div>' +
+								'<div class="goods_list_foot">' +
+								'<span class="goods_list_foot_cancel">取消订单</span>' +
+								//								'<span class="goods_list_foot_pay" onclick="orderJump('+Orders[i].order_id+','+Orders[i].order_status+','+Orders[i].store_id+')">付款</span>' +
+								'<span class="goods_list_foot_pay" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">付款</span>' +
+								'<span class="goods_list_foot_info">共' + qty + '件商品 合计:￥' + total_price + '</span>' +
+								'</div>' +
+								'</div>';
+							$('.goods_area').append(div)
+						}
+						$('.goods_list_foot_pay').click(function() {
+							var order_id = $(this).attr('data_order_id')
+							var order_status = $(this).attr('data_order_status')
+							var store_id = $(this).attr('data_store_id')
+							var vip_id = $(this).attr('data_vip_id')
+							if(order_status == '未付款') {
+								window.location.href = 'order_confirm.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id;
+							}else{
+								window.location.href = 'order_detail.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id;
+							}
+						})
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('请求失败')
+					}
+				});
+			}
+			GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size)
+
+			function showList(e) {
+				var status = e
+				page_num = 1
+				GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size)
+			}
+
+			$(window).scroll(function() {　　
+				var scrollTop = $(this).scrollTop();　　
+				var scrollHeight = $(document).height();　　
+				var windowHeight = $(this).height();　　
+				if(scrollTop + windowHeight == scrollHeight) {　　　　
+					//					alert("you are in the bottom");　
+					page_num += 1;
+					GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size)　
+				}
+			});
+			var RefundWinxinOrder_url = test_url + '/api/WxSP/RefundWinxinOrder'
+
+			function RefundWinxinOrder(RefundWinxinOrder_url, storeid, order_id, vip_id, return_amount) {
+				mui.ajax(RefundWinxinOrder_url, {
+					data: {
+						store_id: storeid,
+						order_id: order_id,
+						staff_id: vip_id,
+						memo: '退款',
+						items_json: '',
+						paylist_json: '',
+						return_amount: return_amount
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					header: {
+						'content-type': 'application/json'
+
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+
+						console.log(data);
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('请求失败')
+					}
+				});
+			}
+		</script>
+
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+
+	</body>
+
+</html>

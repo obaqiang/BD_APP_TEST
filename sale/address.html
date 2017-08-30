@@ -9,6 +9,7 @@
 		<title>地址管理</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/address.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/global.css">
 		<script src="js/html5shiv.min.js"></script>
 	</head>
 	<style>
@@ -20,9 +21,9 @@
 
 	<body>
 
-		<div class="address_info" style="display: none;">
-			<div class="address_list">
-				<div class="list_head">
+		<div class="address_info" id="address_info" style="display: none;">
+			<!--<div class="address_list">
+				<div class="list_head" id="consignee">
 					马老板 130321156585
 				</div>
 				<div class="list_body">
@@ -43,20 +44,257 @@
 						<span>删除</span>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 
-		<div class="btn_bottom">
+		<div class="btn_bottom" onclick="newAddress()">
 			新建地址
 		</div>
-	
+
 		<div class="no_address_area">
 			<img src="img/292px_254px_kuaidi.png" alt="" />
 			<span>快递小哥迷路了，填个收货地址吧~</span>
 		</div>
 
 		<script src="js/jquery-1.11.3.min.js "></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common/bdapp.js"></script>
+		<script src="../js/config/web_config.js"></script>
+
 		<script src="js/bootstrap.js "></script>
+
+		<script type="text/javascript">
+			var member_id;
+			var token = GetQueryString('token')
+			var open_id = GetQueryString('open_id')
+			var store_id = GetQueryString('store_id')
+			var orderid = GetQueryString('orderid')
+			var vip_id = GetQueryString('vip_id')
+			var GetVipAddressList_url = test_url + '/api/Discount/GetVipAddressList'
+			var DefaultAddress_url = test_url + '/api/SmallProgram/DefaultAddress'
+			var DeleteVipAddress_url = test_url + '/api/SmallProgram/DeleteVipAddress'
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			console.log(store_id)
+			console.log(orderid)
+			
+			var source_from = GetQueryString('source_from')
+			if(source_from == 'app') { //如果是app进入
+	
+				GetMemberInfo(GetMemberInfo_url, token);
+			} else {
+				GetMemberInfo(GetMemberInfoExtend_url, token);
+			}
+
+			function newAddress() {
+				window.location.href = 'new_address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id+'&source_from='+source_from;
+			}
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log('需要的token：' + token);
+						console.log(data);
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
+
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('需要的token：' + token);
+						console.log(type);
+					}
+				});
+			}
+
+
+			function GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, vip_id, member_id) {
+				mui.ajax(GetVipAddressList_url, {
+					data: {
+						token: token,
+						member_id: member_id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					async:true,
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(member_id)
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						alert('GetVipAddressList开始')
+						//						alert(JSON.stringify(data))
+						console.log(open_id)
+						console.log(token)
+						if(data.Data.IsError == false) {
+							var addressList = data.Data.addressList
+							if(addressList.length == 0) { //无地址
+								$('#address_info').hide();
+							} else {
+								$('#address_info').show();
+								for(var i = 0; i < addressList.length; i++) {
+									var consignee = addressList[i].consignee + ' ' + addressList[i].phone;
+									console.log(consignee)
+									var province = addressList[i].province;
+									var city = addressList[i].city;
+									var area = addressList[i].area;
+									var street = addressList[i].street;
+									var defaultAddress = addressList[i].defaultAddress;
+									var id = addressList[i].id;
+									var if_defau_div;
+									if(defaultAddress == 0) {
+										if_defau_div =
+											'<span class="cho_no"  data_id="' + id + '"></span>' +
+											'<img class="cho_ok" style="display:none;" data_id="' + id + '" src="img/32px_32px_V.png" alt="" />';
+									} else if(defaultAddress == 1) {
+										if_defau_div =
+											'<span class="cho_no" style="display:none;"  data_id="' + id + '"></span>' +
+											'<img class="cho_ok" data_id="' + id + '" src="img/32px_32px_V.png"  alt="" />';
+									}
+
+									var div =
+										'<div class="address_list" >' +
+										'<div class="list_head">' +
+										consignee +
+										'</div>' +
+										'<div class="list_body">' +
+										province + city + area + street +
+										'</div>' +
+										'<div class="list_foot">' +
+										'<div class="list_default">' +
+										if_defau_div +
+										'<span class="cho_text" data_id="' + id + '">默认地址</span>' +
+										'</div>' +
+										'<div class="list_edit" onclick="editAddr">' +
+										'<img class="edit_address" data_id="' + id + '" src="img/36px_36px_bianji.png" alt="" />' +
+										'<span class="edit_address" data_id="' + id + '">编辑</span>' +
+										'</div>' +
+										'<div class="list_delete" >' +
+										'<img data_id="' + id + '" class="del_address" src="img/36px_36px_shanchu.png" alt="" />' +
+										'<span class="del_address" data_id="' + id + '">删除</span>' +
+										'</div>' +
+										'</div>' +
+										'</div>';
+									$('#address_info').append(div)
+								}
+								$('.cho_no, .cho_ok, .cho_text').click(function() { //设置默认地址
+									//									console.log(21212)
+									//									console.log($(this).attr('data_id'))
+									//									console.login($(this).nextSibling())
+									var id = $(this).attr('data_id')
+									$(this).next().show();
+									$('.cho_ok').hide();
+									$(this).prev().show()
+									DefaultAddress(DefaultAddress_url, id, token, open_id, store_id, orderid, vip_id)
+
+								})
+
+								$('.edit_address').click(function() { //编辑地址
+									var id = $(this).attr('data_id')
+									window.location.href = 'edit_address.html?token=' + token + '&id=' + id + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id+'&source_from='+source_from
+								})
+
+								$('.del_address').click(function() {
+									var id = $(this).attr('data_id')
+									DeleteVipAddress(DeleteVipAddress_url, id, token, open_id, store_id, orderid)
+									$(this).parent().parent().parent().remove();
+								})
+
+							}
+
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						alert('GetVipAddressList接口出错')
+						alert(errorThrown)
+					}
+				});
+
+			}
+			console.log(member_id)
+			GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid,vip_id,member_id)
+
+			function DefaultAddress(DefaultAddress_url, id, token, open_id, store_id, orderid) {
+				mui.ajax(DefaultAddress_url, {
+					data: {
+						id: id,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(DefaultAddress_url)
+						console.log(data);
+						if(data.Data.IsError == false) {
+							Alert('默认地址设置成功')
+							window.location.href = 'order_confirm.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid+'&source_from='+source_from
+						}
+
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+
+					}
+				});
+			}
+
+			function DeleteVipAddress(DeleteVipAddress_url, id, token, open_id, store_id, orderid) {
+				mui.ajax(DeleteVipAddress_url, {
+					data: {
+						id: id,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							Alert('删除成功')
+						}
+
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+
+					}
+				});
+			}
+		</script>
+
 		<script>
 			//各个屏幕大小适配
 			(function(doc, win) {

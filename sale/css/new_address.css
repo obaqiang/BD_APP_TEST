@@ -14,17 +14,20 @@
 .address_list_input {
 	border: none;
 	outline: none;
+
+	line-height: 0.4rem;
 }
 .content-block{
 	position: absolute;
 	top: 0;
 	left: 0.8rem;
-	
+	width: 70%;
 }
 .city_input{
 	line-height: 0.4rem;
 	outline: none;
 	border: none;
+
 }
 .btn_ok{
 	width: 90%;
@@ -35,6 +38,7 @@
 	border-radius: 0.05rem;
 	color: #fff;	
 	border: none;
+	background: #cb2920;
 }
 .btn_no{
 	width: 90%;
@@ -45,5 +49,5 @@
 	border-radius: 0.05rem;
 	color: #fff;	
 	border: none;
-	background: #cb2920;
+	background: #999999;
 }

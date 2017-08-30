@@ -1,0 +1,20 @@
+header{
+	text-align: center;
+	background: #cb2920;
+	color: #fff;
+	line-height: 0.4rem;
+	position: fixed;
+	width: 100%;
+}
+.img_area{
+	
+	width: 0.4rem;
+	height: 0.4rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.img_area img{
+	width: 0.2rem;
+	height: 0.2rem;
+}

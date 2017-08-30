@@ -9,6 +9,7 @@
 		<title>确认订单</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/order_confirm.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/global.css">
 		<script src="js/html5shiv.min.js"></script>
 	</head>
 	<style>
@@ -20,51 +21,58 @@
 
 	<body>
 
-		<div class="address_cho">
+		<div class="address_cho" onclick="showAddressCho()">
 			<span class="address_cho_head">请选择取货方式</span>
 			<span class="address_cho_show">快递到店</span>
 			<img class="address_cho_icon" src="img/18px_30px_buttom.png" alt="" />
 		</div>
-		<div class="address_show">
+		<div class="address_show" onclick="addressJump()">
 			<img class="address_show_icon" src="img/28px_40px_dizhi.png" alt="" />
-			<span class="address_show_1">您还没有收货地址</span>
-			<span class="address_show_2">道德风尚；立刻解放的；了空间的方式；l科技发达离开家</span>
+			<span class="address_show_1" id="address_1">您还没有收货地址</span>
+			<span class="address_show_2" id="address_2">新建地址</span>
 			<img class="address_show_go" src="img/18px_30px_buttom.png" alt="" />
 		</div>
 
-		<div class="order_info">
+		<div class="order_info" id="order_info">
 			<img class="shop_icon" src="img/36px_36px_shangjia.png" alt="" />
-			<span class="shop_name">麦田香草城北路店</span>
-			<div class="order_area">
+			<span class="shop_name" id="store_name">*商店名称*</span>
+			<!--<div class="order_area">
 				<img class="order_area_img" src="img/750px_620px_chanpintu.png" alt="" />
 				<span class="order_area_head">[麦田香草]双头马克的疯狂浪费的gk看的风口浪尖高峰到来空间</span>
 				<span class="order_area_price">￥29.80</span>
 				<span class="order_area_num">x3</span>
-			</div>
+			</div>-->
 		</div>
 
 		<div class="pay_way">
-			<div class="pay_way_list">
+			<div class="pay_way_list" id="pay_way_1" style="display: none;">
 				<img class="pay_way_list_icon" src="img/38px_38px_BD.png" alt="" />
 				<span class="pay_way_list_way">BD卡支付</span>
-				<span class="pay_way_list_show">余额30.00元</span>
+				<!--<span class="pay_way_list_show">余额30.00元</span>-->
 				<span class="pay_way_list_no"></span>
 				<img class="pay_way_list_ok" src="img/32px_32px_V.png" alt="" />
 			</div>
-			<div class="pay_way_list">
+			<div class="pay_way_list" id="pay_way_2" style="display: none;">
 				<img class="pay_way_list_icon" src="img/38px_38px_zhifubao.png" alt="" />
 				<span class="pay_way_list_way">支付宝</span>
 				<span class="pay_way_list_show"></span>
 				<span class="pay_way_list_no"></span>
 				<img class="pay_way_list_ok" src="img/32px_32px_V.png" alt="" />
 			</div>
-			<div class="pay_way_see">
+			<div class="pay_way_list" id="pay_way_3" style="display: none;">
+				<img class="pay_way_list_icon" src="img/38px_38px_zhifubao.png" alt="" />
+				<span class="pay_way_list_way">微信支付</span>
+				<span class="pay_way_list_show"></span>
+				<span class="pay_way_list_no"></span>
+				<img class="pay_way_list_ok" src="img/32px_32px_V.png" alt="" />
+			</div>
+			<!--<div class="pay_way_see">
 				<span>更多支付方式</span>
 				<img src="img/30px_19px_V.png" alt="" />
-			</div>
+			</div>-->
 		</div>
 
-		<div class="complex_area">
+		<!--<div class="complex_area">
 			<div class="complex_list">
 				<span class="complex_list_1">红包</span>
 				<span class="complex_list_2">(满￥10.00可用)</span>
@@ -81,42 +89,743 @@
 				<span class="complex_list_3">积分可抵￥5.00元</span>
 			</div>
 
-		</div>
+		</div>-->
 
 		<div class="btn_bottom">
 			<span class="bot_info_show">
 				(含运费￥0.00元)实付
 			</span>
-			<span class="bot_price_show">
+			<span class="bot_price_show" id="amount_payed">
 				￥29.00
 			</span>
-			<span class="bot_pay">立即支付</span>
+			<span class="bot_pay" onclick="goBuy()">立即支付</span>
 		</div>
 
 		<div class="address_way_modal" style="display: none;">
 			<div class="address_way_modal_head">
 				请选择收货方式
 			</div>
-			<div class="to_shop">
+			<div class="to_shop" onclick="choSendway(1)">
 				<span class="cho_see">
 					到店领取	
 				</span>
 				<span class="cho_no"></span>
-				<img class="cho_ok" src="img/32px_32px_V.png" alt="" />
+				<img class="cho_ok" id="toshop" src="img/32px_32px_V.png" alt="" style="display: none;" />
 			</div>
-			<div class="to_shop">
+			<div class="to_shop" onclick="choSendway(2)">
 				<span class="cho_see">
 					快递发货	
 				</span>
 				<span class="cho_no"></span>
-				<img class="cho_ok" src="img/32px_32px_V.png" alt="" />
+				<img class="cho_ok" id="toexpress" src="img/32px_32px_V.png" alt="" />
 			</div>
-			
+
 		</div>
+
+		<!--<div class="buy_modal" style="display: none;">
+
+			<div class="buy_modal_list_area">
+				<div class="buy_modal_list buy_cho">
+					<span class="buy_modal_list_left">购买1件</span>
+					<span class="buy_modal_list_right">￥153.00</span>
+				</div>
+				<div class="buy_modal_list">
+					<span class="buy_modal_list_left">购买1件</span>
+					<span class="buy_modal_list_right">￥153.00</span>
+				</div>
+				<div class="buy_modal_list">
+					<span class="buy_modal_list_left">购买1件</span>
+					<span class="buy_modal_list_right">￥153.00</span>
+				</div>
+				<div class="buy_modal_list">
+					<span class="buy_modal_list_left">购买1件</span>
+					<span class="buy_modal_list_right">￥153.00</span>
+				</div>
+				<div class="buy_modal_list">
+					<span class="buy_modal_list_left">购买1件</span>
+					<span class="buy_modal_list_right">￥153.00</span>
+				</div>
+				<div class="buy_modal_list">
+					<span class="buy_modal_list_left">购买1件</span>
+					<span class="buy_modal_list_right">￥153.00</span>
+				</div>
+			</div>
+
+			<div class="buy_modal_foot">
+				下一步
+			</div>
+		</div>-->
+
 		<div class="modal_mask" style="display: none;"></div>
 
 		<script src="js/jquery-1.11.3.min.js "></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common/bdapp.js"></script>
+		<script src="../js/config/web_config.js"></script>
+
 		<script src="js/bootstrap.js "></script>
+		<script>
+			var orderid = GetQueryString('orderid')
+			var token = GetQueryString('token')
+			var open_id = GetQueryString('open_id')
+			var store_id = GetQueryString('store_id')
+			var vip_id = GetQueryString('vip_id')
+			var phone;
+			var member_id;
+			var orderitems;
+			var pay_way = '';
+			var userAgent = navigator.userAgent.toLowerCase();
+			var items_json;
+			var no_need_address;
+			if(userAgent.match(/Alipay/i) == "alipay") {
+				pay_way = '支付宝'
+				$('#pay_way_2').show();
+			} else if(userAgent.match(/MicroMessenger/i) == "micromessenger") {
+				pay_way = '微信'
+				$('#pay_way_3').show();
+			} else {
+				pay_way = 'BD'
+				$('#pay_way_1').show();
+			}
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			var source_from = GetQueryString('source_from')
+			if(source_from == 'app') { //如果是app进入
+	
+				GetMemberInfo(GetMemberInfo_url, token);
+			} else {
+				GetMemberInfo(GetMemberInfoExtend_url, token);
+			}
+
+			var packages_json;
+			//			alert('需要的orderid:'+orderid)
+			//			alert('需要的open_id:'+open_id)
+			var if_has_address;
+			var GetVipAddress_url = test_url + '/api/Discount/GetVipAddress';
+			var GetOrderItemsByOrderID_url = test_url + '/api/WxSP/GetOrderItemsByOrderID_Discount';
+			var GetPackages_url = test_url + '/api/order/GetPackages';
+			var GetPackagesByItems_url = test_url + '/api/orderV2/GetPackagesByItems';
+			
+			var AppBDPay_url = test_url + '/api/orderV2/AppBDPay';
+			console.log(orderid)
+
+			function addressJump() {
+				window.location.href = 'address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id+'&source_from='+source_from
+			}
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(token)
+
+						console.log(data);
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
+						phone = MemberInfo.phone;
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('需要的token：' + token);
+						console.log(type);
+					}
+				});
+			}
+
+
+			function GetVipAddress(GetVipAddress_url, union_id, token,member_id) {
+
+				mui.ajax(GetVipAddress_url, {
+					data: {
+						id: 0,
+//						union_id: union_id
+						member_id:member_id
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						alert('GetVipAddress接口')
+						//						alert(JSON.stringify(data))
+
+						if(!data.Data.Address) {
+							if_has_address = false
+						} else {
+							if_has_address = true
+							var user_name = data.Data.Address.consignee
+							var user_tel = data.Data.Address.phone
+							var address_1 = user_name + ' ' + user_tel
+							$('#address_1').text(address_1)
+							var province = data.Data.Address.province
+							var city = data.Data.Address.city
+							var area = data.Data.Address.area
+							var street = data.Data.Address.street
+							var address_2 = province + city + area + street
+							$('#address_2').text(address_2)
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('报错GetVipAddress接口')
+						//						alert(xhr)
+						//						alert(type)
+						//						alert(errorThrown)
+					}
+				});
+
+			}
+			GetVipAddress(GetVipAddress_url, open_id, token,member_id)
+
+			function showAddressCho() { //选择快死收货或者快递到店弹框
+				$('.address_way_modal').show()
+				$('.modal_mask').show()
+			}
+
+			function choSendway(e) {
+				$('.cho_ok').hide()
+				$('.address_way_modal').hide()
+				$('.modal_mask').hide()
+				if(e == 1) { //选择到店领取的
+					$('#toshop').show()
+					$('.address_cho_show').text('到店领取')
+					no_need_address=true
+				} else if(e == 2) { //选择快递发货的
+					$('#toexpress').show()
+					$('.address_cho_show').text('快递发货')
+					no_need_address=false
+				}
+			}
+
+			function choPayway(e) {
+				$('.pay_way_list_ok').hide()
+				if(e == 1) { //bd卡支付
+					$('#pay_way_1').show();
+					pay_way = 'BD'
+				} else if(e == 2) { //支付宝支付
+					$('#pay_way_2').show()
+					pay_way = '支付宝'
+				} else if(e == 3) { //微信支付
+					$('#pay_way_3').show()
+					pay_way = '微信'
+				}
+			}
+
+			function goBuy() {
+				if(if_has_address != true&&no_need_address==false) {
+					Alert('您还没有收货地址')
+				} else if(if_has_address==true||no_need_address==true){
+					console.log(pay_way)
+					if(pay_way == 'BD') {
+						//						GetPackages(GetPackages_url, orderid, store_id, vip_id, token)
+						//						if(packages_json == '') {
+						//							Alert('BD卡余额不足')
+						//						} else {
+						//							var goodslist = [];
+						//							for(var i = 0; i < orderitems.length; i++) {
+						//								var goodslist_list = {};
+						//								goodslist_list.id = orderitems[i].goods_id
+						//								goodslist.push(goodslist_list)
+						//							}
+						//							var goodslist_json = JSON.stringify(goodslist)
+						//							console.log(goodslist_json);
+						//							if(!member_id || member_id == '' || typeof(member_id) == 'undefined') {
+						//
+						//								Alert('您还不是BD卡会员，请选择其他支付方式')
+						//							} else {
+						//								GetPackagesByItems(GetPackagesByItems_url, goodslist_json, member_id, store_id, vip_id)
+						//							}
+						//						}
+						//						var goodslist = [];
+						//						for(var i = 0; i < orderitems.length; i++) {
+						//							var goodslist_list = {};
+						//							goodslist_list.id = orderitems[i].goods_id
+						//							goodslist.push(goodslist_list)
+						//						}
+						//						var goodslist_json = JSON.stringify(goodslist)
+						//						console.log(goodslist_json);
+						//						if(!member_id || member_id == '' || typeof(member_id) == 'undefined') {
+						//
+						//							Alert('您还不是BD卡会员，请选择其他支付方式')
+						//						} else {
+						//							GetPackagesByItems(GetPackagesByItems_url, goodslist_json, member_id, store_id, vip_id)
+						//						}
+						var total_money = $('#amount_payed').attr('amount_payable')
+						SmartyPreAddOrderV2(SmartyPreAddOrderV2_url, orderid, store_id, vip_id, member_id, total_money, total_money, total_money, 0, '2222', phone, items_json, token)
+
+						//						var str = {
+						//							order_info: orderid,
+						//							balance: total_money
+						//						}
+						//						var json = JSON.stringify(str);
+						//						bdvip.setMsg(json);
+					} else if(pay_way == '支付宝') {
+
+					} else if(pay_way == '微信') {
+						console.log(43242354453)
+						var total_money = $('#amount_payed').attr('amount_payable')
+						console.log(total_money)
+						PayWxRetail(PayWxRetail_url, orderid, open_id, '0.01', store_id, CheckOrder_url)
+
+					}
+				}
+			}
+
+			var GetPayConfig_url = test_url + '/api/discount/GetPayConfig';
+			var PayWxRetail_url = test_url + '/api/discount/PayWxRetail';
+			var CheckOrder_url = test_url + '/api/WxSP/CheckOrder';
+			var SmartyPreAddOrderV2_url = test_url + "/api/OrderV2/SmartyPreAddOrderV3"
+
+			//			var items_json = []
+			//			var price = $('.buy_cho').attr('data-price')
+			//			var qty = $('.buy_cho').attr('data-qty')
+			//			var items = {
+			//				goods_id: goods_id,
+			//				order_id: '',
+			//				price: price,
+			//				qty: qty
+			//			};
+			//
+			//			items_json.push(items);
+			//			items_json = JSON.stringify(items_json);
+			//			var amount_payable = price
+			//			var total_amount = price
+			//			var amount_payed = price
+
+			function SmartyPreAddOrderV2(SmartyPreAddOrderV2_url, order_id, store_id, vip_id, member_id, amount_payable, total_amount, amount_payed, type, last_user, unvip_phone, items_json, token) {
+				mui.ajax(SmartyPreAddOrderV2_url, {
+					data: {
+						order_id: order_id,
+						store_id: store_id,
+						vip_id: vip_id,
+						member_id: member_id,
+						amount_payable: amount_payable,
+						total_amount: total_amount,
+						amount_payed: amount_payed,
+						type: type,
+						last_user: last_user,
+						unvip_phone: unvip_phone,
+						items_json: items_json
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型api-version
+					headers: {
+						'Content-Type': 'application/json',
+						'api-version': 2,
+						'token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data)
+						//						bdvip.setMsg(data.Data.QRCode);
+
+						var str = {
+							order_info: data.Data.QRCode,
+							balance: amount_payable
+						}
+						var json = JSON.stringify(str);
+						bdvip.setMsg(json);
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(order_id)
+						console.log(store_id)
+						console.log(vip_id)
+						console.log(member_id)
+						console.log(amount_payable)
+						console.log(amount_payed)
+						console.log(type)
+						console.log(last_user)
+						console.log(unvip_phone)
+						console.log(items_json)
+
+					}
+				});
+			}
+
+			function CheckOrder(CheckOrder_url, order_id, weixin_pay_no, type) {
+				mui.ajax(CheckOrder_url, {
+					data: {
+						order_id: order_id,
+						weixin_pay_no: weixin_pay_no,
+						type: type //4取消，0正常确认
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					headers: {
+						'Content-Type': 'application/json',
+						'Token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data)
+//						alert(order_id)
+						alert(weixin_pay_no)
+//						alert(type)
+						alert(JSON.stringify(data))
+						if(data.Data.IsError == false) {
+							window.location.href = 'order_detail.html?token=' + token + '&order_id=' + order_id + '&open_id=' + open_id+'&store_id='+store_id+'&source_from='+source_from
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						alert(xhr)
+						alert(type)
+						alert(errorThrown)
+					}
+				});
+			}
+
+			function PayWxRetail(PayWxRetail_url, order_id, open_id, total_money, store_id, CheckOrder_url) {
+				mui.ajax(PayWxRetail_url, {
+					data: {
+						order_id: order_id,
+						pay_type: "weixin",
+						user_id: open_id,
+						total_money: total_money,
+						pay_money: total_money,
+						store_id: store_id
+						//						notify_url : 'www.baidu.com',
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					headers: {
+						'Content-Type': 'application/json',
+						'Token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(order_id)
+						console.log(open_id)
+						console.log(total_money)
+
+						console.log('lala')
+						console.log(data);
+						var prepayId = data.Data.prepayId
+						//						onBridgeReady(appId, timeStamp, nonceStr, package, signType, paySign)
+						//						GetPayConfig(GetPayConfig_url, token)
+						WeixinJSBridge.invoke(
+							'getBrandWCPayRequest', {
+								"appId": data.Data.WxradeCreateResponse.appId, //公众号名称，由商户传入     
+								"timeStamp": data.Data.WxradeCreateResponse.timeStamp, //时间戳，自1970年以来的秒数     
+								"nonceStr": data.Data.WxradeCreateResponse.nonceStr, //随机串     
+								"package": data.Data.WxradeCreateResponse.package,
+								"signType": data.Data.WxradeCreateResponse.signType, //微信签名方式：     
+								"paySign": data.Data.WxradeCreateResponse.paysign //微信签名 
+							},
+
+							function(res) {
+								if(res.err_msg == "get_brand_wcpay_request:ok") {
+									//									alert('需要的:'+prepayId)
+
+									CheckOrder(CheckOrder_url, order_id, prepayId, 0)
+
+								} // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+							}
+						);
+
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(store_id)
+						console.log(order_id)
+						console.log(open_id)
+						console.log(total_money)
+						console.log(errorThrown)
+					}
+				});
+			}
+
+			function GetPayConfig(GetPayConfig_url, token) {
+				mui.ajax(GetPayConfig_url, {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					headers: {
+						//						'Content-Type': 'application/json',
+						'Token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						onBridgeReady(appId, timeStamp, nonceStr, package, signType, paySign)
+
+						WeixinJSBridge.invoke(
+							'getBrandWCPayRequest', {
+								"appId": data.Data.appId, //公众号名称，由商户传入     
+								"timeStamp": data.Data.timeStamp, //时间戳，自1970年以来的秒数     
+								"nonceStr": data.Data.nonceStr, //随机串     
+								"package": '',
+								"signType": "MD5", //微信签名方式：     
+								"paySign": data.Data.paySign //微信签名 
+							},
+							function(res) {
+								if(res.err_msg == "get_brand_wcpay_request:ok") {} // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+							}
+						);
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+
+					}
+				});
+			}
+
+			function AppBDPay(AppBDPay_url, amount_payable, discount_money, goodslist_json, packages_json, store_id, vip_id) {
+				mui.ajax(AppBDPay_url, {
+					data: {
+						amount_payable: amount_payable,
+						discount_money: discount_money,
+						goodslist_json: goodslist_json,
+						packages_json: packages_json,
+						store_id: store_id,
+						vip_id: vip_id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					headers: {
+						//						'Content-Type': 'application/json',
+						'Token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+
+					}
+				});
+			}
+
+			//			function GetPackages(GetPackages_url, order_id, store_id, vip_id, token) {
+			//				mui.ajax(GetPackages_url, {
+			//					data: {
+			//						order_id: order_id,
+			//						store_id: store_id,
+			//						vip_id: vip_id,
+			//						token: token
+			//					},
+			//					dataType: 'json', //服务器返回json格式数据
+			//					type: 'get', //HTTP请求类型
+			//					//					headers: {
+			//					////						'Content-Type': 'application/json',
+			//					//						'Token': token
+			//					//					},
+			//					timeout: 10000, //超时时间设置为10秒；
+			//					success: function(data) {
+			//
+			//						//服务器返回响应，根据响应结果，分析是否登录成功；
+			//						console.log(data);
+			//
+			//						if(data.Data.Recharges.length == 0) {
+			//
+			//							packages_json = ''
+			//						} else {
+			//							var json_data = []
+			//							var json_data_list = {}
+			//							for(var i = 0; i < data.Data.Recharges.length; i++) {
+			//								json_data_list.recharge_id = data.Data.Recharges[i].id
+			//								json_data_list.rcorder_id = data.Data.Recharges[i].rcorder_id
+			//
+			//								json_data.push(json_data_list)
+			//							}
+			//							var json_data_str = JSON.stringify(json_data)
+			//							packages_json = json_data_str
+			//
+			//						}
+			//
+			//					},
+			//
+			//					error: function(xhr, type, errorThrown) {
+			//						//异常处理；
+			//						//						alert('报错GetOrderItemsByOrderID接口')
+			//						//						alert(GetOrderItemsByOrderID_url + '?orderid=' + orderid)
+			//						//						alert(xhr)
+			//						//						alert(type)
+			//						//						alert(errorThrown)
+			//					}
+			//				});
+			//			}
+
+			//			var GetOrderItemsByOrderID_url = test_url + '/api/WxSP/GetOrderItemsByOrderID'
+
+			function GetOrderItemsByOrderID(GetOrderItemsByOrderID_url, orderid) {
+				mui.ajax(GetOrderItemsByOrderID_url, {
+					data: {
+						orderid: orderid
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						alert('GetOrderItemsByOrderID接口')
+						//						alert(JSON.stringify(data))
+						orderitems = data.Data.OrderItems;
+						for(var i = 0; i < orderitems.length; i++) {
+							var div =
+								'<div class="order_area">' +
+								'<img class="order_area_img" src="' + orderitems[i].thumb + '" alt="" />' +
+								'<span class="order_area_head">' + orderitems[i].goods_name + '</span>' +
+								'<span class="order_area_price">￥' + orderitems[i].real_price + '</span>' +
+								'<span class="order_area_num">x' + orderitems[i].qty + '</span>' +
+								'</div>';
+							$('#order_info').append(div)
+						}
+						var amount_payed = data.Data.amount_payed
+						$('#amount_payed').text('￥' + amount_payed)
+						$('#amount_payed').attr('amount_payable', amount_payed)
+						var items_json_array = [];
+						var items = {
+							goods_id: data.Data.OrderItems[0].goods_id,
+							order_id: orderid,
+							price: data.Data.OrderItems[0].real_price,
+							qty: data.Data.OrderItems[0].qty,
+						};
+						items_json_array.push(items);
+						items_json = JSON.stringify(items_json_array);
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('报错GetOrderItemsByOrderID接口')
+						//						alert(GetOrderItemsByOrderID_url + '?orderid=' + orderid)
+						//						alert(xhr)
+						//						alert(type)
+						//						alert(errorThrown)
+					}
+				});
+
+			}
+			GetOrderItemsByOrderID(GetOrderItemsByOrderID_url, orderid)
+
+			var GetStoreInfo_url = test_url + '/api/storeadmin/GetStoreInfo';
+
+			function GetStoreInfo(GetStoreInfo_url, store_id, token) {
+				mui.ajax(GetStoreInfo_url, {
+					data: {
+						store_id: store_id,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						alert('GetStoreInfo接口开始')
+						//						alert(JSON.stringify(data))
+						var store_name = data.Data.Store.store_name;
+						$('#store_name').text(store_name)
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('GetStoreInfo接口出错')
+						//						alert(errorThrown)
+					}
+				});
+
+			}
+			GetStoreInfo(GetStoreInfo_url, store_id, token)
+
+			function GetPackagesByItems(GetPackagesByItems_url, goodslist_json, member_id, store_id, vip_id) {
+				mui.ajax(GetPackagesByItems_url, {
+					data: {
+						goodslist_json: goodslist_json,
+						member_id: member_id,
+						store_id: store_id,
+						vip_id: vip_id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						if(data.Data.Recharges.length == 0) {
+
+							packages_json = '';
+							Alert('BD卡账户余额不足')
+						} else {
+							var json_data = []
+							var json_data_list = {}
+							for(var i = 0; i < data.Data.Recharges.length; i++) {
+								json_data_list.recharge_id = data.Data.Recharges[i].id
+								json_data_list.rcorder_id = data.Data.Recharges[i].rcorder_id
+
+								json_data.push(json_data_list)
+							}
+							var json_data_str = JSON.stringify(json_data)
+							packages_json = json_data_str
+							var amount_payable = $('#amount_payed').attr('amount_payable')
+							AppBDPay(AppBDPay_url, amount_payable, discount_money, goodslist_json, packages_json, store_id, vip_id)
+
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('GetStoreInfo接口出错')
+						//						alert(errorThrown)
+					}
+				});
+			}
+		</script>
+
 		<script>
 			//各个屏幕大小适配
 			(function(doc, win) {

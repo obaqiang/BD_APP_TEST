@@ -9,6 +9,7 @@
 		<title>订单详情</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/order_confirm.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/global.css">
 		<link rel="stylesheet" href="css/code128.css" />
 		<script src="js/html5shiv.min.js"></script>
 	</head>
@@ -22,33 +23,35 @@
 	<body>
 
 		<div class="wait_address">
-			<img class="wait_address_icon" src="img/36px_36px_kuaidi1.png" alt="" />
-			<span class="wait_address_text">请等待发货</span>
+			<img class="wait_address_icon order_status_1" src="img/36px_36px_kuaidi1.png" alt="" style="display: none;"/>
+			<span class="wait_address_text order_status_1" style="display: none;">请等待发货</span>
 
-			<img class="wait_address_icon" src="img/36px_36px_kuaidi2.png" alt="" />
-			<span class="wait_address_text_1">商家已发货</span>
+			<img class="wait_address_icon order_status_2" src="img/36px_36px_kuaidi2.png" alt="" style="display: none;"/>
+			<span class="wait_address_text_1 order_status_2" style="display: none;">商家已发货</span>
 
-			<img class="wait_address_icon" src="img/36px_36px_kuaidi3.png" alt="" />
-			<span class="wait_address_text_2">用户已签收</span>
+			<img class="wait_address_icon order_status_3" src="img/36px_36px_kuaidi3.png" alt="" style="display: none;"/>
+			<span class="wait_address_text_2 order_status_3" style="display: none;">用户已签收</span>
 		</div>
 		<div class="address_show">
 			<img class="address_show_icon" src="img/28px_40px_dizhi.png" alt="" />
-			<span class="address_show_1">您还没有收货地址</span>
-			<span class="address_show_2">道德风尚；立刻解放的；了空间的方式；l科技发达离开家</span>
+			<span class="address_show_1" id="address_1">您还没有收货地址</span>
+			<span class="address_show_2" id="address_2">请填写收货地址</span>
 			<img class="address_show_go" src="img/18px_30px_buttom.png" alt="" />
 		</div>
+		<div class="order_detail_area">
+			<!--<div class="order_info">
+				<img class="shop_icon" src="img/36px_36px_shangjia.png" alt="" />
+				<span class="shop_name">商家名称</span>
+				<div class="order_area">
+					<img class="order_area_img" src="img/750px_620px_chanpintu.png" alt="" />
+					<span class="order_area_head">[麦田香草]双头马克的疯狂浪费的gk看的风口浪尖高峰到来空间</span>
+					<span class="order_area_price">￥29.80</span>
+					<span class="order_area_num">x3</span>
+				</div>
+			</div>-->
+		</div>
 
-		<div class="order_info">
-			<img class="shop_icon" src="img/36px_36px_shangjia.png" alt="" />
-			<span class="shop_name">麦田香草城北路店</span>
-			<div class="order_area">
-				<img class="order_area_img" src="img/750px_620px_chanpintu.png" alt="" />
-				<span class="order_area_head">[麦田香草]双头马克的疯狂浪费的gk看的风口浪尖高峰到来空间</span>
-				<span class="order_area_price">￥29.80</span>
-				<span class="order_area_num">x3</span>
-			</div>
-		</div>
-		<div class="order_info_com">
+		<!--<div class="order_info_com">
 			<div class="com_list">
 				<span class="com_list_1">红包</span>
 				<span class="com_list_2">-￥10.00</span>
@@ -57,63 +60,64 @@
 				<span class="com_list_1">红包</span>
 				<span class="com_list_2">-￥10.00</span>
 			</div>
-		</div>
+		</div>-->
 		<div class="pay_money">
 			<span class="pay_money_left">实付金额</span>
-			<span class="pay_money_right">￥26.00</span>
+			<span class="pay_money_right">￥00</span>
 		</div>
-
 
 		<div class="qrcode_area">
 			<div class="qrcode_text_area">
-				<span class="qrcode_text_1">订单编号:</span>
-				<span class="qrcode_text_2">8798 4564 4564</span>
-				<span class="qrcode_text_3">未使用</span>
+				<span class="qrcode_text_1">验证码:</span>
+				<span class="qrcode_text_2" id="show_send_no"></span>
+				<!--<span class="qrcode_text_3">未使用</span>-->
 			</div>
 			<div class="qrcode" id="qrcode"></div>
 		</div>
-
-
 
 		<div class="order_more_info">
 			<div class="more_info_title">
 				订单信息:
 			</div>
 			<div class="more_info_list">
-				订单编号:45646321847135489413818
+				订单编号:<span id="show_order_id"></span>
 			</div>
 			<div class="more_info_list">
-				付款时间:2017-45-65 18:45:55
+				付款时间:<span id="show_pay_time"></span>
 			</div>
 			<div class="more_info_list">
-				支付方式:微信支付
+				支付方式:<span id="show_pay_way"></span>
 			</div>
-			<div class="more_info_list">
-				购买数量:3件
-			</div>
+			<!--<div class="more_info_list">
+				购买数量:<span id="show_pay_qty"></span>件
+			</div>-->
 		</div>
 
 		<div class="order_more_info">
 			<div class="more_info_title">
 				商家信息:
 			</div>
-			<div class="more_info_list">
-				商家名称:麦田香草
+			<div class="more_info_list" id="store_name">
+				商家名称:
 			</div>
-			<div class="more_info_list">
-				商家地址:城北路5号
+			<div class="more_info_list" id="address">
+				商家地址:
 			</div>
-			<div class="more_info_list">
-				电话:15862671811
+			<div class="more_info_list" id="tel">
+				电话:
 			</div>
 
 		</div>
-		
 
 		<script src="js/jquery-1.11.3.min.js "></script>
 		<script src="js/bootstrap.js "></script>
 		<script src="js/code128.js"></script>
 		<script src="js/qrcode.js"></script>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common/bdapp.js"></script>
+		<script src="../js/config/web_config.js"></script>
+
 		<script>
 			//各个屏幕大小适配
 			(function(doc, win) {
@@ -132,13 +136,212 @@
 		</script>
 
 		<script>
-			var TradeCode = 123154654321651;
-			//			createBarcode('Barcode', TradeCode, 'B');
-			qrcode = new QRCode(document.getElementById("qrcode"), {
-				width: 132, //设置宽高
-				height: 132
-			});
-			qrcode.makeCode(TradeCode);
+			var open_id = GetQueryString('open_id');
+			var store_id = GetQueryString('store_id');
+			var token = GetQueryString('token');
+			var order_id = GetQueryString('order_id');
+			var GetVipAddress_url = test_url + '/api/Discount/GetVipAddress'
+			var GetOrderItemsByOrderID_url = test_url + '/api/WxSP/GetOrderItemsByOrderID'
+			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			var source_from = GetQueryString('source_from')
+			if(source_from == 'app') { //如果是app进入
+				GetMemberInfo(GetMemberInfo_url, token);
+			} else {
+				GetMemberInfo(GetMemberInfoExtend_url, token);
+			}
+
+			function GetMemberInfo(GetMemberInfo_url, token) {
+				mui.ajax(GetMemberInfo_url, {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(token)
+
+						console.log(data);
+						var MemberInfo = data.Data.MemberInfo;
+						member_id = MemberInfo.id;
+						phone = MemberInfo.phone;
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('需要的token：' + token);
+						console.log(type);
+					}
+				});
+			}
+
+			function GetVipAddress(GetVipAddress_url, union_id, token,member_id) {
+				mui.ajax(GetVipAddress_url, {
+					data: {
+						id: 0,
+						member_id:member_id
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					headers: {
+						'Content-Type': 'application/json',
+						'token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						alert('GetVipAddress接口')
+						//						alert(JSON.stringify(data))
+
+						if(!data.Data.Address) {
+							if_has_address = false
+						} else {
+							if_has_address = true
+							var user_name = data.Data.Address.consignee
+							var user_tel = data.Data.Address.phone
+							var address_1 = user_name + ' ' + user_tel
+							$('#address_1').text(address_1)
+							var province = data.Data.Address.province
+							var city = data.Data.Address.city
+							var area = data.Data.Address.area
+							var street = data.Data.Address.street
+							var address_2 = province + city + area + street
+							$('#address_2').text(address_2)
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('报错GetVipAddress接口')
+						//						alert(xhr)
+						//						alert(type)
+						//						alert(errorThrown)
+					}
+				});
+
+			}
+			GetVipAddress(GetVipAddress_url, open_id, token,member_id)
+
+			function GetOrderItemsByOrderID(GetOrderItemsByOrderID_url, order_id) {
+				mui.ajax(GetOrderItemsByOrderID_url, {
+					data: {
+						orderid: order_id,
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						var OrderItems = data.Data.OrderItems;
+						var order_status = data.Data.order_status;
+						if(order_status=='未发货'){
+							$('.order_status_1').show()
+						}else if(order_status=='已发货'||order_status=='未领取'||order_status=='未收货'){
+							$('.order_status_2').show()
+						}else if(order_status=='已领取'||order_status=='已收货'){
+							$('.order_status_3').show()
+						}
+						for(var i = 0; i < OrderItems.length; i++) {
+							var price = OrderItems[i].qty * OrderItems[i].real_price
+							var div =
+								'<div class="order_info">' +
+								'<img class="shop_icon" src="img/36px_36px_shangjia.png" alt="" />' +
+								'<span class="shop_name">麦田香草城北路店</span>' +
+								'<div class="order_area">' +
+								'<img class="order_area_img" src="'+OrderItems[i].thumb+'" alt="" />' +
+								'<span class="order_area_head">'+ OrderItems[i].goods_name+'</span>'+
+								'<span class="order_area_price">￥' + price + '</span>' +
+								'<span class="order_area_num">x' + OrderItems[i].qty + '</span>' +
+								'</div>' +
+								'</div>';
+							$('.order_detail_area').append(div)
+						}
+						var send_no = data.Data.send_no;
+						$('#show_send_no').text(send_no)
+						if(send_no != '') {
+							var TradeCode = send_no;
+							//			createBarcode('Barcode', TradeCode, 'B');
+							qrcode = new QRCode(document.getElementById("qrcode"), {
+								width: 132, //设置宽高
+								height: 132
+							});
+							qrcode.makeCode(TradeCode);
+						} else {
+							$('.qrcode_area').hide()
+						}
+
+						var order_id = data.Data.order_id;
+						$('#show_order_id').text(order_id);
+
+						var pay_time = data.Data.pay_time;
+						$('#show_pay_time').text(pay_time)
+						
+						var pay_name = data.Data.pay_name;
+						$('#show_pay_way').text(pay_name)
+						
+						var amount_payed = data.Data.amount_payed;
+						$('.pay_money_right').text('￥'+amount_payed)
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('报错GetVipAddress接口')
+						//						alert(xhr)
+						//						alert(type)
+						//						alert(errorThrown)
+					}
+				});
+			}
+			GetOrderItemsByOrderID(GetOrderItemsByOrderID_url, order_id)
+
+			var GetStoreInfo_url = test_url+'/api/storeadmin/GetStoreInfo'
+			function GetStoreInfo(GetStoreInfo_url,store_id) {
+				mui.ajax(GetStoreInfo_url, {
+					data: {
+						store_id: store_id,
+						token:token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						$('#store_name').text('商家名称:'+data.Data.Store.store_name)
+						$('.shop_name').text(data.Data.Store.store_name) 
+						$('#address').text('商家地址:'+data.Data.Store.address)
+						$('#tel').text('电话:'+data.Data.Store.tel)
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('报错GetVipAddress接口')
+						//						alert(xhr)
+						//						alert(type)
+						//						alert(errorThrown)
+					}
+				});
+			}
+			GetStoreInfo(GetStoreInfo_url,store_id)
 		</script>
 
 	</body>

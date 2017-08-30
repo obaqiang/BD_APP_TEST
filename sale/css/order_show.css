@@ -1,0 +1,129 @@
+.order_show_head {
+	position: fixed;
+	top: 0.4rem;
+	width: 100%;
+	background: #fff;
+	border-bottom: 1px solid #ddd;
+}
+
+.head_list {
+	display: inline-block;
+	width: 25%;
+	float: left;
+	text-align: center;
+	font-size: 0.14rem;
+	line-height: 0.4rem;
+}
+
+.no_goods_area {
+	position: absolute;
+	width: 100%;
+	top: 0.8rem;
+	text-align: center;
+	font-size: 0.18rem;
+	line-height: 0.7rem;
+}
+
+.no_goods_area img {
+	display: block;
+	margin: 1.5rem auto 0;
+}
+
+.goods_area {
+	position: absolute;
+	top: 0.9rem;
+	width: 100%;
+}
+.goods_list{
+	margin-bottom: 0.2rem;
+}
+.goods_list_head {
+	background: #fff;
+	font-size: 0.12rem;
+	line-height: 0.4rem;
+}
+
+.goods_list_head_img {
+	width: 0.18rem;
+	height: 0.16rem;
+	margin-left: 0.1rem;
+}
+
+.goods_list_head_shop_name {
+	margin-left: 0.1rem;
+	color: #55595B;
+}
+
+.goods_list_head_status_1 {
+	float: right;
+	margin-right: 0.1rem;
+	color: #FF5D0C;
+}
+
+.goods_list_body {
+	position: relative;
+	padding: 0.1rem;
+}
+
+.goods_list_body_img {
+	width: 0.9rem;
+	height: 0.9rem;
+	border: 1px solid #ddd;
+}
+
+.goods_list_body_text {
+	position: absolute;
+	top: 0.1rem;
+	left: 1.1rem;
+	font-size: 0.14rem;
+	line-height: 0.2rem;
+	color: #333333;
+}
+.goods_list_body_price{
+	position: absolute;
+	left: 1.1rem;
+	top: 0.8rem;
+}
+.goods_list_body_zhe{
+	border: 1px solid #09AA3E;
+	border-radius: 0.05rem;
+	font-size: 0.09rem;
+	color: #09AA3E;
+	position: absolute;
+	right: 0.2rem;
+	top: 0.6rem;
+	padding: 0.01rem 0.05rem;
+}
+.goods_list_body_num{
+	position: absolute;
+	right: 0.2rem;
+	top: 0.8rem;
+	font-size: 0.13rem;
+	color: #787878;
+}
+.goods_list_foot{
+	padding: 0.1rem;
+	background: #fff;
+}
+.goods_list_foot_cancel{
+	border: 1px solid #999999;
+	font-size: 0.13rem;
+	display: inline-block;
+	border-radius: 0.5rem;
+	padding: 0.05rem 0.1rem;
+	color: #999999;
+}
+.goods_list_foot_pay{
+	border: 1px solid #FF6D23;
+	font-size: 0.13rem;
+	display: inline-block;
+	border-radius: 0.5rem;
+	padding: 0.05rem 0.2rem;
+	color: #FF6D23;
+
+}
+.goods_list_foot_info{
+	float: right;
+	line-height: 0.3rem;
+	color: #3D4244;
+}
