@@ -97,6 +97,7 @@
 			var status = GetQueryString('status');
 
 			var GetOrdersForDiscount_url = test_url + '/api/OrderV2/GetOrdersForDiscount'
+			var CancelOrder_url = test_url+'/api/orderV2/Confirm'
 			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
 			var page_num = 1
 			var page_size = 10
@@ -132,7 +133,7 @@
 			}
 			GetMemberInfo(GetMemberInfo_url, token)
 
-			function GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size) {
+			function GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size,CancelOrder_url) {
 				mui.ajax(GetOrdersForDiscount_url, {
 					data: {
 						open_id: open_id,
@@ -165,7 +166,7 @@
 							var qty = Orders[i].Items[0].qty
 							var price = Orders[i].Items[0].price
 							var total_price = qty * price
-
+							
 							var div =
 								'<div class="goods_list"  >' +
 								'<div class="goods_list_head">' +
@@ -181,7 +182,7 @@
 								'<span class="goods_list_body_num">x' + qty + '</span>' +
 								'</div>' +
 								'<div class="goods_list_foot">' +
-								'<span class="goods_list_foot_cancel">取消订单</span>' +
+								'<span class="goods_list_foot_cancel" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">取消订单</span>' +
 								//								'<span class="goods_list_foot_pay" onclick="orderJump('+Orders[i].order_id+','+Orders[i].order_status+','+Orders[i].store_id+')">付款</span>' +
 								'<span class="goods_list_foot_pay" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">付款</span>' +
 								'<span class="goods_list_foot_info">共' + qty + '件商品 合计:￥' + total_price + '</span>' +
@@ -196,9 +197,19 @@
 							var vip_id = $(this).attr('data_vip_id')
 							if(order_status == '未付款') {
 								window.location.href = 'order_confirm.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id;
-							}else{
+							} else {
 								window.location.href = 'order_detail.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id;
 							}
+						})
+						
+						
+						$('.goods_list_foot_cancel').click(function(){
+							var order_id = $(this).attr('data_order_id')
+							var order_status = $(this).attr('data_order_status')
+							var store_id = $(this).attr('data_store_id')
+							var vip_id = $(this).attr('data_vip_id')
+							CancelOrder(CancelOrder_url,order_id,store_id,token)
+							
 						})
 
 					},
@@ -208,12 +219,12 @@
 					}
 				});
 			}
-			GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size)
+			GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size,CancelOrder_url)
 
 			function showList(e) {
 				var status = e
 				page_num = 1
-				GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size)
+				GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size,CancelOrder_url)
 			}
 
 			$(window).scroll(function() {　　
@@ -223,7 +234,7 @@
 				if(scrollTop + windowHeight == scrollHeight) {　　　　
 					//					alert("you are in the bottom");　
 					page_num += 1;
-					GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size)　
+					GetOrdersForDiscount(GetOrdersForDiscount_url, open_id, status, token, page_num, page_size,CancelOrder_url)　
 				}
 			});
 			var RefundWinxinOrder_url = test_url + '/api/WxSP/RefundWinxinOrder'
@@ -251,6 +262,38 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 
+						console.log(data);
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log('请求失败')
+					}
+				});
+			}
+
+			function CancelOrder(CancelOrder_url,order_id,store_id,token) {
+				mui.ajax(CancelOrder_url, {
+					data: {
+						order_id: order_id,
+						store_id: store_id,
+						type:4,
+						uid:0,
+						opertype:2,
+						token:token
+					
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					header: {
+						'content-type': 'application/json'
+
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(order_id)
 						console.log(data);
 
 					},

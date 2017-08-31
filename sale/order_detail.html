@@ -143,9 +143,10 @@
 			var GetVipAddress_url = test_url + '/api/Discount/GetVipAddress'
 			var GetOrderItemsByOrderID_url = test_url + '/api/WxSP/GetOrderItemsByOrderID'
 			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
-			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			var source_from = GetQueryString('source_from')
 			if(source_from == 'app') { //如果是app进入
+	
 				GetMemberInfo(GetMemberInfo_url, token);
 			} else {
 				GetMemberInfo(GetMemberInfoExtend_url, token);
@@ -251,7 +252,7 @@
 						var order_status = data.Data.order_status;
 						if(order_status=='未发货'){
 							$('.order_status_1').show()
-						}else if(order_status=='已发货'||order_status=='未领取'||order_status=='未收货'){
+						}else if(order_status=='已发货'||order_status=='未领取'||order_status=='未发货'){
 							$('.order_status_2').show()
 						}else if(order_status=='已领取'||order_status=='已收货'){
 							$('.order_status_3').show()

@@ -74,7 +74,7 @@
 			var DefaultAddress_url = test_url + '/api/SmallProgram/DefaultAddress'
 			var DeleteVipAddress_url = test_url + '/api/SmallProgram/DeleteVipAddress'
 			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
-			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			console.log(store_id)
 			console.log(orderid)
 			
@@ -107,13 +107,18 @@
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log('需要的token：' + token);
 						console.log(data);
+//						alert('GetMemberInfo接口开始')
+//						alert(JSON.stringify(data))
 						var MemberInfo = data.Data.MemberInfo;
 						member_id = MemberInfo.id;
+					
 
 
 					},
 					error: function(xhr, type, errorThrown) {
 						//异常处理；
+//						alert('GetMemberInfo接口出错')
+//						alert(errorThrown)
 						console.log('需要的token：' + token);
 						console.log(type);
 					}
@@ -224,8 +229,10 @@
 
 					error: function(xhr, type, errorThrown) {
 						//异常处理；
-						alert('GetVipAddressList接口出错')
-						alert(errorThrown)
+//						alert('GetVipAddressList接口出错')
+//						alert(token)
+//						alert(member_id)
+//						alert(errorThrown)
 					}
 				});
 

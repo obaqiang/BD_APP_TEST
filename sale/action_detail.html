@@ -10,7 +10,7 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/action_detail.css" rel="stylesheet">
 		<link rel="stylesheet" href="../css/global.css">
-
+		<link rel="stylesheet" href="../css/swiper.min.css">
 		<script src="js/html5shiv.min.js"></script>
 	</head>
 	<style>
@@ -26,12 +26,32 @@
 
 			<div class="row">
 				<div class="col-xs-12 no_wb">
-					<img id="big_img" style="width: 100%;" class="img-responsive" src="" alt="" />
+					<!--<img id="big_img" style="width: 100%;" class="img-responsive" src="" alt="" />-->
+					<div class="swiper-container">
+						<div class="swiper-wrapper">
+							<!--<div class="swiper-slide">
+								<img style="width: 100%;" src="img/292px_254px_kuaidi.png" alt="" />
+							</div>
+							<div class="swiper-slide">
+								<img style="width: 100%;" src="img/292px_254px_kuaidi.png" alt="" />
+							</div>
+							<div class="swiper-slide">
+								<img style="width: 100%;" src="img/292px_254px_kuaidi.png" alt="" />
+							</div>-->
+
+						</div>
+						<!-- Add Pagination -->
+						<!--<div class="swiper-pagination"></div>-->
+						<!-- Add Arrows -->
+						<!--<div class="swiper-button-next"></div>
+						<div class="swiper-button-prev"></div>-->
+					</div>
+
 					<div class="sale_info">
 						<span class="sp_price">
 							<span class="sp_1">￥</span>
 						<span class="sp_2" id="sp_2"></span>
-						<span class="sp_3" id="sp_3"></span>
+						<!--<span class="sp_3" id="sp_3"></span>-->
 						</span>
 
 						<span class="sp_4" id="sales_count">件已售</span>
@@ -41,9 +61,9 @@
 						<span class="sp_in_2" id="t_h"></span>
 						<span class="sp_in_3">时</span>
 						<span class="sp_in_4" id="t_m"></span>
-						<span class="sp_in_5">分</span>
+						<span class="sp_in_3">分</span>
 						<span class="sp_in_6" id="t_s"></span>
-						<span class="sp_in_7">秒</span>
+						<span class="sp_in_3">秒</span>
 						</span>
 					</div>
 				</div>
@@ -84,7 +104,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 shop_area">
-					<img class="shop_icon" src="img/750px_620px_chanpintu.png" alt="" />
+					<img class="shop_icon" src="" alt="" />
 					<span class="shop_name"></span>
 					<span class="shop_address"></span>
 					<!--<img class="icon_address" src="img/42px_42px_dizhi.png" alt="" />
@@ -125,12 +145,12 @@
 		<div class="modal_show" style="display: none;">
 			<div class="modal_show_title">
 				<span>活动规则</span>
-				<img onclick="hideModal()" src="img/18px_30px_buttom.png" alt="" />
+				<!--<img onclick="hideModal()" src="img/18px_30px_buttom.png" alt="" />-->
 			</div>
 			<div class="modal_show_body" id="activity_rule">
 				活动规则
 			</div>
-			<div class="modal_foot">
+			<div class="modal_foot" onclick="hideModal()">
 				完成
 			</div>
 		</div>
@@ -174,7 +194,7 @@
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/common/bdapp.js"></script>
 		<script src="../js/config/web_config.js"></script>
-
+		<script src="../js/plugin/swiper.min.js"></script>
 		<script src="js/bootstrap.js "></script>
 		<script>
 			//各个屏幕大小适配
@@ -198,14 +218,17 @@
 			var member_id;
 			var code = GetQueryString('code')
 			var storeid = GetQueryString('storeid');
-			
+
 			var openid;
 			var unionid;
 			var nickname;
 			var sex;
 			var token = GetQueryString('token');
 			var activity_id = GetQueryString('activity_id');
-
+			var hide = GetQueryString('hide')
+			if(hide == 'store') {
+				$('.btn_bottom').hide()
+			}
 			var vip_id;
 			//			alert(code)
 			var content_tel_status;
@@ -216,22 +239,30 @@
 			var DoCheckUserFollow_url = test_url + '/api/Member/DoCheckUserFollow'
 			var ActiveCard_url = test_url + '/api/member/ActiveCard'
 			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
-			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			var CheckUserHasCard_url = test_url + '/api/member/CheckUserHasCard';
 			var source_from = GetQueryString('source_from');
-			if(source_from == 'app') { //如果是app进入
-
-				GetMemberInfo(GetMemberInfo_url, token);
-				vip_id = GetQueryString('vip_id');
-			} else {
-				CheckUserHasCard(CheckUserHasCard_url, storeid, openid)
-			}
-			console.log(code)
 			if(code) {
 				DoCheckUserFollow(DoCheckUserFollow_url)
 			} else {
 				GetMemberInfo(GetMemberInfo_url, token)
 			}
+			if(source_from == 'app') { //如果是app进入
+
+				GetMemberInfo(GetMemberInfo_url, token);
+				vip_id = GetQueryString('vip_id');
+			} else {
+				activity_id = getCookie('activity_id')
+				//				alert('需要的activity_id：'+activity_id)
+				storeid = getCookie('storeid')
+				//				alert('需要的storeid：'+storeid)
+				//				alert(131312321)
+				//				alert(storeid)
+				//				alert(openid)
+				CheckUserHasCard(CheckUserHasCard_url, storeid, openid)
+
+			}
+			console.log(code)
 
 			function GetMemberInfo(GetMemberInfo_url, token) {
 				mui.ajax(GetMemberInfo_url, {
@@ -302,11 +333,21 @@
 					m = Math.floor(t / 1000 / 60 % 60);
 					s = Math.floor(t / 1000 % 60);
 				}
+				if(0 < h < 10) {
+					h = '0' + h;
+
+				}
+				if(0 < m < 10) {
+					m = '0' + m;
+				}
+				if(0 < s < 10) {
+					s = '0' + s;
+				}
 
 				document.getElementById("t_d").innerHTML = d + "天";
-				document.getElementById("t_h").innerHTML = h + "时";
-				document.getElementById("t_m").innerHTML = m + "分";
-				document.getElementById("t_s").innerHTML = s + "秒";
+				document.getElementById("t_h").innerHTML = h + "";
+				document.getElementById("t_m").innerHTML = m + "";
+				document.getElementById("t_s").innerHTML = s + "";
 			}
 
 			function verBtn() { //获取验证码接口
@@ -365,7 +406,7 @@
 					success: function(data) {
 						console.log(activity_id);
 						console.log(data);
-						goods_id = data.Data.activity_discount.id;
+						goods_id = data.Data.activity_product.id;
 						if(data.Data.activity_discount_product_details_img.length != 0) {
 							//							var big_img = data.Data.activity_discount_product_details_img[0].image_url;
 							//							$('#big_img').attr('src', big_img);
@@ -379,8 +420,26 @@
 							//								var img_div = '<img class="title_img" src="' + data.Data.activity_discount_product_img[i].thumb + '" alt="" />';
 							//							}
 							//							$('#img_list').append(img_div);
-							var big_img = data.Data.activity_discount_product_img[0].thumb;
-							$('#big_img').attr('src', big_img);
+							//							var big_img = data.Data.activity_discount_product_img[0].img_url;
+							//							$('#big_img').attr('src', big_img);
+							for(var i = 0; i < data.Data.activity_discount_product_img.length; i++) {
+								var img =
+									'<div class="swiper-slide">' +
+									'<img style="width: 100%;" src="' + data.Data.activity_discount_product_img[i].img_url + '" alt="" />' +
+									'</div>';
+								$('.swiper-wrapper').append(img);
+							}
+							var swiper = new Swiper('.swiper-container', {
+								pagination: '.swiper-pagination',
+								nextButton: '.swiper-button-next',
+								prevButton: '.swiper-button-prev',
+								paginationClickable: true,
+								spaceBetween: 30,
+								centeredSlides: true,
+								autoplay: 2500,
+								autoplayDisableOnInteraction: false
+							});
+
 						}
 						var sp_2 = data.Data.activity_discount_product_price[0].discount_price;
 						$('#sp_2').text(sp_2);
@@ -391,8 +450,11 @@
 						setInterval(GetRTime(end_time), 0);
 						console.log(end_time);
 
-						var product_describe = data.Data.activity_product.product_describe
-						$('#product_describe').text(product_describe)
+						//						var product_describe = data.Data.activity_product.product_describe
+						//						product_describe = cutstr(product_describe, 80)
+						var productname = data.Data.activity_product.productname
+						//						productname = cutstr(productname, 70)
+						$('#product_describe').text(productname)
 						var stock = data.Data.activity_product.stock
 						stock = '剩余' + stock + '件'
 						$('#stock').text(stock)
@@ -400,6 +462,9 @@
 						price = '原价￥' + price
 						$('#price').text(price)
 						var activity_rule = data.Data.activity_product.activity_rule
+						if(activity_rule == '') {
+							activity_rule = '规则未填写'
+						}
 						$('#activity_rule').text(activity_rule)
 
 						var sales_count = data.Data.activity_discount.sales_count
@@ -515,15 +580,16 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data);
-						alert('DoCheckUserFollow接口开始')
-
-						alert(JSON.stringify(data));
+						//						alert('DoCheckUserFollow接口开始')
+						//
+						//						alert(JSON.stringify(data));
 
 						//						alert(data.Data.HasFollowed)
-						openid = data.Data.open_id
+
 						//						alert('得到的openid:' + openid)
 						if(data.Data.MemberInfo) {
 							member_id = data.Data.MemberInfo.id
+							openid = data.Data.MemberInfo.open_id
 						}
 						if(data.Data.HasFollowed == false) {
 							$('.follow_modal').show()
@@ -568,11 +634,13 @@
 						if(data.Data.IsError == false) {
 							vip_id = data.Data.vip_id
 							token = data.Data.bdtoken
+							//							alert('需要的token:' + token)
 						}
 
 					},
 					error: function(xhr, type, errorThrown) {
 						//						alert('CheckUserHasCard接口报错')
+						//						alert(errorThrown)
 						//						alert('需要的链接：' + CheckUserHasCard_url + '?storeid=' + storeid + '&openid=' + openid)
 						//						alert(xhr)
 						//						alert(type)
@@ -632,7 +700,7 @@
 							Alert('信息完善成功');
 							var member_name = encodeURI(username);
 							$('#btn_sure').unbind();
-							window.location.href = '../home/index_main_mine.html?token=' + token + '&phone=' + phone + '&birthday=' + birth + '&member_name=' + member_name+'&source_from='+source_from;
+							window.location.href = '../home/index_main_mine.html?token=' + token + '&phone=' + phone + '&birthday=' + birth + '&member_name=' + member_name + '&source_from=' + source_from;
 						} else {
 							var ErrorMessage = data.Data.ErrorMessage;
 							Alert(ErrorMessage);
@@ -661,7 +729,7 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data);
-						//						alert(JSON.stringify(data))
+						alert(JSON.stringify(data))
 
 						//						alert(JSON.stringify(data))
 						if(data.Data.IsError == false) {
@@ -673,7 +741,13 @@
 					error: function(xhr, type, errorThrown) {
 						//异常处理；
 						console.log(type)
-						//						alert('ActiveCard接口出错')
+						alert('ActiveCard接口出错')
+						alert(storeid)
+						alert(openid)
+						alert(unionid)
+						alert(phone)
+						alert(smscode)
+						alert(errorThrown)
 						//						alert(ActiveCard_url + '?storeid=' + storeid + '&openid=' + openid + '&unionid=' + unionid + '&phone=' + phone + '&smscode=' + smscode)
 						//						alert(storeid)
 						//						alert(openid)
@@ -714,8 +788,11 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						alert('需要的member_id:' + member_id)
+						//						alert('CreateOrder接口开始')
+						//						alert(JSON.stringify(data))
 						console.log(data);
-						//						alert('CreateOrder接口')
+						console.log(items_json)
+						//												alert('CreateOrder接口')
 						//						alert(CreateOrder_url+'?order_id='+order_id+'&store_id='+store_id+'&vip_id='+vip_id+'&member_id='+member_id+'&amount_payable='+amount_payable+'&total_amount='+total_amount+'&amount_payed='+amount_payed +'&type='+type+'&last_user='+last_user+'&unvip_phone='+unvip_phone+'&items_json='+items_json)
 						//						alert(token)
 						//						alert(JSON.stringify(data))
@@ -723,8 +800,9 @@
 						if(data.Data.IsError == false) {
 							//							alert(member_id)
 							//							alert(data.Data.OrderID)
-							alert('需要的orderid:' + data.Data.OrderID)
-							window.location.href = 'order_confirm.html?orderid=' + data.Data.OrderID + '&token=' + token + '&open_id=' + openid + '&store_id=' + store_id + '&vip_id=' + vip_id+'&source_from='+source_from
+							//							alert('需要的orderid:' + data.Data.OrderID)
+							//							alert('需要的store_id:'+ store_id)
+							window.location.href = 'order_confirm.html?orderid=' + data.Data.OrderID + '&token=' + token + '&open_id=' + openid + '&store_id=' + store_id + '&vip_id=' + vip_id + '&source_from=' + source_from
 
 						}
 
@@ -761,6 +839,7 @@
 					var amount_payable = price
 					var total_amount = price
 					var amount_payed = price
+					//					console.log(storeid)
 					CreateOrder('', storeid, vip_id, member_id, amount_payable, total_amount, amount_payed, 0, '2222', '', items_json, token, openid)
 
 				}

@@ -47,6 +47,12 @@
 		<script>
 			var CheckUserHasFollowed_Extend_url = test_url + '/api/Member/CheckUserHasFollowed_Extend'
 
+			var activity_id = GetQueryString('activity_id')
+			var storeid = GetQueryString('storeid')
+
+			setCookie('activity_id', activity_id)
+			setCookie('storeid', storeid)
+
 			function CheckUserHasFollowed_Extend(CheckUserHasFollowed_Extend_url) {
 				$.ajax({
 					url: CheckUserHasFollowed_Extend_url,
@@ -56,16 +62,16 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data);
-//						alert('CheckUserHasFollowed_Extend接口开始')
-////						
-////						
-//						alert(JSON.stringify(data))
+						//						alert('CheckUserHasFollowed_Extend接口开始')
+						////						
+						////						
+						//						alert(JSON.stringify(data))
 						window.location.href = data.Data.Data
 					},
 					error: function(xhr, type, errorThrown) {
-//						alert('CheckUserHasFollowed_Extend接口出错')
-//						alert(errorThrown)
-//						alert(xhr)
+						//						alert('CheckUserHasFollowed_Extend接口出错')
+						//						alert(errorThrown)
+						//						alert(xhr)
 						console.log('需要的链接：' + CheckUserHasFollowed_Extend_url)
 						//异常处理；
 						console.log(type);

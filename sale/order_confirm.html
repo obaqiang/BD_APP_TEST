@@ -23,7 +23,7 @@
 
 		<div class="address_cho" onclick="showAddressCho()">
 			<span class="address_cho_head">请选择取货方式</span>
-			<span class="address_cho_show">快递到店</span>
+			<span class="address_cho_show">快递发货</span>
 			<img class="address_cho_icon" src="img/18px_30px_buttom.png" alt="" />
 		</div>
 		<div class="address_show" onclick="addressJump()">
@@ -60,7 +60,7 @@
 				<img class="pay_way_list_ok" src="img/32px_32px_V.png" alt="" />
 			</div>
 			<div class="pay_way_list" id="pay_way_3" style="display: none;">
-				<img class="pay_way_list_icon" src="img/38px_38px_zhifubao.png" alt="" />
+				<img class="pay_way_list_icon" src="img/38px_38px_weixin.png" alt="" />
 				<span class="pay_way_list_way">微信支付</span>
 				<span class="pay_way_list_show"></span>
 				<span class="pay_way_list_no"></span>
@@ -96,7 +96,7 @@
 				(含运费￥0.00元)实付
 			</span>
 			<span class="bot_price_show" id="amount_payed">
-				￥29.00
+				￥00
 			</span>
 			<span class="bot_pay" onclick="goBuy()">立即支付</span>
 		</div>
@@ -188,7 +188,7 @@
 				$('#pay_way_1').show();
 			}
 			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
-			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo'; //微信进入
+			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			var source_from = GetQueryString('source_from')
 			if(source_from == 'app') { //如果是app进入
 	

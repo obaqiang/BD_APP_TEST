@@ -4,6 +4,7 @@
 	width: 100%;
 	background: #fff;
 	border-bottom: 1px solid #ddd;
+	z-index: 2;
 }
 
 .head_list {

@@ -20,24 +20,24 @@ body {
 }
 
 .sp_1 {
-	font-size: 0.19rem;
+	font-size: 0.15rem;
 	color: #fff;
 }
 
 .sp_2 {
-	font-size: 0.33rem;
+	font-size: 0.3rem;
 	color: #fff;
 }
 
 .sp_3 {
-	font-size: 0.19rem;
+	font-size: 0.15rem;
 	color: #fff;
 }
 
 .sp_4 {
 	position: absolute;
-	left: 1.5rem;
-	bottom: 0.1rem;
+	left: 1.7rem;
+	bottom: 0.13rem;
 	background: #d20833;
 	font-size: 0.14rem;
 	padding: 0.02rem 0.1rem;
@@ -56,7 +56,7 @@ body {
 	position: absolute;
 	background: #ffe440;
 	right: 0;
-	width: 35%;
+	width: 30%;
 	text-align: center;
 	height: 0.5rem;
 	padding-top: 0.01rem;
@@ -77,7 +77,7 @@ body {
 }
 
 .sp_in_3 {
-	font-size: 0.07rem;
+	font-size: 0.08rem;
 	color: #5c3410;
 }
 
@@ -111,7 +111,7 @@ body {
 
 .sp_tri {
 	position: absolute;
-	right: 1.31rem;
+	right: 1.12rem;
 	top: 0;
 	width: 0;
 	height: 0;
@@ -228,7 +228,7 @@ body {
 	position: relative;
 	background: #fff;
 	overflow: hidden;
-	height: 1rem;
+	height: 0.7rem;
 }
 
 .shop_icon {
@@ -310,14 +310,14 @@ body {
 	text-align: center;
 	color: #fff;
 	font-size: 0.14rem;
-	line-height: 0.4rem;
+	line-height: 0.5rem;
 }
 .modal_show{
 	position: fixed;
 	bottom: 0;
 	width: 100%;
 	background: #fff;
-	z-index: 2;
+	z-index: 10;
 }
 .modal_show_title{
 	border-bottom: 1px solid #ddd;
@@ -341,11 +341,12 @@ body {
 }
 .modal_mask{
 	background: #000000;
-	opacity: 0.2;
+	opacity: 0.5;
 	height: 100%;
 	width: 100%;
 	position: fixed;
 	top: 0;
+	z-index: 9;
 }
 .modal_foot{
 	background: #ff4444;
@@ -359,14 +360,14 @@ body {
 	top: 0;
 	width: 100%;
 	text-align: center;
-	z-index: 2;
+	z-index: 10;
 }
 .login_modal{
 	position: fixed;
 	top: 0;
 	width: 100%;
 	text-align: center;
-	z-index: 2;
+	z-index: 10;
 }
 .fo_img_1{
 	width: 3rem;
@@ -425,6 +426,7 @@ body {
 	line-height: 0.22rem;
 	color: #fff;
 	border-radius: 0.05rem;
+	padding: 0.03rem 0.05rem;
 }
 .login_btn{
 
@@ -442,13 +444,14 @@ body {
 .buy_modal {
 	position: fixed;
 	width: 100%;
-	z-index: 2;
+	z-index: 10;
 	background: #fff;
 	bottom: 0;
 }
 .buy_modal_list_area{
-	height: 1.6rem;
-	overflow-y: scroll;
+	/*height: 1.6rem;*/
+	/*overflow-y: scroll;*/
+	
 }
 .buy_modal_list {
 	font-size: 0.14rem;
