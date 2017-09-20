@@ -10,6 +10,7 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/new_address.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/LArea.css">
+		<link rel="stylesheet" href="../css/global.css">
 		<link href="css/new_address.css" rel="stylesheet">
 		<script src="js/html5shiv.min.js"></script>
 	</head>
@@ -17,6 +18,27 @@
 		html,
 		body {
 			background: #f2f2f2;
+		}
+		
+		.choose_1 {
+			z-index: 1;
+			position: absolute;
+			left: 0.8rem;
+			top: 0.15rem;
+		}
+		
+		.choose_2 {
+			z-index: 1;
+			position: absolute;
+			left: 1.5rem;
+			top: 0.15rem;
+		}
+		
+		.choose_3 {
+			z-index: 1;
+			position: absolute;
+			left: 2.2rem;
+			top: 0.15rem;
 		}
 	</style>
 
@@ -30,13 +52,53 @@
 				<span class="address_list_text">联系方式:</span>
 				<input class="address_list_input" type="text" id='content_tel' />
 			</div>
-			<div class="address_list">
+			<!--<div class="address_list">
 				<span>联系方式:</span>
 				<div class="content-block">
 					<input class="city_input" id="demo1" type="text" readonly="" placeholder="城市选择特效" value="广东省,深圳市,南山区" />
 					<input id="value1" type="hidden" value="20,234,504" />
 				</div>
+			</div>-->
+			<div class="address_list">
+				<span>联系方式:</span>
+				<div class="">
+					<!--<select class="choose_1" onmousedown="if(this.options.length>4){this.size=5}" onblur="this.size=0" onchange="this.size=0">
+						<option value="-请选择-">--省--</option>
+						<option value="-请选择-" selected="">--啦--</option>
+						<option value="-请选择-">--哈--</option>
+						<option value="-请选择-">--省--</option>
+						<option value="-请选择-" selected="">--啦--</option>
+						<option value="-请选择-">--哈--</option>
+					</select>
+					<select class="choose_2" onmousedown="if(this.options.length>4){this.size=5}" onblur="this.size=0" onchange="this.size=0">
+						<option value="-请选择-">--省--</option>
+						<option value="-请选择-" selected="">--啦--</option>
+						<option value="-请选择-">--哈--</option>
+						<option value="-请选择-">--省--</option>
+						<option value="-请选择-" selected="">--啦--</option>
+						<option value="-请选择-">--哈--</option>
+					</select>
+					<select class="choose_3" onmousedown="if(this.options.length>4){this.size=5}" onblur="this.size=0" onchange="this.size=0">
+						<option value="-请选择-">--省--</option>
+						<option value="-请选择-" selected="">--啦--</option>
+						<option value="-请选择-">--哈--</option>
+						<option value="-请选择-">--省--</option>
+						<option value="-请选择-" selected="">--啦--</option>
+						<option value="-请选择-">--哈--</option>
+					</select>-->
+					<select name="" id="area_1" class="area_1" onchange="selProvince()">
+						<option value="">--省--</option>
+					</select>
+					<select name="" id="area_2" class="area_1" onchange="selArea()">
+						<option value="">--市--</option>
+					</select>
+					<select name="" id="area_3" class="area_1" onchange="selCity()">
+						<option value="">--区--</option>
+					</select>
+
+				</div>
 			</div>
+
 			<div class="address_list">
 				<span class="address_list_text">详细地址:</span>
 				<input class="address_list_input" placeholder="街道，地址等" type="text" id="content_ver" />
@@ -75,18 +137,18 @@
 			})(document, window);
 		</script>
 		<script>
-			var area1 = new LArea();
-			area1.init({
-				'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
-				'valueTo': '#value1', //选择完毕后id属性输出到该位置
-				'keys': {
-					id: 'id',
-					name: 'name'
-				}, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
-				'type': 1, //数据源类型
-				'data': LAreaData //数据源
-			});
-			area1.value = [1, 13, 3]; //控制初始位置，注意：该方法并不会影响到input的value
+			//			var area1 = new LArea();
+			//			area1.init({
+			//				'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+			//				'valueTo': '#value1', //选择完毕后id属性输出到该位置
+			//				'keys': {
+			//					id: 'id',
+			//					name: 'name'
+			//				}, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+			//				'type': 1, //数据源类型
+			//				'data': LAreaData //数据源
+			//			});
+			//			area1.value = [1, 13, 3]; //控制初始位置，注意：该方法并不会影响到input的value
 			//			var area2 = new LArea();
 			//			area2.init({
 			//				'trigger': '#demo2',
@@ -98,6 +160,9 @@
 			//				'type': 2,
 			//				'data': [provs_data, citys_data, dists_data]
 			//			});
+			//			$('.choonse option').click(function(){
+			//				$(this).attr("selected","selected");
+			//			})
 		</script>
 		<script>
 			var content_name_status = true;
@@ -120,13 +185,22 @@
 			var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo'; //BDapp进入
 			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			var source_from = GetQueryString('source_from')
+			var GetProvinceList_url = test_url + '/api/Discount/GetProvinceList'
+			var province_data;
+			var province_data_num_sel;
+			var GetCityListByProvinceArea_url = test_url + '/api/Discount/GetCityListByProvinceArea'
+			var area_data;
+			var area_data_num_sel;
+			var GetCountyByProvinceCity_url = test_url + '/api/Discount/GetCountyByProvinceCity';
+			var city_data;
+			var city_data_num_sel;
 			if(source_from == 'app') { //如果是app进入
 				$('.btn_bottom').hide()
 				GetMemberInfo(GetMemberInfo_url, token);
 			} else {
 				GetMemberInfo(GetMemberInfoExtend_url, token);
 			}
-			
+
 			$('input').blur(function() {
 				if($(this).is('#content_tel')) {
 					if(!(/^1[34578]\d{9}$/.test(this.value))) {
@@ -188,7 +262,6 @@
 				});
 			}
 
-
 			function ifBtn() {
 				if(content_name_status == true && content_tel_status == true && content_ver_status == true) {
 					$('#btn_ok').show()
@@ -202,22 +275,28 @@
 
 			function btnSure() {
 
-				var area_array = $('#demo1').val();
-				area_array = area_array.split(',');
-				console.log(area_array);
-				province = area_array[0];
-				city = area_array[1];
-				area = area_array[2];
+				//				var area_array = $('#demo1').val();
+				//				area_array = area_array.split(',');
+				//				console.log(area_array);
+				//				province = area_array[0];
+				//				city = area_array[1];
+				//				area = area_array[2];
 				street = $('#content_ver').val();
 				consignee = $('#content_name').val();
 				phone = $('#content_tel').val();
-				SaveVipAddress(SaveVipAddress_url, province, city, area, street, consignee, phone, open_id, token, store_id, orderid)
+				if(typeof(province_data_num_sel) == 'undefined' || (area_data_num_sel) == 'undefined' || (city_data_num_sel) == 'undefined') {
+					Alert('省市区信息不完善')
+				} else {
+					SaveVipAddress(SaveVipAddress_url, province_data_num_sel, area_data_num_sel, city_data_num_sel, street, consignee, phone, open_id, token, store_id, orderid)
+
+				}
+
 			}
 
 			function SaveVipAddress(SaveVipAddress_url, province, city, area, street, consignee, phone, open_id, token, store_id, orderid) {
 				mui.ajax(SaveVipAddress_url, {
 					data: {
-						 id: id,
+						id: id,
 						province: province,
 						city: city,
 						area: area,
@@ -241,7 +320,7 @@
 						//						alert(JSON.stringify(data))
 						if(data.Data.IsError == false) {
 							Alert('新建地址成功')
-							window.location.href = 'address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid+'&source_from='+source_from;
+							window.location.href = 'address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&source_from=' + source_from;
 						}
 
 					},
@@ -254,12 +333,12 @@
 				});
 			}
 
-			function GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, id,member_id) {
+			function GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, id, member_id) {
 				mui.ajax(GetVipAddressList_url, {
 					data: {
-//						union_id: open_id,
+						//						union_id: open_id,
 						token: token,
-						member_id:member_id
+						member_id: member_id
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
@@ -281,8 +360,11 @@
 									$('#content_name').val(consignee)
 									var phone = addressList[i].phone
 									$('#content_tel').val(phone)
-									var area_str = addressList[i].province + ',' + addressList[i].city + ',' + addressList[i].area
-									$('#demo1').val(area_str)
+//									var area_str = addressList[i].province + ',' + addressList[i].city + ',' + addressList[i].area
+//									$('#demo1').val(area_str)
+//									province_data_num_sel = data.Data.province
+//									area_data_num_sel = data.Data.area
+//									city_data_num_sel = data.Data.city
 									$('#content_tel').val(phone)
 									var street = addressList[i].street
 									$('#content_ver').val(street)
@@ -292,14 +374,136 @@
 					},
 
 					error: function(xhr, type, errorThrown) {
-						//异常处理；
-						alert('GetVipAddressList接口出错')
-						alert(errorThrown)
+
 					}
 				});
 			}
 
-			GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, id,member_id)
+			
+
+			
+
+			function GetProvinceList(GetProvinceList_url) { //查询省份
+				mui.ajax(GetProvinceList_url, {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(data)
+						province_data = data.Data
+						for(var i = 0; i < data.Data.length; i++) {
+							var option_div =
+								'<option area_no="' + data.Data[i].areano + '">' + data.Data[i].areaname + '</option>'
+							$('#area_1').append(option_div)
+						}
+
+					},
+
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			GetProvinceList(GetProvinceList_url)
+			GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, id, member_id)
+			
+			
+
+			
+
+			function GetCityListByProvinceArea(GetCityListByProvinceArea_url, province) { //查询市
+				mui.ajax(GetCityListByProvinceArea_url, {
+					data: {
+						province: province
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(data)
+						area_data = data.Data
+						for(var i = 0; i < data.Data.length; i++) {
+							var option_div =
+								'<option area_no="' + data.Data[i].areano + '">' + data.Data[i].areaname + '</option>';
+							$('#area_2').append(option_div)
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			
+
+			function GetCountyByProvinceCity(GetCountyByProvinceCity_url, city) { //查询区
+				mui.ajax(GetCountyByProvinceCity_url, {
+					data: {
+						city: city
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(data)
+						city_data = data.Data
+						for(var i = 0; i < data.Data.length; i++) {
+							var option_div =
+								'<option area_no="' + data.Data[i].areano + '">' + data.Data[i].areaname + '</option>'
+							$('#area_3').append(option_div)
+						}
+					},
+
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+
+			function selProvince() {
+				console.log($('#area_1').val())
+				for(var i = 0; i < province_data.length; i++) {
+					if($('#area_1').val() == province_data[i].areaname) {
+						console.log(province_data[i].areano)
+						province_data_num_sel = province_data[i].areano
+						GetCityListByProvinceArea(GetCityListByProvinceArea_url, province_data_num_sel)
+					}
+				}
+			}
+
+			function selArea() {
+
+				for(var i = 0; i < area_data.length; i++) {
+					if($('#area_2').val() == area_data[i].areaname) {
+						area_data_num_sel = area_data[i].areano
+						GetCountyByProvinceCity(GetCountyByProvinceCity_url, area_data_num_sel)
+					}
+				}
+			}
+
+			function selCity() {
+				for(var i = 0; i < city_data.length; i++) {
+					if($('#area_3').val() == city_data[i].areaname) {
+						city_data_num_sel = city_data[i].areano
+						console.log(province_data_num_sel)
+						console.log(area_data_num_sel)
+						console.log(city_data_num_sel)
+
+					}
+				}
+			}
 		</script>
 
 	</body>

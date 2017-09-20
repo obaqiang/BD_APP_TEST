@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="format-detection" content="telephone=no">
+		<title></title>
+
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" href="../../css/login.css" />
+		<link rel="stylesheet" href="../../css/global.css" />
+		<link rel="stylesheet" href="../../css/login_register.css" />
+		<style type="text/css">
+			body {
+				background: #fff;
+			}
+			
+			.btn_success {
+				font-size: 0.15rem;
+				position: absolute;
+				color: #CB2920;
+				border: 1px solid #CB2920;
+				padding: 0 0.3rem;
+				border-radius: 0.2rem;
+				top: 4.6rem;
+				left: 1.3rem;
+				line-height: 0.3rem;
+			}
+			
+			.btn_down {
+				font-size: 0.15rem;
+				position: absolute;
+				color: #CB2920;
+				border: 1px solid #CB2920;
+				padding: 0 0.3rem;
+				border-radius: 0.2rem;
+				top: 5.1rem;
+				left: 1.3rem;
+				line-height: 0.3rem;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<img style="width: 100%;" src="../../images/register_success.gif " alt="" />
+
+		<div class="btn_success" onclick="goSee()">
+			点击关注
+		</div>
+		<div class="btn_down" onclick="goDown()">
+			下载APP
+		</div>
+
+		<script src="../../js/config/web_config.js"></script>
+		<script src="../../js/mui.js"></script>
+		<script src="../../js/mui.jsonp.js"></script>
+		<script src="../../js/mui.enterfocus.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/jquery-1.11.3.js"></script>
+		<script src="../../js/common/bdapp.js"></script>
+		<script src="../../js/config/web_config.js"></script>
+		<!--<script src="../../js/no_h5_plus/login.js"></script>-->
+
+		<script>
+			function goSee() {
+				window.location.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NDUwMTY0NQ==#wechat_redirect'
+			}
+
+			function goDown() {
+				window.location.href= 'http://card.ks12580.net/mobile/shanghu_download.html'
+			}
+		</script>
+
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</body>
+
+</html>

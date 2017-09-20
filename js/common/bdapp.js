@@ -390,7 +390,7 @@ function js_date_time(unixtime) {
 function getNowFormatDate(newDate) {
 	var date = new Date();
 	date.setTime(newDate * 1000);
-	var seperator1 = "-";
+	var seperator1 = "/";
 	var seperator2 = ":";
 	var month = date.getMonth() + 1;
 	var strDate = date.getDate();

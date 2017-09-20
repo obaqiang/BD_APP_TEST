@@ -26,13 +26,19 @@
 			<span class="address_cho_show">快递发货</span>
 			<img class="address_cho_icon" src="img/18px_30px_buttom.png" alt="" />
 		</div>
-		<div class="address_show" onclick="addressJump()">
+		<div class="address_show" id="kuaidi" onclick="addressJump()">
 			<img class="address_show_icon" src="img/28px_40px_dizhi.png" alt="" />
 			<span class="address_show_1" id="address_1">您还没有收货地址</span>
 			<span class="address_show_2" id="address_2">新建地址</span>
 			<img class="address_show_go" src="img/18px_30px_buttom.png" alt="" />
 		</div>
 
+		<div class="address_show" id="daodian" style="display: none;">
+			<img class="address_show_icon" src="img/28px_40px_dizhi.png" alt="" />
+			<span class="address_show_1">取货方式:到店领取</span>
+			<span class="address_show_2" id="address_3"></span>
+			<!--<img class="address_show_go" src="img/18px_30px_buttom.png" alt="" />-->
+		</div>
 		<div class="order_info" id="order_info">
 			<img class="shop_icon" src="img/36px_36px_shangjia.png" alt="" />
 			<span class="shop_name" id="store_name">*商店名称*</span>
@@ -170,13 +176,15 @@
 			var open_id = GetQueryString('open_id')
 			var store_id = GetQueryString('store_id')
 			var vip_id = GetQueryString('vip_id')
+			var activity_id = GetQueryString('activity_id')
 			var phone;
 			var member_id;
 			var orderitems;
 			var pay_way = '';
 			var userAgent = navigator.userAgent.toLowerCase();
 			var items_json;
-			var no_need_address;
+			var no_need_address = true;
+			var send_send_type = 2;
 			if(userAgent.match(/Alipay/i) == "alipay") {
 				pay_way = '支付宝'
 				$('#pay_way_2').show();
@@ -191,7 +199,7 @@
 			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			var source_from = GetQueryString('source_from')
 			if(source_from == 'app') { //如果是app进入
-	
+
 				GetMemberInfo(GetMemberInfo_url, token);
 			} else {
 				GetMemberInfo(GetMemberInfoExtend_url, token);
@@ -205,12 +213,11 @@
 			var GetOrderItemsByOrderID_url = test_url + '/api/WxSP/GetOrderItemsByOrderID_Discount';
 			var GetPackages_url = test_url + '/api/order/GetPackages';
 			var GetPackagesByItems_url = test_url + '/api/orderV2/GetPackagesByItems';
-			
+
 			var AppBDPay_url = test_url + '/api/orderV2/AppBDPay';
-			console.log(orderid)
 
 			function addressJump() {
-				window.location.href = 'address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id+'&source_from='+source_from
+				window.location.href = 'address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id + '&source_from=' + source_from
 			}
 
 			function GetMemberInfo(GetMemberInfo_url, token) {
@@ -243,15 +250,15 @@
 					}
 				});
 			}
+			var ExpressPrice
 
-
-			function GetVipAddress(GetVipAddress_url, union_id, token,member_id) {
+			function GetVipAddress(GetVipAddress_url, union_id, token, member_id) {
 
 				mui.ajax(GetVipAddress_url, {
 					data: {
 						id: 0,
-//						union_id: union_id
-						member_id:member_id
+						//						union_id: union_id
+						member_id: member_id
 
 					},
 					dataType: 'json', //服务器返回json格式数据
@@ -263,6 +270,7 @@
 					timeout: 10000, //超时时间设置为10秒；
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(member_id)
 						console.log(data);
 						//						alert('GetVipAddress接口')
 						//						alert(JSON.stringify(data))
@@ -281,6 +289,8 @@
 							var street = data.Data.Address.street
 							var address_2 = province + city + area + street
 							$('#address_2').text(address_2)
+							ExpressPrice = data.Data.ExpressPrice
+							$('.bot_info_show').text('(含运费￥' + ExpressPrice + '元)实付')
 						}
 					},
 
@@ -294,7 +304,7 @@
 				});
 
 			}
-			GetVipAddress(GetVipAddress_url, open_id, token,member_id)
+			GetVipAddress(GetVipAddress_url, open_id, token, member_id)
 
 			function showAddressCho() { //选择快死收货或者快递到店弹框
 				$('.address_way_modal').show()
@@ -308,12 +318,21 @@
 				if(e == 1) { //选择到店领取的
 					$('#toshop').show()
 					$('.address_cho_show').text('到店领取')
-					no_need_address=true
+					no_need_address = true
+					$('#daodian').show()
+					$('#kuaidi').hide()
+					send_send_type = 1
+					//					alert(send_send_type)
 				} else if(e == 2) { //选择快递发货的
 					$('#toexpress').show()
 					$('.address_cho_show').text('快递发货')
-					no_need_address=false
+					no_need_address = false
+					$('#daodian').hide()
+					$('#kuaidi').show()
+					send_send_type = 2
+					//					alert(send_send_type)
 				}
+
 			}
 
 			function choPayway(e) {
@@ -331,9 +350,10 @@
 			}
 
 			function goBuy() {
-				if(if_has_address != true&&no_need_address==false) {
+				UpdateOnlineOrderSendType(UpdateOnlineOrderSendType_url, orderid, send_send_type, token)
+				if(if_has_address != true && no_need_address == false) {
 					Alert('您还没有收货地址')
-				} else if(if_has_address==true||no_need_address==true){
+				} else if(if_has_address == true || no_need_address == true) {
 					console.log(pay_way)
 					if(pay_way == 'BD') {
 						//						GetPackages(GetPackages_url, orderid, store_id, vip_id, token)
@@ -369,7 +389,13 @@
 						//						} else {
 						//							GetPackagesByItems(GetPackagesByItems_url, goodslist_json, member_id, store_id, vip_id)
 						//						}
+						//						console.log(orderid)
+						//						console.log(send_send_type)
 						var total_money = $('#amount_payed').attr('amount_payable')
+						total_money = parseFloat(total_money)
+						ExpressPrice = parseFloat(ExpressPrice)
+						total_money = total_money + ExpressPrice
+				
 						SmartyPreAddOrderV2(SmartyPreAddOrderV2_url, orderid, store_id, vip_id, member_id, total_money, total_money, total_money, 0, '2222', phone, items_json, token)
 
 						//						var str = {
@@ -381,13 +407,17 @@
 					} else if(pay_way == '支付宝') {
 
 					} else if(pay_way == '微信') {
-						console.log(43242354453)
+
 						var total_money = $('#amount_payed').attr('amount_payable')
-						console.log(total_money)
-						PayWxRetail(PayWxRetail_url, orderid, open_id, '0.01', store_id, CheckOrder_url)
+						total_money = total_money + ExpressPrice
+						ExpressPrice = parseFloat(ExpressPrice)
+						total_money = total_money + ExpressPrice
+
+						PayWxRetail(PayWxRetail_url, orderid, open_id, '0.01', store_id, CheckOrder_url,UpdateDiscountAllOrder_url,activity_id)
 
 					}
 				}
+
 			}
 
 			var GetPayConfig_url = test_url + '/api/discount/GetPayConfig';
@@ -410,6 +440,36 @@
 			//			var amount_payable = price
 			//			var total_amount = price
 			//			var amount_payed = price
+			var UpdateOnlineOrderSendType_url = test_url + '/api/OrderV2/UpdateOnlineOrderSendType'
+
+			function UpdateOnlineOrderSendType(UpdateOnlineOrderSendType_url, order_id, send_type, token) {
+				mui.ajax(UpdateOnlineOrderSendType_url, {
+					data: {
+						order_id: order_id,
+						send_type: send_type
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型api-version
+					headers: {
+						//						'Content-Type': 'application/json',
+						'api-version': 2,
+						'token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//						alert(send_type)
+						console.log(send_type)
+						console.log(order_id)
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data)
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+
+					}
+				});
+			}
 
 			function SmartyPreAddOrderV2(SmartyPreAddOrderV2_url, order_id, store_id, vip_id, member_id, amount_payable, total_amount, amount_payed, type, last_user, unvip_phone, items_json, token) {
 				mui.ajax(SmartyPreAddOrderV2_url, {
@@ -442,8 +502,10 @@
 
 						var str = {
 							order_info: data.Data.QRCode,
-							balance: amount_payable
+							balance: amount_payable,
+
 						}
+						console.log(str)
 						var json = JSON.stringify(str);
 						bdvip.setMsg(json);
 					},
@@ -483,12 +545,12 @@
 
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data)
-//						alert(order_id)
-						alert(weixin_pay_no)
-//						alert(type)
-						alert(JSON.stringify(data))
+						//						alert(order_id)
+						//						alert(weixin_pay_no)
+						//						alert(type)
+						//						alert(JSON.stringify(data))
 						if(data.Data.IsError == false) {
-							window.location.href = 'order_detail.html?token=' + token + '&order_id=' + order_id + '&open_id=' + open_id+'&store_id='+store_id+'&source_from='+source_from
+							window.location.href = 'order_detail.html?token=' + token + '&order_id=' + order_id + '&open_id=' + open_id + '&store_id=' + store_id + '&source_from=' + source_from
 						}
 					},
 
@@ -500,8 +562,39 @@
 					}
 				});
 			}
+			var UpdateDiscountAllOrder_url = test_url+'/api/Discount/UpdateDiscountAllOrder'
+			function UpdateDiscountAllOrder(UpdateDiscountAllOrder_url,discount_id,ordermoney) {
+				mui.ajax(UpdateDiscountAllOrder_url, {
+					data: {
+						discount_id: discount_id,
+						orderCount: 1,
+						ordermoney: ordermoney 
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					headers: {
+//						'Content-Type': 'application/json',
 
-			function PayWxRetail(PayWxRetail_url, order_id, open_id, total_money, store_id, CheckOrder_url) {
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data)
+						
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						alert('报错')
+						alert(xhr)
+						alert(type)
+						alert(errorThrown)
+					}
+				});
+			}
+
+			function PayWxRetail(PayWxRetail_url, order_id, open_id, total_money, store_id, CheckOrder_url,UpdateDiscountAllOrder_url,discount_id) {
 				mui.ajax(PayWxRetail_url, {
 					data: {
 						order_id: order_id,
@@ -547,7 +640,7 @@
 									//									alert('需要的:'+prepayId)
 
 									CheckOrder(CheckOrder_url, order_id, prepayId, 0)
-
+									UpdateDiscountAllOrder(UpdateDiscountAllOrder_url,discount_id,total_money)
 								} // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
 							}
 						);
@@ -561,6 +654,7 @@
 						console.log(open_id)
 						console.log(total_money)
 						console.log(errorThrown)
+						alert(errorThrown)
 					}
 				});
 			}
@@ -765,6 +859,7 @@
 						//						alert(JSON.stringify(data))
 						var store_name = data.Data.Store.store_name;
 						$('#store_name').text(store_name)
+						$('#address_3').text(data.Data.Store.district_name + data.Data.Store.city_name + data.Data.Store.address)
 					},
 
 					error: function(xhr, type, errorThrown) {

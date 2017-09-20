@@ -77,17 +77,17 @@
 			var GetMemberInfoExtend_url = test_url + '/api/aliwx/GetMemberInfo_Extend'; //微信进入
 			console.log(store_id)
 			console.log(orderid)
-			
+
 			var source_from = GetQueryString('source_from')
 			if(source_from == 'app') { //如果是app进入
-	
+
 				GetMemberInfo(GetMemberInfo_url, token);
 			} else {
 				GetMemberInfo(GetMemberInfoExtend_url, token);
 			}
 
 			function newAddress() {
-				window.location.href = 'new_address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id+'&source_from='+source_from;
+				window.location.href = 'new_address.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id + '&source_from=' + source_from;
 			}
 
 			function GetMemberInfo(GetMemberInfo_url, token) {
@@ -107,24 +107,21 @@
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log('需要的token：' + token);
 						console.log(data);
-//						alert('GetMemberInfo接口开始')
-//						alert(JSON.stringify(data))
+						//						alert('GetMemberInfo接口开始')
+						//						alert(JSON.stringify(data))
 						var MemberInfo = data.Data.MemberInfo;
 						member_id = MemberInfo.id;
-					
-
 
 					},
 					error: function(xhr, type, errorThrown) {
 						//异常处理；
-//						alert('GetMemberInfo接口出错')
-//						alert(errorThrown)
+						//						alert('GetMemberInfo接口出错')
+						//						alert(errorThrown)
 						console.log('需要的token：' + token);
 						console.log(type);
 					}
 				});
 			}
-
 
 			function GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, vip_id, member_id) {
 				mui.ajax(GetVipAddressList_url, {
@@ -134,7 +131,7 @@
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
-					async:true,
+					async: true,
 					//					headers: {
 					//						'Content-Type': 'application/json',
 					//						'token': token
@@ -176,10 +173,10 @@
 
 									var div =
 										'<div class="address_list" >' +
-										'<div class="list_head">' +
+										'<div class="list_head"  data_id="' + id + '">' +
 										consignee +
 										'</div>' +
-										'<div class="list_body">' +
+										'<div class="list_body"  data_id="' + id + '">' +
 										province + city + area + street +
 										'</div>' +
 										'<div class="list_foot">' +
@@ -199,7 +196,7 @@
 										'</div>';
 									$('#address_info').append(div)
 								}
-								$('.cho_no, .cho_ok, .cho_text').click(function() { //设置默认地址
+								$('.cho_no, .cho_ok, .cho_text,.list_body,.list_head').click(function() { //设置默认地址
 									//									console.log(21212)
 									//									console.log($(this).attr('data_id'))
 									//									console.login($(this).nextSibling())
@@ -213,7 +210,7 @@
 
 								$('.edit_address').click(function() { //编辑地址
 									var id = $(this).attr('data_id')
-									window.location.href = 'edit_address.html?token=' + token + '&id=' + id + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id+'&source_from='+source_from
+									window.location.href = 'edit_address.html?token=' + token + '&id=' + id + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&vip_id=' + vip_id + '&source_from=' + source_from
 								})
 
 								$('.del_address').click(function() {
@@ -229,16 +226,16 @@
 
 					error: function(xhr, type, errorThrown) {
 						//异常处理；
-//						alert('GetVipAddressList接口出错')
-//						alert(token)
-//						alert(member_id)
-//						alert(errorThrown)
+						//						alert('GetVipAddressList接口出错')
+						//						alert(token)
+						//						alert(member_id)
+						//						alert(errorThrown)
 					}
 				});
 
 			}
 			console.log(member_id)
-			GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid,vip_id,member_id)
+			GetVipAddressList(GetVipAddressList_url, open_id, token, store_id, orderid, vip_id, member_id)
 
 			function DefaultAddress(DefaultAddress_url, id, token, open_id, store_id, orderid) {
 				mui.ajax(DefaultAddress_url, {
@@ -259,7 +256,7 @@
 						console.log(data);
 						if(data.Data.IsError == false) {
 							Alert('默认地址设置成功')
-							window.location.href = 'order_confirm.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid+'&source_from='+source_from
+							window.location.href = 'order_confirm.html?token=' + token + '&open_id=' + open_id + '&store_id=' + store_id + '&orderid=' + orderid + '&source_from=' + source_from
 						}
 
 					},

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="format-detection" content="telephone=no">
+		<title></title>
+
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/icons-extra.css" />
+		<link rel="stylesheet" href="../../css/login.css" />
+		<link rel="stylesheet" href="../../css/global.css" />
+		<link rel="stylesheet" href="../../css/login_register.css" />
+		<style type="text/css">
+			body {
+				background: #fff;
+			}
+			.btn_register_hover:active{
+				opacity: 0.8;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<img style="width: 100%;" src="../../images/750px_310px_top.png">
+		<img style="width: 0.8rem;display: block;margin: -0.5rem auto 0;border-radius: 50%;box-shadow: 2px 2px 2px #CB2920;" src="../../images/180px_180px_logo.png" alt="" />
+
+		<div class="content_tel" style="width: 85%;margin: 0.1rem auto 0;">
+			<img class="name_img" src="../../images/36px_50px_icon2.png" alt="" />
+			<input type="tel" class="name_in" id="content_tel" placeholder="手机号码" />
+		</div>
+		<div class="content_ver" style="border-bottom: 1px solid #ddd;width: 85%;margin: auto;">
+			<img class="name_img" src="../../images/36px_50px_icon3.png" alt="" />
+			<input type="text" class="name_in" id="content_ver" placeholder="短信验证码" />
+			<button onclick="sendVercode()" class="mui-btn-danger btn_ver" style="background: #CB2920;border: none;color: #fff;padding: 0.08rem; 0.1rem;border-radius: 0.05rem;" id="btn_ver">
+				验证码
+			</button>
+			<button onclick="alertError()" class="mui-btn-danger btn_ver" style="background: #999999;border: none;color: #fff;padding: 0.08rem; 0.1rem;border-radius: 0.05rem;" id="btn_ver_no">
+				验证码
+			</button>
+		
+		</div>
+
+		<button class="btn_register_hover" onclick="goRegister()" style="border:none;display: block;width: 80%;margin:0.5rem auto; 0.5rem;font-size: 0.2rem;padding: 0.1rem;border-radius: 0.3rem;color: #fff;background: #CB2920;">
+			注册
+		</button>
+		<img style="width: 100%;display:block;margin-top: 1.2rem;margin-bottom: 0;" src="../../images/750px_230px_bottom.png" />
+
+		<script src="../../js/config/web_config.js"></script>
+		<script src="../../js/mui.js"></script>
+		<script src="../../js/mui.jsonp.js"></script>
+		<script src="../../js/mui.enterfocus.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/jquery-1.11.3.js"></script>
+		<script src="../../js/common/bdapp.js"></script>
+		<script src="../../js/config/web_config.js"></script>
+		<!--<script src="../../js/no_h5_plus/login.js"></script>-->
+
+		<script>
+			var content_tel_status = false;
+			var content_ver_status = false;
+
+			//			$('input').blur(function() {
+			//				if($(this).is('#content_tel')) {
+			//					if(!(/^1[34578]\d{9}$/.test(this.value))) {
+			//						var errorMsg = '手机号码错误';
+			//						Alert(errorMsg);
+			//						content_tel_status = false;
+			//					} else {
+			//						//						Alert('手机号输入正确');
+			//						content_tel_status = true;
+			//					}
+			//				} else if($(this).is('#content_ver')) {
+			//					if(this.value == "") {
+			//						var errorMsg = '验证码不能为空';
+			//						Alert(errorMsg);
+			//						content_ver_status = false;
+			//					} else {
+			//						content_ver_status = true;
+			//					}
+			//				}
+			//				if(content_tel_status==true&&content_ver_status==true){
+			//					$('#btn_ver').show()
+			//					$('#btn_ver_no').hide()
+			//				}else{
+			//					$('#btn_ver').hide()
+			//					$('#btn_ver_no').show()
+			//				}
+			//
+			//			});
+
+			$("#content_tel").on('input', function() {
+				if(!(/^1[34578]\d{9}$/.test(this.value))) {
+					content_tel_status = false;
+				} else {
+					content_tel_status = true;
+				}
+				if(content_tel_status == true) {
+					$('#btn_ver').show()
+					$('#btn_ver_no').hide()
+				} else {
+					$('#btn_ver').hide()
+					$('#btn_ver_no').show()
+				}
+			})
+			$("#content_ver").on('input', function() {
+				if(this.value == "") {
+					content_ver_status = false;
+				} else {
+					content_ver_status = true;
+				}
+				if(content_tel_status == true) {
+					$('#btn_ver').show()
+					$('#btn_ver_no').hide()
+				} else {
+					$('#btn_ver').hide()
+					$('#btn_ver_no').show()
+				}
+			})
+
+			var vercodereg_url = test_url + '/api/member/VerCodeReg';
+
+			function VerCodeReg(vercodereg_url, phone, VerifyCodeType) {
+				mui.ajax(vercodereg_url, {
+					data: {
+						phone: phone,
+						VerifyCodeType: VerifyCodeType
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						if(data.IsError == false) {
+							Alert('验证码已发送');
+//							ver_status = false;
+//							$('#btn_ver').css('background', '#aaaaaa');
+							dianji();
+						} else {
+							Alert('信息填写有误');
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						Alert('信息填写有误');
+						console.log(type);
+					}
+				});
+			}
+
+			function sendVercode() {
+				var phone = $('#content_tel').val();
+				var VerifyCode = $('#content_ver').val();
+				$('#btn_ver').hide()
+				$('#btn_ver_no').show() 			
+				//				VerCodeReg(vercodereg_url, phone, VerifyCodeType)
+				dianji()
+			}
+
+			function dianji() {
+				var num = 3
+				var name = setInterval(function() {
+
+					$("#btn_ver_no").text(num + '秒后重发'); // 你倒计时显示的地方元素
+					num--;
+					if(num == 0) {
+						clearInterval(name);
+						$('#btn_ver').show()
+						$('#btn_ver_no').hide()
+						$('#btn_ver_no').text('验证码')
+					}
+				}, 1000);
+			}
+
+			function goRegister() {
+				
+			}
+			var GetStoreInfo_url = test_url + '/api/storeadmin/GetStoreInfo'
+
+			function GetStoreInfo(GetStoreInfo_url, store_id) {
+				mui.ajax(GetStoreInfo_url, {
+					data: {
+						store_id: store_id,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					//					headers: {
+					//						'Content-Type': 'application/json',
+					//						'token': token
+					//					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						$('#store_name').text('商家名称:' + data.Data.Store.store_name)
+						$('.shop_name').text(data.Data.Store.store_name)
+						$('#address').text('商家地址:' + data.Data.Store.address)
+						$('#tel').text('电话:' + data.Data.Store.tel)
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//						alert('报错GetVipAddress接口')
+						//						alert(xhr)
+						//						alert(type)
+						//						alert(errorThrown)
+					}
+				});
+			}
+//			GetStoreInfo(GetStoreInfo_url, store_id)
+		</script>
+
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</body>
+
+</html>

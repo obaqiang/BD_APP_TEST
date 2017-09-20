@@ -156,6 +156,9 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(open_id);
+						console.log(status)
+				
+				
 						console.log(data);
 						if(page_num == 1) {
 							$('.goods_area').empty();
@@ -166,6 +169,13 @@
 							var qty = Orders[i].Items[0].qty
 							var price = Orders[i].Items[0].price
 							var total_price = qty * price
+							var pay_div;
+							if(Orders[i].order_status=='未付款'){
+								pay_div='<span class="goods_list_foot_pay" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">付款</span>'
+							}else{
+								pay_div=''
+							}
+							
 							
 							var div =
 								'<div class="goods_list"  >' +
@@ -174,7 +184,7 @@
 								'<span class="goods_list_head_shop_name">' + Orders[i].store_name + '</span>' +
 								'<span class="goods_list_head_status_1">' + Orders[i].order_status + '</span>' +
 								'</div>' +
-								'<div class="goods_list_body">' +
+								'<div class="goods_list_body" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">' +
 								'<img class="goods_list_body_img" src="' + Orders[i].thumb + '" alt="" />' +
 								'<span class="goods_list_body_text">' + Orders[i].goods_names + '</span>' +
 								'<span class="goods_list_body_price">￥' + price + '</span>' +
@@ -182,23 +192,24 @@
 								'<span class="goods_list_body_num">x' + qty + '</span>' +
 								'</div>' +
 								'<div class="goods_list_foot">' +
-								'<span class="goods_list_foot_cancel" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">取消订单</span>' +
+//								'<span class="goods_list_foot_cancel" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">取消订单</span>' +
 								//								'<span class="goods_list_foot_pay" onclick="orderJump('+Orders[i].order_id+','+Orders[i].order_status+','+Orders[i].store_id+')">付款</span>' +
-								'<span class="goods_list_foot_pay" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">付款</span>' +
+								pay_div+
+//								'<span class="goods_list_foot_pay" data_vip_id="' + Orders[i].vip_id + '" data_order_id = "' + Orders[i].order_id + '" data_order_status = "' + Orders[i].order_status + '" data_store_id = "' + Orders[i].store_id + '">付款</span>' +
 								'<span class="goods_list_foot_info">共' + qty + '件商品 合计:￥' + total_price + '</span>' +
 								'</div>' +
 								'</div>';
 							$('.goods_area').append(div)
 						}
-						$('.goods_list_foot_pay').click(function() {
+						$('.goods_list_foot_pay,.goods_list_body').click(function() {
 							var order_id = $(this).attr('data_order_id')
 							var order_status = $(this).attr('data_order_status')
 							var store_id = $(this).attr('data_store_id')
 							var vip_id = $(this).attr('data_vip_id')
 							if(order_status == '未付款') {
-								window.location.href = 'order_confirm.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id;
+								window.location.href = 'order_confirm.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id+'&source_from=app';
 							} else {
-								window.location.href = 'order_detail.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id;
+								window.location.href = 'order_detail.html?orderid=' + order_id + '&store_id=' + store_id + '&open_id=' + open_id + '&store_id=' + store_id + '&token=' + token + '&vip_id=' + vip_id+'&source_from=app';
 							}
 						})
 						

@@ -11,6 +11,15 @@
 	position: relative;
 }
 
+.address_list_new{
+	font-size: 0.14rem;
+	color: #3f3f41;
+
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+	position: relative;
+}
+
 .address_list_input {
 	border: none;
 	outline: none;
