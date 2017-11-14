@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/receive.css" />
+	</head>
+	<body>
+		<div class="bl">
+			
+			<div class="bl_in">
+				<img src="img/niunai.jpg" style="width: 0.6rem;border-radius: 50%;position:absolute;top: 0.2rem;left: 0.2rem;" alt="" />
+				<span style="color: #fff;font-size: 0.24rem;position: absolute;top: 0.2rem;right: 0.2rem;">
+					￥100.00
+				</span>
+				<span style="color: #fff;font-size: 0.2rem;position: absolute;right: 0.2rem;top: 0.5rem;">
+					满298可用
+				</span>
+			</div>
+			<img class="perfect" src="img/perfect.png" alt="" />
+			<span style="position: absolute;top: 1.1rem;left: 0.2rem;font-size: 0.13rem;color: #666666;">
+				麦田香草
+			</span>
+			<span style="position: absolute;top: 1.35rem;left: 0.2rem;font-size: 0.13rem;color: #666666;">
+				有效期3天 限定商品使用
+			</span>
+			<span style="background: #f9a249;padding: 0.05rem 0.15rem;border-radius: 0.02rem;color: #fff;position: absolute;right: 0.35rem;top: 1.25rem;">2张</span>
+			<img style="float: right;margin: 0.3rem 0.1rem 0.1rem;" src="img/right_see.png" alt="" />
+		</div>
+		
+	</body>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+</html>

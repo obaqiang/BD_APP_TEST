@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>BD贵宾卡</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/register.css" />
+
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="in_area">
+				<span class="in_area_sp">商家名称</span>
+				<input type="text" placeholder="请输入要开通的商家名称" id="content_name" v-model="shop_name" v-on:input="inputName" />
+			</div>
+			<div class="in_area">
+				<span class="in_area_sp">手机号</span>
+				<input type="text" placeholder="请输入手机号码" id="content_tel" v-model="tel" v-on:input="inputTel" />
+			</div>
+			<div class="in_area">
+				<span class="in_area_sp">验证码</span>
+				<input type="text" placeholder="请输入验证码" id="content_code" v-model="ver" v-on:input="inputVer" />
+				<span v-if="tel_status==true" class="btn_sp" id="btn_sp" @click="getVerCode()">获取验证码</span>
+				<span v-if="tel_status==false" class="btn_sp_no" id="btn_sp_no">{{no_btn_text}}</span>
+			</div>
+			<div class="in_area">
+				<span class="in_area_sp">系统选择</span>
+				<span class="in_area_bd">BD贵宾卡</span>
+			</div>
+			<div class="package_cho_area">
+				<span class="pac_text">套餐选择</span>
+				<!--<span class="pay_area">
+				金额
+				<span class="pay_area_price">0</span> 元
+			</span>-->
+			</div>
+			<div class="bg_ff_squ" id="squ_cho">
+
+				<div v-for="(site,index) in packList" class="cho_squ" :class="{cb_squ:changeclass==index}" @click="choPackage(site,index)">
+					<div class="cho_squ_1">{{site.package_name}}</div>
+					<div class="cho_squ_2">￥ {{site.price}}</div>
+					<div class="text_area">
+						<div class="cho_squ_3">有效期:{{site.buy_year}}年</div>
+						<div class="cho_squ_3">短信数:{{site.mess_qty}}条</div>
+						<div class="cho_squ_3">员工数:{{site.peo_qty}}年</div>
+						<div class="cho_squ_3">会员数:{{site.vip_qty}}</div>
+					</div>
+
+				</div>
+				<!--<div class="cho_squ">
+					<div class="cho_squ_1">套餐A</div>
+					<div class="cho_squ_2">￥ 180</div>
+					<div class="text_area">
+						<div class="cho_squ_3">有效期:1年</div>
+						<div class="cho_squ_3">短信数:100条</div>
+						<div class="cho_squ_3">有效期:1年</div>
+						<div class="cho_squ_3">有效期:1年</div>
+					</div>
+
+				</div>
+				<div class="cho_squ">
+					<div class="cho_squ_1">套餐A</div>
+					<div class="cho_squ_2">￥ 180</div>
+					<div class="text_area">
+						<div class="cho_squ_3">有效期:1年</div>
+						<div class="cho_squ_3">短信数:100条</div>
+						<div class="cho_squ_3">有效期:1年</div>
+						<div class="cho_squ_3">有效期:1年</div>
+					</div>
+
+				</div>
+				<div class="cho_squ">
+					<div class="cho_squ_1">套餐A</div>
+					<div class="cho_squ_2">￥ 180</div>
+					<div class="text_area">
+						<div class="cho_squ_3">有效期:1年</div>
+						<div class="cho_squ_3">短信数:100条</div>
+						<div class="cho_squ_3">有效期:1年</div>
+						<div class="cho_squ_3">有效期:1年</div>
+					</div>
+
+				</div>-->
+			</div>
+
+			<div class="attention_area">
+				<img id="hook" v-if="read_status == true" @click="choRead()" src="img/ok_hook.png" style="width: 0.15rem;" alt="" />
+				<img id="nohook" v-if="read_status == false" @click="choRead()" src="img/no_hook.png/" style="width: 0.15rem;" alt="" />
+				<span class="attention_text" @click="choRead()">我已阅读并同意</span>
+				<span class="attention_text_b">电子协议</span>
+			</div>
+
+			<div class="btn_bot">
+				<div v-if="if_can_sub == false" class="btn_bot_text" id="btn_bot_text">
+					提交订单
+				</div>
+				<div v-if="if_can_sub==true" class="btn_bot_text_ok" id="btn_bot_text_ok" @click="VerificationCode()">
+					提交订单
+				</div>
+			</div>
+
+		</div>
+
+		<script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="//cdn.bootcss.com/vue-resource/1.0.3/vue-resource.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var demo = new Vue({
+				el: '#app',
+				data: {
+					packList: [],
+					getPackageUrl: test_url + '/api/Agent/StoreParam', //存数据接口    
+					changeclass: 0,
+					has_read: false,
+					tel: '',
+					no_btn_text: '获取验证码',
+					if_can_sub: false,
+					shop_name_status: false,
+					tel_status: false,
+					ver_status: false,
+					read_status: false,
+					shop_name: '',
+					ver: '',
+					Code_url: test_url + '/api/Agent/Code',
+					package_name: '',
+					price: '',
+					open_id: '',
+					token: '',
+					id: '',
+					DoCheckUserFollow_url:test_url+'/api/Member/DoCheckUserFollowV2'
+				},
+				created: function() { //在实例创建完成后被立即调用
+					this.getPackage() //定义方法
+
+				},
+				methods: {
+					getPackage: function() {
+						var that = this;
+						that.$http({ //调用接口
+							method: 'GET',
+							url: this.getPackageUrl //this指data
+
+						}).then(function(response) { //接口返回数据
+							this.packList = response.data.Data.packList;
+							console.log(this.packList)
+							var packList = this.packList
+							for(var i = 0; i < packList.length; i++) {
+								var mess_qty;
+								var peo_qty;
+								var vip_qty;
+								var buy_year = packList[i].buy_year;
+								var Items = packList[i].Items;
+								var id = packList[i].id;
+								for(var j = 0; j < Items.length; j++) {
+									if(Items[j].type == '001') {
+										vip_qty = Items[j].qty;
+									}
+									if(Items[j].type == '002') {
+										mess_qty = Items[j].qty;
+									}
+									if(Items[j].type == '003') {
+										peo_qty = Items[j].qty;
+									}
+
+								}
+
+								if(typeof(vip_qty) == 'undefined') {
+									vip_qty = 0
+								}
+								if(typeof(mess_qty) == 'undefined') {
+									mess_qty = 0
+								}
+								if(typeof(peo_qty) == 'undefined') {
+									peo_qty = 0
+								}
+								packList[i].vip_qty = vip_qty
+								packList[i].mess_qty = mess_qty
+								packList[i].peo_qty = peo_qty
+
+							}
+							this.packList = packList
+						}, function(error) {})
+					},
+					choPackage: function(site, index) {
+						console.log(site)
+						this.package_name = site.package_name
+						this.price = site.price
+						this.id = site.id
+						this.changeclass = index
+						this.ifCanSub()
+					},
+					choRead: function() {
+						this.read_status = !this.read_status
+						this.ifCanSub()
+
+					},
+					inputTel: function() {
+						//						console.log(this.tel)
+						if(!(/^1[34578]\d{9}$/.test(this.tel))) {
+							this.tel_status = false
+						} else {
+							this.tel_status = true
+						}
+						this.ifCanSub()
+					},
+					inputName: function() {
+						if(this.shop_name != '') {
+							this.shop_name_status = true
+						} else {
+							this.shop_name_status = false
+						}
+						this.ifCanSub()
+					},
+					inputVer: function() {
+						if(this.ver != '') {
+							this.ver_status = true
+						} else {
+							this.ver_status = false
+						}
+						this.ifCanSub()
+					},
+					ifCanSub: function() {
+
+						if(this.shop_name_status == true && this.tel_status == true && this.ver_status == true && this.read_status == true) {
+							this.if_can_sub = true
+						} else {
+							this.if_can_sub = false
+						}
+
+					},
+					getVerCode: function() {
+						var that = this;
+						that.cutTime()
+						that.Code_url = that.Code_url + "?phone=" + that.tel + '&name=' + that.shop_name
+						that.$http({ //调用接口
+							method: 'GET',
+							url: that.Code_url,
+						}).then(function(response) { //接口返回数据
+							console.log(response.data)
+
+						}, function(error) {
+
+						})
+					},
+					cutTime: function() {
+						var that = this
+						that.tel_status = false
+						var num = 3
+						that.no_btn_text = num + '秒'
+						var name = setInterval(function() {
+							that.no_btn_text = num + '秒'
+							num--;
+							if(num == 0) {
+								clearInterval(name);
+								that.no_btn_text = '获取验证码'
+								that.tel_status = true
+							}
+						}, 1000);
+					},
+					VerificationCode: function() {
+						var that = this;
+						that.VerificationCode_url = that.VerificationCode_url + "?phone=" + that.tel + '&code=' + that.ver
+						that.$http({ //调用接口
+							method: 'GET',
+							url: that.VerificationCode_url,
+						}).then(function(response) { //接口返回数据
+							console.log(response.data)
+							if(response.data.IsError == false) {
+								window.location.href = '../order_detail.html?name=' + that.shop_name + '&phone=' + that.phone + '&package_name=' + that.package_name + '&price=' + that.price + '&open_id=' + that.open_id + '&token=' + that.token + '&id=' + that.id
+							}
+						}, function(error) {
+
+						})
+					},
+
+					DoCheckUserFollow: function() {
+						var that = this
+						that.$http({ //调用接口
+							method: 'GET',
+							url: that.DoCheckUserFollow_url,
+						}).then(function(response) { //接口返回数据
+							console.log(response.data)
+
+						}, function(error) {
+
+						})
+					}
+
+				}
+			})
+		</script>
+
+	</body>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+
+</html>

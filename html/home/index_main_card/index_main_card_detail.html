@@ -373,10 +373,15 @@
 						$('#address').text(address);
 						var location_lng = data.Data.Store.location_lng;
 						var location_lat = data.Data.Store.location_lat;
-						var map_url = 'http://uri.amap.com/marker?position=' + location_lng + ',' + location_lat;
+						var map_url = 'http://api.map.baidu.com/marker?location='+location_lat+','+location_lng+'&title='+address+'&content='+address+'&output=html&src=苏州无线|yourAppName';
 						document.getElementById('map').addEventListener('tap', function() {
 							console.log(map_url);
-							window.location.href = 'index_map.html?map_url=' + map_url;
+							if(location_lat==0&&location_lng==0){
+								Alert('商家暂未设置地址')
+							}else{
+								window.location.href = map_url;
+							}
+							
 						});
 						//					点击积分兑换事件
 						document.getElementById('points_exchange').addEventListener('tap', function() {

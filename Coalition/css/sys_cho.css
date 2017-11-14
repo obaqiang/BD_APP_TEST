@@ -1,0 +1,10 @@
+.sys_bo{
+	background: #fff;
+	border-bottom: 1px solid #ddd;
+	padding: 0.1rem;
+	position: relative;
+}
+.sys_text{
+	line-height: 0.35rem;
+	margin-left: 0.4rem;
+}

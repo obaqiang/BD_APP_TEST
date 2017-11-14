@@ -1,0 +1,18 @@
+.bl{
+	position: relative;
+	width: 90%;
+	border-radius: 0.1rem;
+	margin: 0.1rem auto;
+	border-radius: ;
+	overflow: hidden;
+	background: #fff;
+}
+.bl_in{
+	background: #CB2920;
+	height: 1rem;
+}
+.perfect{
+	position: absolute;
+	top: 0.98rem;
+	width: 100%;
+}

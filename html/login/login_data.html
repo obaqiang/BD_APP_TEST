@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>个人信息</title>
+		<title>完善信息</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -41,14 +41,15 @@
 	<body>
 		<header class="mui-bar mui-bar-nav mine_personal_header">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">填写用户信息</h1>
+			<h1 class="mui-title">完善信息</h1>
 		</header>
 		<div class="mui-content">
 			<!--<input id="phone" type="text" value="???" />
 			<div class="change_msg"></div>-->
-			<div class="tel">
-				<span>新手机号</span>
-				<input type="text" placeholder="请输入新手机号" id="content_tel" value="" />
+
+			<div class="tel" id="new_name">
+				<span class="lo_re_data">姓名</span>
+				<input type="text" placeholder="请输入姓名" id="content_name" value="" />
 			</div>
 			<div class="tel">
 				<!--<span class="lo_re_data">生日</span>-->
@@ -60,20 +61,12 @@
 				<select class="sel_day" id="sel_day"></select>日
 
 			</div>
-			<div class="tel">
-				<span class="lo_re_data">姓名</span>
-				<input type="text" placeholder="请输入姓名" id="content_name" value="" />
-			</div>
-			<div class="verity">
-				<span>验证码&nbsp;&nbsp;&nbsp;&nbsp;</span>
-				<input type="text" id="content_ver" placeholder="请输入验证码" />
-				<!--<span id="verity_btn" class="verity_btn_no">验证码</span>-->
-				<button class="mui-btn-danger" id="btn_ver">验证码</button>
-			</div>
+
 		</div>
 		<div class="nav_bottom" id="btn_sure">
 			确定
 		</div>
+
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/config/web_config.js"></script>
@@ -92,23 +85,21 @@
 		});
 	</script>
 	<script>
-		
-		
-		
 		var content_name_status = false;
-		var content_tel_status = false;
-		var content_ver_status = false;
-		var ver_status = true;
-
-		var member_id;
-		var storeid = GetQueryString('storeid');
+		var token = GetQueryString('token')
+		var phone;
 		var GetInfo_url = test_url + '/api/aliwx/GetInfo';
-		var token = GetQueryString('token');
 
+		$("#new_name").on('input', function() {
+			if(this.value == "") {
+				content_name_status = false;
+			} else {
+				content_name_status = true;
+			}
+		})
 
-
-		function GetInfo(GetInfo_url, token) {
-			mui.ajax(GetInfo_url, {
+		function GetInfo(url, token) {
+			mui.ajax(url, {
 				data: {
 					token: token,
 				},
@@ -120,178 +111,150 @@
 
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					console.log(data);
-					memberid = data.Data.UserID;
+					phone = data.Data.Phone
+					var birthday = data.Data.birthday
+					var member_name = getCookie('member_name')
+					if(!member_name) {
+						member_name = data.Data.member_name
+
+					}
+					if(member_name != '') {
+						$('#content_name').val(member_name)
+					}
+					//从cookie中拿去生日数据
+					var year = getCookie('year');
+					var month = getCookie('month');
+					var day = getCookie('day');
+					console.log(year)
+					if(!year) {
+						//						console.log(111)
+						if(birthday != '') {
+							year = birthday.slice(0, 4)
+
+							month = birthday.slice(5, 7)
+
+							day = birthday.slice(8, 10)
+
+						}
+					}
+					$('.sel_year').attr('rel', year)
+					$('.sel_month').attr('rel', month)
+					$('.sel_day').attr('rel', day)
 
 				},
 				error: function(xhr, type, errorThrown) {
 					//异常处理；
 					console.log(type);
-					
+
 				}
 			});
 
 		};
 		GetInfo(GetInfo_url, token);
 
-		function dianji() {
-			var num = 60
-			var name = setInterval(function() {
-				$("#btn_ver").text(num + '秒'); // 你倒计时显示的地方元素
-				num--;
-				if(num == 0) {
-					clearInterval(name);
-					ver_status = true;
-					$('#btn_ver').text('验证码');
-					$('#btn_ver').css('background', '#cb2920');
-				}
-			}, 1000);
-		}
+		var UpdateVipInfo_url = test_url + '/api/Member/UpdateVipInfo'
 
-		$('input').blur(function() {
-			if($(this).is('#content_tel')) {
-				if(!(/^1[34578]\d{9}$/.test(this.value))) {
-					var errorMsg = '手机号码错误';
-					Alert(errorMsg);
-					content_tel_status = false;
-				} else {
-					Alert('手机号输入正确');
-					content_tel_status = true;
-				}
-			} else if($(this).is('#content_name')) {
-				if(this.value == "") {
-					var errorMsg = '姓名不能为空';
-					Alert(errorMsg);
-					content_name_status = false;
-				} else {
-					Alert('姓名输入正确');
-					content_name_status = true;
-				}
-			} else if($(this).is('#content_ver')) {
-				if(this.value == "") {
-					var errorMsg = '验证码不能为空';
-					Alert(errorMsg);
-					content_ver_status = false;
-				} else {
-					content_ver_status = true;
-				}
-			}
-
-		});
-
-		var VerifyCodeType = 1; //（类型：0 注册页面  1 完善信息页面）
-		//		获取验证码
-		var vercodereg_url = test_url + '/api/member/VerCodeReg';
-
-		function VerCodeReg(vercodereg_url, phone, VerifyCodeType) {
-			mui.ajax(vercodereg_url, {
+		function UpdateVipInfo(url, phone, name, birthday, token) {
+			mui.ajax(url, {
 				data: {
 					phone: phone,
-					VerifyCodeType: VerifyCodeType
+					name: name,
+					birthday: birthday,
+					token: token
 				},
 				dataType: 'json', //服务器返回json格式数据
-				type: 'post', //HTTP请求类型
+				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
+				async: false,
 				success: function(data) {
-					//服务器返回响应，根据响应结果，分析是否登录成功；
-					console.log(data);
-					if(data.IsError == false) {
-						Alert('验证码已发送');
-						ver_status = false;
-						$('#btn_ver').css('background', '#aaaaaa');
-						dianji();
 
-					} else {
-						Alert('信息填写有误');
-					}
-
-				},
-				error: function(xhr, type, errorThrown) {
-					//异常处理；
-					Alert('信息填写有误');
-					console.log(type);
-				}
-			});
-		}
-
-		var improveinfo_url = test_url + '/api/member/ImproveInfo';
-
-		function ImproveInfo(improveinfo_url, username, phone, storeid, VerifyCode, memberid, birth) {
-			mui.ajax(improveinfo_url, {
-				data: {
-					username: username,
-					phone: phone,
-					storeid: storeid,
-					VerifyCode: VerifyCode,
-					memberid: memberid,
-					birth: birth
-				},
-				dataType: 'json', //服务器返回json格式数据
-				type: 'post', //HTTP请求类型
-				timeout: 10000, //超时时间设置为10秒；
-				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					console.log(data);
 					if(data.Data.IsError == false) {
-						Alert('信息完善成功');
-						var member_name = encodeURI(username);
-						$('#btn_sure').unbind();
-						window.location.href = '../home/index_main_mine.html?token=' + token + '&phone=' + phone + '&birthday=' + birth + '&member_name=' + member_name;
+						window.location.href = '../home/index_main_mine.html?token=' + token
 					} else {
-						var ErrorMessage = data.Data.ErrorMessage;
-						Alert(ErrorMessage);
+						Alert('姓名包含特殊字符')
 					}
+
 				},
 				error: function(xhr, type, errorThrown) {
 					//异常处理；
 					console.log(type);
+
 				}
 			});
 		}
-		var phone;
-		//		点击按钮验证码事件
-		$('#btn_ver').click(function() {
-			var sel_year = $('#sel_year').val();
-			var sel_month = $('#sel_month').val();
-			var sel_day = $('#sel_day').val();
-			console.log(sel_year);
-			console.log(sel_month);
-			console.log(sel_day);
-			if(content_name_status == true && content_tel_status == true && sel_year != 0 && sel_month != 0 && sel_day != 0) {
 
-				if(ver_status == true) {
-					phone = $('#content_tel').val();
-					VerCodeReg(vercodereg_url, phone, VerifyCodeType);
-				}
-
-			} else {
-				Alert('信息填写有误');
-			}
-
-		})
+		//		$('#btn_sure').click(function() {
+		//			var sel_year = $('#sel_year').val();
+		//			var sel_month = $('#sel_month').val();
+		//			var sel_day = $('#sel_day').val();
+		//			if(content_name_status == false) {
+		//				Alert('请输入姓名')
+		//
+		//			} else if(sel_year == 0 || sel_month == 0 || sel_day == 0) {
+		//				Alert('生日信息填写有误')
+		//			} else {
+		//				username = $('#content_name').val();
+		//
+		//				if(sel_month < 10) {
+		//					sel_month = '0' + sel_month;
+		//				}
+		//				if(sel_day < 10) {
+		//					sel_day = '0' + sel_day;
+		//				}
+		//				var birth = sel_year + '-' + sel_month + '-' + sel_day;
+		//				console.log(birth);
+		//				UpdateVipInfo(UpdateVipInfo_url, phone, username, birth,token)
+		//			}
+		//		})
 
 		$('#btn_sure').click(function() {
 			var sel_year = $('#sel_year').val();
-			var sel_month = $('#sel_month').val();
-			var sel_day = $('#sel_day').val();
-			if(content_name_status == true && content_tel_status == true && sel_year != 0 && sel_month != 0 && sel_day != 0) {
-				username = $('#content_name').val();
-				phone = $('#content_tel').val();
-				VerifyCode = $('#content_ver').val();
 
-				if(sel_month < 10) {
-					sel_month = '0' + sel_month;
-				}
-				if(sel_day < 10) {
-					sel_day = '0' + sel_day;
-				}
-				var birth = sel_year + '-' + sel_month + '-' + sel_day;
-				console.log(birth);
-				ImproveInfo(improveinfo_url, username, phone, storeid, VerifyCode, memberid, birth);
-			} else {
-				Alert('信息填写有误');
+			var sel_month = $('#sel_month').val();
+
+			var sel_day = $('#sel_day').val();
+
+			console.log(sel_year)
+			console.log(sel_month)
+			console.log(sel_day)
+			member_name = $('#content_name').val();
+			
+			if(sel_month < 10) {
+				sel_month = '0' + sel_month;
 			}
+			if(sel_day < 10) {
+				sel_day = '0' + sel_day;
+			}
+			var birth
+			if(sel_year == 0 || sel_month == '00' || sel_day == '00') {
+				birth = ''
+			} else {
+				birth = sel_year + '-' + sel_month + '-' + sel_day;
+			}
+
+			console.log(sel_year)
+			console.log(sel_month)
+			console.log(sel_day)
+
+			if(member_name == '' && birth == '') { //这是一个非常奇怪的需求
+				Alert('请至少完善一项个人信息')
+			} else if(birth == '') {
+				UpdateVipInfo(UpdateVipInfo_url, phone, member_name, birth, token)
+			}else if(member_name == ''){
+				UpdateVipInfo(UpdateVipInfo_url, phone, member_name, birth, token)
+			} else {
+				setCookie('year', sel_year)
+				setCookie('month', sel_month)
+				setCookie('day', sel_day)
+				setCookie('member_name', member_name)
+				UpdateVipInfo(UpdateVipInfo_url, phone, member_name, birth, token)
+			}
+
 		})
 	</script>
+
 	<script>
 		//各个屏幕大小适配
 		(function(doc, win) {

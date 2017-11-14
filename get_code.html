@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/order_detail.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	</head>
+
+	<body>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="js/common/bdapp.js"></script>
+		<script>
+			var CheckUserHasFollowed_Extend_url = test_url + '/api/Member/CheckUserHasFollowed_Extend'
+
+			var activity_id = GetQueryString('activity_id')
+			var storeid = GetQueryString('storeid')
+
+			setCookie('activity_id', activity_id)
+			setCookie('storeid', storeid)
+
+			function CheckUserHasFollowed_Extend(CheckUserHasFollowed_Extend_url) {
+				$.ajax({
+					url: CheckUserHasFollowed_Extend_url,
+					type: 'get',
+					dataType: 'json',
+					data: {
+						type:'wxgetcode1'
+
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+						//						alert('CheckUserHasFollowed_Extend接口开始')
+						////						
+						////						
+						//						alert(JSON.stringify(data))
+						window.location.href = data.Data.Data
+					},
+					error: function(xhr, type, errorThrown) {
+						//						alert('CheckUserHasFollowed_Extend接口出错')
+						//						alert(errorThrown)
+						//						alert(xhr)
+						console.log('需要的链接：' + CheckUserHasFollowed_Extend_url)
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			CheckUserHasFollowed_Extend(CheckUserHasFollowed_Extend_url)
+		</script>
+	</body>
+
+</html>

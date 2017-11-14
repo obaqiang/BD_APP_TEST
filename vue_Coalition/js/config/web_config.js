@@ -7,7 +7,7 @@
 
 //测试
 //var yehongbing_url = 'http://testapi.bdvip.net';
-//var test_url = 'http://testapi.bdvip.net'; 
+//var test_url = 'http://testapi.bdvip.net';
 
 //测试_2
 var yehongbing_url = 'https://testapi.ks12580.net';

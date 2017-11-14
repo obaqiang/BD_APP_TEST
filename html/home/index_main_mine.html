@@ -155,11 +155,11 @@
 				</div>
 			</div>
 			
-			<div class="address">
+			<div class="address" style="display: none;">
 				收货地址
 				<img src="../../images/16px_26px_V.png" alt="" />
 			</div>
-			<div class="order_show">
+			<div class="order_show" style="display: none;">
 				<div class="order_show_list" onclick="ordershowJump(0)" data_status="0">
 					<img src="../../sale/img/44px_44px_quanbudingdan.png" alt="" />
 					全部订单
@@ -183,6 +183,12 @@
 			</div>
 			
 			<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted mine_bg_list">
+				<li class="mui-table-view-cell" onclick="roundJump()">
+					<a class="mui-navigate-right mine_list_head">
+						<img src="../../images/wanshan.png" alt="图片不存在" />
+						<span>完善信息</span>
+					</a>
+				</li>
 				<li class="mui-table-view-cell" id="change_tel">
 					<a class="mui-navigate-right mine_list_head">
 						<img src="../../images/48px_48px_xiugaishoujihao.png" alt="图片不存在" />
@@ -573,7 +579,9 @@
 					window.location.href='../../sale/order_show.html?token=' + token+'&open_id='+open_id+'&status='+status;
 				}
 				
-				
+				function roundJump(){
+					window.location.href = '../login/login_data.html?token='+token
+				}
 				
 
 			}

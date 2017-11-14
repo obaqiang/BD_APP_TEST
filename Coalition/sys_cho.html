@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/sys_cho.css" />
+	</head>
+	<body>
+		<div class="sys_bo">
+			<img src="img/sys_1.png" style="width: 1.5rem;" alt="" />
+		</div>
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/bd_icon.png" alt="" />
+			<span class="sys_text">BD贵宾卡</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		
+		<div class="sys_bo" style="margin-top: 0.2rem;">
+			<img src="img/sys_4.png" style="width: 1.5rem;" alt="" />
+		</div>
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/huazhuangpin.png" alt="" />
+			<span class="sys_text">化妆品</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/xiefu.png" alt="" />
+			<span class="sys_text">鞋服</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/shuiguo.png" alt="" />
+			<span class="sys_text">水果生鲜</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		
+		<div class="sys_bo" style="margin-top: 0.2rem;">
+			<img src="img/sys_3.png" style="width: 1.5rem;" alt="" />
+		</div>
+		
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/hongbei.png" alt="" />
+			<span class="sys_text">烘焙</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/canyin.png" alt="" />
+			<span class="sys_text">餐饮美食</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		
+		<div class="sys_bo" style="margin-top: 0.2rem;">
+			<img src="img/sys_3.png" style="width: 1.5rem;" alt="" />
+		</div>
+		
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/yuchang.png" alt="" />
+			<span class="sys_text">浴场足浴</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		<div class="sys_bo">
+			<img style="width: 0.3rem;position: absolute;" src="img/meifa.png" alt="" />
+			<span class="sys_text">美容美发</span>
+			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
+		</div>
+		
+	</body>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+</html>

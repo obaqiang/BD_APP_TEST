@@ -1,0 +1,154 @@
+
+.in_area{
+	border-bottom:1px solid #ddd;
+	font-size: 0.15rem;
+	line-height: 0.4rem;
+	color: #333333;
+	position: relative;
+	background: #fff;
+}
+.in_area_sp{
+	display: inline-block;
+	width: 20%;
+	margin-left: 0.1rem;
+}
+.in_area input{
+	border: none;
+	outline: none;
+	width: 70% ;
+	margin-bottom: 0;
+	font-size: 0.15rem;
+	
+}
+.in_area_bd{
+	color: #666666;
+	padding: 10px 15px;
+}
+.btn_sp{
+	position: absolute;
+	color: #cb2920;
+	font-size: 0.12rem;
+	line-height: 0.3rem;
+	border: 1px solid #CB2920;
+	border-radius: 0.05rem;
+	width: 20%;
+	right: 0.1rem;
+	top: 0.05rem;
+	text-align: center;
+}
+.btn_sp_no{
+	position: absolute;
+	color: #AAAAAA;
+	font-size: 0.12rem;
+	line-height: 0.3rem;
+	border: 1px solid #AAAAAA;
+	border-radius: 0.05rem;
+	width: 20%;
+	right: 0.1rem;
+	top: 0.05rem;
+	text-align: center;
+	color: #AAAAAA;
+}
+.package_cho_area{
+	color: #333333;
+	font-size: 0.15rem;
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+	padding-right: 0.1rem;
+	background: #fff;
+}
+.pay_area{
+	float: right;
+}
+.pay_area_price{
+	color: #CB2920;
+}
+.cho_squ{
+	display: inline-block;
+	width: 45%;
+	border: 1px solid #aaaaaa;
+	height: 0.9rem;
+	position: relative;
+	margin-left: 0.1rem;
+}
+.cho_squ_1{
+	font-size: 0.12rem;
+	background: #aaaaaa;
+	position: absolute;
+	top: 0.1rem;
+	left: 0.1rem;
+	padding: 0.02rem 0.2rem;
+	border-radius: 0.05rem;
+}
+.cho_squ_2{
+	font-size: 0.21rem;
+	position: absolute;
+	right: 0.1rem;
+	top: 0.15rem;
+	font-size: 0.21rem;
+	color: #aaaaaa;
+}
+.text_area{
+	margin-top: 0.4rem;
+}
+.cho_squ_3{
+	font-size: 0.09rem;
+	display: inline-block;
+	width: 50%;
+	float: left;
+	text-align: center;
+
+}
+
+.cb_squ{
+	border: 1px solid #CB2920;
+}
+.cb_squ .cho_squ_1{
+	color: #fff;
+	background: #CB2920;
+}
+
+.cb_squ .cho_squ_2{
+	color: #CB2920;
+
+}
+.cb_squ .text_area{
+	color: #CB2920;
+
+}
+.bg_ff_squ{
+	background: #fff;
+	padding: 0.1rem 0;
+}
+.attention_area{
+	padding: 0.2rem;
+}
+.attention_text{
+	color: #7b7b7b;
+	font-size: 0.13rem;
+}
+.attention_text_b{
+	color: #ff9517;
+	font-size: 0.13rem;
+}
+.btn_bot{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 0.1rem;
+	background: #fff;
+}
+.btn_bot_text{
+	text-align: center;
+	background: #cccccc;
+	font-size: 0.18rem;
+	line-height: 0.4rem;
+	color: #fff;
+}
+.btn_bot_text_ok{
+	text-align: center;
+	background: #ff4444;
+	font-size: 0.18rem;
+	line-height: 0.4rem;
+	color: #fff;
+}

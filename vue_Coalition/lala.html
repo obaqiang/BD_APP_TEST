@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/register.css" />
+	</head>
+	<style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		
+		.box {
+			height: 40px;
+			background: cyan;
+		}
+		
+		.nav {
+			line-height: 40px;
+			display: inline-block;
+			margin-left: 100px;
+			cursor: pointer;
+		}
+		
+		.red {
+			color: red;
+		}
+	</style>
+
+	<body>
+		<div id="wrap" class="box">
+			<div v-for="(list,index) in navLists" class="nav" :class="{ red:changeRed == index}" @click="reds(index)">{{list.text}}</div>
+		</div>
+		<script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="//cdn.bootcss.com/vue-resource/1.0.3/vue-resource.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: "#wrap",
+				data: {
+					navLists: [{
+							"text": "首页"
+						},
+						{
+							"text": "组件"
+						},
+						{
+							"text": "API"
+						},
+						{
+							"text": "我们"
+						}
+					],
+					changeRed: 0
+				},
+				methods: {
+					reds: function(index) {
+						this.changeRed = index;
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

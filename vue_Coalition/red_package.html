@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/register.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	</head>
+	<style type="text/css">
+		.text {
+			background: #FF6E00;
+			text-align: center;
+			font-size: 0.3rem;
+			line-height: 0.5rem;
+			color: #fff;
+			letter-spacing: 0.1rem;
+			font-family: 'STHeitiK-Light';
+			padding: 0.1rem;
+			height: 1.8rem;
+		}
+		
+		.see_img {
+			display: none;
+			width: 100%;
+			position: absolute;
+			top: 1.8rem;
+		}
+		
+		.see_img_2 {
+			/*display: none;*/
+			width: 100%;
+			position: absolute;
+			top: 1.8 rem;
+		}
+		
+		.text_see {
+			position: absolute;
+			color: #fff;
+			display: inline-block;
+			top: 2.2rem;
+			left: 1.65rem;
+			color: #CB2920;
+			text-align: center;
+			display: none;
+		}
+	</style>
+
+	<body>
+		<div class="text">
+			恭喜您获得<br />5张优惠券<br />总计336元
+		</div>
+		<img class="see_img" src="img/package_2.png" alt="" />
+		<img class="see_img_2" src="img/pakage_1.gif" alt="" />
+		<div class="text_see">优惠券<br />5张</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="js/common/bdapp.js"></script>
+		<script>
+			function hello() {
+				//				alert("hello");
+				$('.see_img').show();
+				$('.see_img_2').hide();
+				$('.text_see').fadeIn();
+			}
+
+			var t2 = window.setTimeout("hello()", 1000); //使用字符串执行方法
+		</script>
+
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</body>
+
+</html>

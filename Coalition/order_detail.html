@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/order_detail.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	</head>
+
+	<body>
+
+		<div class="head_text">
+			订单信息
+		</div>
+		<div class="order_info">
+			<span class="order_a">商家名称:</span>
+			<span class="order_b">麦田香草</span>
+		</div>
+		<div class="order_info">
+			<span class="order_a">手机号:</span>
+			<span class="order_b">13032119695</span>
+		</div>
+		<div class="order_info">
+			<span class="order_a">系统选择:</span>
+			<span class="order_b">BD贵宾卡</span>
+		</div>
+		<div class="order_info">
+			<span class="order_a">套餐选择:</span>
+			<span class="order_b">套餐A</span>
+		</div>
+
+		<div class="body_text">
+			支付方式
+		</div>
+		<div class="pay_way">
+			<img src="img/zhifubao.png" style="width: 0.15rem;" alt="" />
+			<span>支付宝支付</span>
+			<img src="img/no_hook.png" style="width: 0.15rem;float: right;margin-top: 0.1rem;margin-right: 0.1rem;" alt="" />
+
+		</div>
+		<div class="pay_way">
+			<img src="img/weixin.png" style="width: 0.15rem;" alt="" />
+			<span>微信支付</span>
+			<img src="img/no_hook.png" style="width: 0.15rem;float: right;margin-top: 0.1rem;margin-right: 0.1rem;" alt="" />
+
+		</div>
+		<div class="btn_bot">
+			<span class="pay_money">
+				结算金额:
+				<span style="color: #CB2920;">￥180.00</span>
+			</span>
+			<span class="go_pay" onclick="goBuy()">去付款</span>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="js/common/bdapp.js"></script>
+		<script>
+			var name = GetQueryString('name')
+			var package_name = GetQueryString('package_name');
+			var phone = GetQueryString('phone')
+			var open_id = GetQueryString('open_id')
+			var price = GetQueryString('price')
+			var order_id;
+			var token = GetQueryString('token')
+			console.log(name)
+			console.log(package_name)
+			console.log(phone)
+			var GetOrderID_url = test_url + '/api/Agent/GetOrderID'
+
+			function GetOrderID(url) {
+				$.ajax({
+					url: url, // 跳转到 action    
+					data: {
+
+					},
+					type: 'get',
+					cache: false,
+					dataType: 'json',
+					success: function(data) {
+
+						console.log(data)
+						order_id = data.Data;
+					},
+					error: function() {
+						// view("异常！");    
+						alert("异常！");
+					}
+
+				})
+			}
+			GetOrderID(GetOrderID_url)
+
+			var GetPayConfig_url = test_url + '/api/discount/GetPayConfig'
+
+			var PayWxRetail_url = test_url + '/api/discount/PayWxRetail';
+			function PayWxRetail(url,order_id,open_id,total_money) {
+				mui.ajax(url, {
+					data: {
+						order_id: order_id,
+						pay_type: "weixin",
+						user_id: open_id,
+						total_money: total_money,
+						pay_money: total_money,
+						store_id: 713,
+						store_name:'苏州无线生活网络科技有限公司'
+						//						notify_url : 'www.baidu.com',
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					headers: {
+						'Content-Type': 'application/json',
+						'Token': token
+					},
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(order_id)
+						console.log(open_id)
+						console.log(total_money)
+
+						console.log('lala')
+						console.log(data);
+						var prepayId = data.Data.prepayId
+						//						onBridgeReady(appId, timeStamp, nonceStr, package, signType, paySign)
+						//						GetPayConfig(GetPayConfig_url, token)
+						WeixinJSBridge.invoke(
+							'getBrandWCPayRequest', {
+								"appId": data.Data.WxradeCreateResponse.appId, //公众号名称，由商户传入     
+								"timeStamp": data.Data.WxradeCreateResponse.timeStamp, //时间戳，自1970年以来的秒数     
+								"nonceStr": data.Data.WxradeCreateResponse.nonceStr, //随机串     
+								"package": data.Data.WxradeCreateResponse.package,
+								"signType": data.Data.WxradeCreateResponse.signType, //微信签名方式：     
+								"paySign": data.Data.WxradeCreateResponse.paysign //微信签名 
+							},
+
+							function(res) {
+								if(res.err_msg == "get_brand_wcpay_request:ok") {
+									alert('支付成功')
+									//									alert('需要的:'+prepayId)
+
+//									CheckOrder(CheckOrder_url, order_id, prepayId, 0)
+//									UpdateDiscountAllOrder(UpdateDiscountAllOrder_url, discount_id, total_money)
+								} // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+							}
+						);
+
+					},
+
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						
+						console.log(store_id)
+						console.log(order_id)
+						console.log(open_id)
+						console.log(total_money)
+						console.log(errorThrown)
+						alert(errorThrown)
+					}
+				});
+			}
+			
+			
+			function goBuy(){
+				console.log(order_id)
+				PayWxRetail(PayWxRetail_url,order_id,open_id,price)
+			}
+		</script>
+	</body>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+
+</html>

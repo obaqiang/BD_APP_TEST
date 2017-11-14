@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/receive.css" />
+	</head>
+	<style type="text/css">
+		.class_1 {
+			width: 0.6rem;
+			border-radius: 50%;
+			position: absolute;
+			top: 0.2rem;
+			left: 0.2rem;
+		}
+		
+		.class_2 {
+			color: #fff;
+			font-size: 0.24rem;
+			position: absolute;
+			top: 0.2rem;
+			right: 0.2rem;
+		}
+		
+		.class_3 {
+			color: #fff;
+			font-size: 0.2rem;
+			position: absolute;
+			right: 0.2rem;
+			top: 0.5rem;
+		}
+		
+		.class_4 {
+			position: absolute;
+			top: 1.1rem;
+			left: 0.2rem;
+			font-size: 0.13rem;
+			color: #666666;
+		}
+		
+		.class_5 {
+			position: absolute;
+			top: 1.35rem;
+			left: 0.2rem;
+			font-size: 0.13rem;
+			color: #666666;
+		}
+		
+		.class_6 {
+			background: #f9a249;
+			padding: 0.05rem 0.15rem;
+			border-radius: 0.02rem;
+			color: #fff;
+			position: absolute;
+			right: 0.35rem;
+			top: 1.25rem;
+		}
+		
+		.class_7 {
+			float: right;
+			margin: 0.3rem 0.1rem 0.1rem;
+		}
+	</style>
+
+	<body>
+		<div id="div">
+
+			<!--<div class="bl" onclick="jumpTo()">
+
+				<div class="bl_in">
+					<img src="img/niunai.jpg" class="class_1" alt="" />
+					<span class="class_2">
+					￥100.00
+				</span>
+					<span class="class_3">
+					满298可用
+				</span>
+				</div>
+				<img class="perfect" src="img/perfect.png" alt="" />
+				<span class="class_4">
+				麦田香草
+				</span>
+				<span class="class_5">
+				有效期3天 限定商品使用
+				</span>
+				<span class="class_6">2张</span>
+				<img class="class_7" src="img/right_see.png" alt="" />
+
+			</div>-->
+
+		</div>
+
+		<!--<div style="position: fixed;width: 100%;background: #fff;bottom: 0;text-align: center;padding: 0.1rem 0.1rem;">
+			<div style="background: #FF4444;font-size: 0.18rem;line-height: 0.4rem;color: #fff;border-radius: 0.05rem;">
+				打开卡包
+			</div>
+		</div>-->
+
+	</body>
+
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/config/web_config.js"></script>
+	<script src="js/common/bdapp.js"></script>
+	<script>
+		//		alert(window.location.href)
+		var store_id = GetQueryString('store_id');
+		var open_id = GetQueryString('open_id');
+		var user_id = '';
+		var vip_id = GetQueryString('vip_id');
+		var member_id = GetQueryString('member_id');
+		//		var token = GetQueryString('token')
+		var GetStoreTickets_url = test_url + '/api/Ticket/GetStoreTickets'
+
+		//		alert('store_id:'+store_id)
+		//		alert('open_id:'+open_id)
+		//		alert('user_id:'+user_id)
+		//		alert('vip_id:'+vip_id)
+		//		alert('member_id:'+member_id)
+		//		alert('token:'+token)
+		function GetStoreTickets(url) {
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				async: false,
+				//				beforeSend: function(request) {
+				//					request.setRequestHeader("token", token)
+				//					request.setRequestHeader("Content - Type", "application / x - www - form - urlencoded ");
+				//
+				//				},
+				data: {
+					store_id: store_id,
+					open_id: open_id,
+					user_id: user_id,
+					vip_id: vip_id,
+					member_id: member_id
+				},
+				success: function(data) {
+					//服务器返回响应，根据响应结果，分析是否登录成功；
+					alert(JSON.stringify(data))
+					console.log(store_id)
+					console.log(open_id)
+					console.log(user_id)
+					console.log(vip_id)
+					console.log(member_id)
+					console.log(data);
+
+					for(var i = 0; i < data.Data.StoreTickets.length; i++) {
+						var div =
+							'<div class="bl" onclick = jumpTo(' + data.Data.StoreTickets[i].ticket_id + ',' + data.Data.StoreTickets[i].Ticket_Num + ')>' +
+							'<div class="bl_in" style="background:' + data.Data.StoreTickets[i].ticket_color + ';">' +
+							'<img src="' + data.Data.StoreTickets[i].logo_img + '" class="class_1" alt="" />' +
+							'<span class="class_2">' + data.Data.StoreTickets[i].ticket_money + '</span>' +
+							'<span class="class_3">' +
+							data.Data.StoreTickets[i].condition_money + '</span>' +
+							'</div>' +
+							'<img class="perfect" src="img/perfect.png" alt="" />' +
+							'<span class="class_4">' +
+							data.Data.StoreTickets[i].store_name + '</span>' +
+							'<span class="class_5">' +
+							'有效期' + data.Data.StoreTickets[i].expire_in + '天 限定商品使用 ' + '</span>' +
+							'<span class="class_6">' + data.Data.StoreTickets[i].Ticket_Num + '张</span>' +
+							'<img class="class_7" src="img/right_see.png" alt="" />' +
+							'</div>';
+						$('#div').append(div)
+					}
+
+				},
+				error: function(xhr, type, errorThrown) {
+					alert('报错')
+					alert(JSON.stringify(xhr))
+					alert(type)
+					alert(errorThrown)
+					console.log(store_id)
+					console.log(open_id)
+					console.log(user_id)
+					console.log(vip_id)
+					console.log(member_id)
+					console.log(type);
+
+				}
+			});
+		}
+		GetStoreTickets(GetStoreTickets_url)
+
+		function jumpTo(ticket_id,num_limit) {
+			//			alert(ticket_id)
+			window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id+'&num_limit='+num_limit
+		}
+	</script>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+
+</html>

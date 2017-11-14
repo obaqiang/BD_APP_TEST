@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/coupon.css" />
+	</head>
+	<body>
+		<img style="width: 100%;" src="img/xoupon.png" alt="" />
+		<div class="price">
+			<span>
+				￥
+			</span>
+			100
+		</div>
+		<div class="coupon_1">
+			消费满256元可使用此优惠券
+		</div>
+		<div class="coupon_2">
+			2017.09.01 至 2018.10.01
+		</div>
+		<div class="coupon_3">
+			蛋糕类，奶茶类，饼干类
+		</div>
+		<div class="coupon_area">
+			<span class="area_1">抵用张数:</span>
+			<span class="area_2">-</span>
+			<span class="area_3">1</span>
+			<span class="area_4">+</span>
+		</div>
+		<div class="btn">
+			<div class="btn_in">
+				立即抵用
+			</div>
+			
+		</div>
+		<div class="coupon_modal">
+			<div class="modal_head">
+				限定商品使用
+				<img class="cha" src="img/chacha.png" alt="" />
+			</div>
+			<div class="modal_body">
+				<div class="classify">
+					<span class="classify_1">分类：</span>
+					<span class="classify_2">
+						蛋糕类，奶茶类，饼干类
+					</span>
+					
+				</div>
+				<div class="product">
+					<span class="classify_1">产品：</span>
+					<span class="classify_2">
+						多伦多小吃，多伦多西饼，多伦多大饼，多伦多大饼 多伦多大饼，多伦多大饼，多伦多大饼，多伦多大饼 多伦多大饼，多伦多大饼，多伦多大饼，多伦多大饼
+					</span>
+					
+				</div>
+			</div>
+		</div>
+		<div class="modal_mask"></div>
+	</body>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>BD贵宾卡</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/register.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	</head>
+
+	<body>
+		<div class="in_area">
+			<span class="in_area_sp">商家名称</span>
+			<input type="text" placeholder="请输入要开通的商家名称" id="content_name" />
+		</div>
+		<div class="in_area">
+			<span class="in_area_sp">手机号</span>
+			<input type="text" placeholder="请输入手机号码" id="content_tel" />
+		</div>
+		<div class="in_area">
+			<span class="in_area_sp">验证码</span>
+			<input type="text" placeholder="请输入验证码" id="content_code" />
+			<span class="btn_sp" id="btn_sp" onclick="dianji()" style="display: none;">获取验证码</span>
+			<span class="btn_sp_no" id="btn_sp_no">获取验证码</span>
+		</div>
+		<div class="in_area">
+			<span class="in_area_sp">系统选择</span>
+			<span class="in_area_bd">BD贵宾卡</span>
+		</div>
+		<div class="package_cho_area">
+			<span class="pac_text">套餐选择</span>
+			<!--<span class="pay_area">
+				金额
+				<span class="pay_area_price">0</span> 元
+			</span>-->
+		</div>
+		<div class="bg_ff_squ" id="squ_cho">
+			<!--<div class="cho_squ cb_squ">
+				<div class="cho_squ_1">套餐A</div>
+				<div class="cho_squ_2">￥ 180</div>
+				<div class="text_area">
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">短信数:100条</div>
+					<div class="cho_squ_3">员工数:1年</div>
+					<div class="cho_squ_3">会员数:1年</div>
+				</div>
+
+			</div>
+			<div class="cho_squ">
+				<div class="cho_squ_1">套餐A</div>
+				<div class="cho_squ_2">￥ 180</div>
+				<div class="text_area">
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">短信数:100条</div>
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">有效期:1年</div>
+				</div>
+
+			</div>
+			<div class="cho_squ">
+				<div class="cho_squ_1">套餐A</div>
+				<div class="cho_squ_2">￥ 180</div>
+				<div class="text_area">
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">短信数:100条</div>
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">有效期:1年</div>
+				</div>
+
+			</div>
+			<div class="cho_squ">
+				<div class="cho_squ_1">套餐A</div>
+				<div class="cho_squ_2">￥ 180</div>
+				<div class="text_area">
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">短信数:100条</div>
+					<div class="cho_squ_3">有效期:1年</div>
+					<div class="cho_squ_3">有效期:1年</div>
+				</div>
+
+			</div>-->
+		</div>
+
+		<div class="attention_area">
+			<img id="hook" src="img/ok_hook.png" style="width: 0.15rem;display: none;" onclick="getHook()" alt="" />
+			<img id="nohook" src="img/no_hook.png/" style="width: 0.15rem;" onclick="getHook()" alt="" />
+			<span class="attention_text" onclick="getHook()">我已阅读并同意</span>
+			<span class="attention_text_b">电子协议</span>
+		</div>
+
+		<div class="btn_bot">
+			<div class="btn_bot_text" id="btn_bot_text">
+				提交订单
+			</div>
+			<div class="btn_bot_text_ok" id="btn_bot_text_ok" style="display: none;" onclick="VerificationCode()">
+				提交订单
+			</div>
+		</div>
+		<!--<div id="open_id"></div>-->
+		<script src="js/mui.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="js/common/bdapp.js"></script>
+		<script type="text/javascript">
+			var StoreParam_url = test_url + '/api/Agent/StoreParam'
+			var code = GetQueryString('code')
+			var DoCheckUserFollow_url = test_url + '/api/Member/DoCheckUserFollowV2'
+			var open_id;
+			var token;
+			
+
+
+			function DoCheckUserFollow(url) {
+				$.ajax({
+					url: url,
+					type: 'get',
+					dataType: 'json',
+					async: false,
+					data: {
+						code: code
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+//						alert(JSON.stringify(data))
+						open_id = data.Data.open_id
+//						$('#open_id').text(open_id)
+						token = data.Data.WXtoken
+		
+
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log('需要的链接：' + DoCheckUserFollow_url)
+
+						console.log(type);
+
+					}
+				});
+			}
+			DoCheckUserFollow(DoCheckUserFollow_url)
+
+			function StoreParam(url) {
+				$.ajax({
+					url: url, // 跳转到 action    
+					data: {
+
+					},
+					type: 'get',
+					cache: false,
+					dataType: 'json',
+					success: function(data) {
+						console.log(data)
+						var packList = data.Data.packList;
+						for(var i = 0; i < packList.length; i++) {
+							var package_name = packList[i].package_name;
+							var price = packList[i].price;
+
+							var mess_qty;
+							var peo_qty;
+							var vip_qty;
+							var buy_year = packList[i].buy_year;
+							var Items = packList[i].Items;
+							var id = packList[i].id;
+							for(var j = 0; j < Items.length; j++) {
+								if(Items[j].type == '001') {
+									vip_qty = Items[j].qty;
+								}
+								if(Items[j].type == '002') {
+									mess_qty = Items[j].qty;
+								}
+								if(Items[j].type == '003') {
+									peo_qty = Items[j].qty;
+								}
+
+							}
+
+							if(typeof(vip_qty) == 'undefined') {
+								vip_qty = 0
+							}
+							if(typeof(mess_qty) == 'undefined') {
+								mess_qty = 0
+							}
+							if(typeof(peo_qty) == 'undefined') {
+								peo_qty = 0
+							}
+							var div =
+								'<div class="cho_squ">' +
+								'<div class="cho_squ_1" data_id="'+id+'">' + package_name + '</div>' +
+								'<div class="cho_squ_2" data_price="' + price + '">￥ ' + price + '</div>' +
+								'<div class = "text_area" >' +
+								'<div class="cho_squ_3">有效期:' + buy_year + '年</div>' +
+								'<div class = "cho_squ_3" > 短信数: ' + mess_qty + ' 条 </div>' +
+								'<div class = "cho_squ_3" > 员工数: ' + peo_qty + ' </div>' +
+								'<div class = "cho_squ_3" > 会员数: ' + vip_qty + ' </div>' +
+								'</div>' +
+								'</div>';
+							$('#squ_cho').append(div)
+						}
+						$('.cho_squ').click(function() {
+							$('.cho_squ').removeClass('cb_squ')
+							$(this).addClass('cb_squ')
+						})
+					},
+					error: function() {
+						// view("异常！");    
+						alert("异常！");
+					}
+
+				})
+			}
+
+			function Code(url, phone, name) {
+				$.ajax({
+					url: url, // 跳转到 action    
+					data: {
+						phone: phone,
+						name: name
+					},
+					type: 'get',
+					cache: false,
+					dataType: 'json',
+					success: function(data) {
+
+						console.log(data)
+
+					},
+					error: function() {
+						// view("异常！");    
+						alert("异常！");
+					}
+
+				})
+			}
+
+
+			function VerificationCode() {
+				var VerificationCode_url = test_url + '/api/Agent/VerificationCode'
+				var phone = $('#content_tel').val()
+				var code = $('#content_code').val();
+				var name = $('#content_name').val()
+				var package_name = $('.cb_squ .cho_squ_1').text()
+				var price = $('.cb_squ .cho_squ_2').attr('data_price')
+				var id = $('.cb_squ .cho_squ_1').attr('data_id')
+				//				var open_id = $('#open_id').text()
+				console.log(package_name)
+				if(package_name == '') {
+					alert('请选择套餐')
+				} else {
+
+					$.ajax({
+						url: VerificationCode_url, // 跳转到 action    
+						data: {
+							phone: phone,
+							code: code
+
+						},
+						type: 'get',
+						cache: false,
+						dataType: 'json',
+						success: function(data) {
+
+							console.log(data)
+							//							alert(JSON.stringify(data))
+							//							alert(2222)
+
+							if(data.IsError == false) {
+								name = encodeURI(name)
+								window.location.href = '../order_detail.html?name='+name+'&phone=' + phone + '&package_name=' + package_name + '&price=' + price + '&open_id=' + open_id + '&token=' + token+'&id='+id
+							} else {
+								alert('验证码不正确')
+							}
+
+						},
+						error: function(type) {
+							// view("异常！");
+							console.log(type)
+							alert("异常！");
+						}
+
+					})
+
+				}
+
+			}
+			var Code_url = test_url + '/api/Agent/Code'
+
+			function dianji() {
+				var phone = $('#content_tel').val();
+				var name = $('#content_name').val();
+				console.log(phone)
+				Code(Code_url, phone, name);
+				var num = 3
+				$('#btn_sp').hide()
+				$('#btn_sp_no').show()
+				var name = setInterval(function() {
+
+					$("#btn_sp_no").text(num + '秒'); // 你倒计时显示的地方元素
+					num--;
+					if(num == 0) {
+						clearInterval(name);
+						$('#btn_sp').show()
+						$('#btn_sp_no').hide()
+						$('#btn_sp').text('获取验证码')
+					}
+				}, 1000);
+			}
+
+			var content_tel_status = false
+			$("#content_tel").on('input', function() {
+				if(!(/^1[34578]\d{9}$/.test(this.value))) {
+					content_tel_status = false;
+				} else {
+					content_tel_status = true;
+				}
+				if(content_tel_status == true && content_name_status == true) {
+					$('#btn_sp').show()
+					$('#btn_sp_no').hide()
+				} else {
+					$('#btn_sp').hide()
+					$('#btn_sp_no').show()
+				}
+
+				if(content_tel_status == true && content_name_status == true && content_code_status == true && if_Read == true) {
+					$('#btn_bot_text').hide();
+					$('#btn_bot_text_ok').show();
+				}
+			})
+			var content_name_status = false;
+			$("#content_name").on('input', function() {
+				if(this.value == "") {
+					content_name_status = false;
+				} else {
+					content_name_status = true;
+				}
+				if(content_tel_status == true && content_name_status == true) {
+					$('#btn_sp').show()
+					$('#btn_sp_no').hide()
+				} else {
+					$('#btn_sp').hide()
+					$('#btn_sp_no').show()
+				}
+
+				if(content_tel_status == true && content_name_status == true && content_code_status == true && if_Read == true) {
+					$('#btn_bot_text').hide();
+					$('#btn_bot_text_ok').show();
+				}
+
+			})
+			var content_code_status = false;
+			$("#content_code").on('input', function() {
+				if(this.value == "") {
+					content_code_status = false;
+				} else {
+					content_code_status = true;
+				}
+
+				if(content_tel_status == true && content_name_status == true && content_code_status == true && if_Read == true) {
+					$('#btn_bot_text').hide();
+					$('#btn_bot_text_ok').show();
+				}
+
+			})
+			var if_Read = false
+
+			function getHook() {
+				if(if_Read == false) {
+					if_Read = true
+					$('#nohook').hide()
+					$('#hook').show()
+				} else {
+					if_Read = false
+					$('#nohook').show()
+					$('#hook').hide()
+				}
+				if(content_tel_status == true && content_name_status == true && content_code_status == true && if_Read == true) {
+					$('#btn_bot_text').hide();
+					$('#btn_bot_text_ok').show();
+				}
+			}
+
+			StoreParam(StoreParam_url)
+		</script>
+
+	</body>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+
+</html>

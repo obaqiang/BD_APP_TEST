@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/coupon.css" />
+	</head>
+	<body>
+		<img style="width: 100%;" src="img/diyong.gif" alt="" />
+		<div style="width: 100%;text-align: center;position: absolute;top: 5rem;font-size: 0.2rem;" >
+			<span style="color: #fff;border: 2px solid #fff;border-radius:0.1rem;padding: 0.1rem 0.2rem;" onclick="jumpTo()">继续抵用优惠券</span>
+		</div>
+		
+	</body>
+	<script>
+		function jumpTo(){
+			window.location.href= 'http://testshop.ks12580.net/mobile/html/print/getticketurl'
+		}
+	</script>
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+</html>

@@ -1,0 +1,55 @@
+.head_text{
+	margin-top: 0.1rem;
+	background: #fff;
+	font-size: 0.15rem;
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+	border-bottom: 1px solid #ddd;
+}
+.order_info{
+	background: #fff;
+	font-size: 0.13rem;
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+	border-bottom: 1px solid #ddd;
+}
+.order_a{
+	display: inline-block;
+	width: 20%;
+}
+.body_text{
+	background: #fff;
+	margin-top: 0.1rem;
+	font-size: 0.15rem;
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+	border-bottom: 1px solid #ddd;
+}
+.pay_way{
+	background: #fff;
+	color: #333333;
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+	border-bottom: 1px solid #ddd;
+}
+.btn_bot{
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	background: #fff;
+	line-height: 0.4rem;
+	padding-left: 0.1rem;
+}
+.pay_money{
+	font-size: 0.15rem;
+	color: #3d4245;
+}
+.go_pay{
+	background: #CB2920;
+	color: #fff;
+	line-height: 0.4rem;
+	display: inline-block;
+	float: right;
+	width: 20%;
+	text-align: center;
+}
