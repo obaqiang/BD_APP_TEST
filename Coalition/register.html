@@ -89,7 +89,7 @@
 
 		<div class="attention_area">
 			<img id="hook" src="img/ok_hook.png" style="width: 0.15rem;display: none;" onclick="getHook()" alt="" />
-			<img id="nohook" src="img/no_hook.png/" style="width: 0.15rem;" onclick="getHook()" alt="" />
+			<img id="nohook" src="img/no_hook.png" style="width: 0.15rem;" onclick="getHook()" alt="" />
 			<span class="attention_text" onclick="getHook()">我已阅读并同意</span>
 			<span class="attention_text_b">电子协议</span>
 		</div>
@@ -112,8 +112,6 @@
 			var DoCheckUserFollow_url = test_url + '/api/Member/DoCheckUserFollowV2'
 			var open_id;
 			var token;
-			
-
 
 			function DoCheckUserFollow(url) {
 				$.ajax({
@@ -127,16 +125,15 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data);
-//						alert(JSON.stringify(data))
+						//						alert(JSON.stringify(data))
 						open_id = data.Data.open_id
-//						$('#open_id').text(open_id)
+						//						$('#open_id').text(open_id)
 						token = data.Data.WXtoken
-		
 
 					},
 					error: function(xhr, type, errorThrown) {
 						console.log('需要的链接：' + DoCheckUserFollow_url)
-
+						alert('网络异常')
 						console.log(type);
 
 					}
@@ -188,9 +185,15 @@
 							if(typeof(peo_qty) == 'undefined') {
 								peo_qty = 0
 							}
+							var a_class;
+							if(i == 0) {
+								a_class = 'cb_squ'
+							} else {
+								a_class = ''
+							}
 							var div =
-								'<div class="cho_squ">' +
-								'<div class="cho_squ_1" data_id="'+id+'">' + package_name + '</div>' +
+								'<div class="cho_squ ' + a_class + '">' +
+								'<div class="cho_squ_1" data_id="' + id + '">' + package_name + '</div>' +
 								'<div class="cho_squ_2" data_price="' + price + '">￥ ' + price + '</div>' +
 								'<div class = "text_area" >' +
 								'<div class="cho_squ_3">有效期:' + buy_year + '年</div>' +
@@ -208,7 +211,7 @@
 					},
 					error: function() {
 						// view("异常！");    
-						alert("异常！");
+						alert("网络异常！");
 					}
 
 				})
@@ -231,12 +234,11 @@
 					},
 					error: function() {
 						// view("异常！");    
-						alert("异常！");
+						alert("网络异常！");
 					}
 
 				})
 			}
-
 
 			function VerificationCode() {
 				var VerificationCode_url = test_url + '/api/Agent/VerificationCode'
@@ -249,7 +251,7 @@
 				//				var open_id = $('#open_id').text()
 				console.log(package_name)
 				if(package_name == '') {
-					alert('请选择套餐')
+					Alert('请选择套餐')
 				} else {
 
 					$.ajax({
@@ -269,17 +271,37 @@
 							//							alert(2222)
 
 							if(data.IsError == false) {
-								name = encodeURI(name)
-								window.location.href = '../order_detail.html?name='+name+'&phone=' + phone + '&package_name=' + package_name + '&price=' + price + '&open_id=' + open_id + '&token=' + token+'&id='+id
+								var userAgent = navigator.userAgent.toLowerCase();
+								if(userAgent.match(/MicroMessenger/i) == "micromessenger") { //微信端打开
+//									alert('微信')
+									name = encodeURI(name)
+									window.location.href = '../order_detail.html?name=' + name + '&phone=' + phone + '&package_name=' + package_name + '&price=' + price + '&open_id=' + open_id + '&token=' + token + '&id=' + id
+
+								} else { //BD卡打开
+//									alert('BD卡')
+									var str = {
+										name: name,
+										phone: phone,
+										package_name: package_name,
+										price: price,
+										token: token,
+										id: id
+									}
+									console.log(str)
+									var json = JSON.stringify(str);
+									bdvip.setMsg(json);
+								}
+
 							} else {
-								alert('验证码不正确')
+								//								alert('验证码不正确')
+								Alert('验证码不正确')
 							}
 
 						},
 						error: function(type) {
 							// view("异常！");
 							console.log(type)
-							alert("异常！");
+							alert("网络异常！");
 						}
 
 					})
@@ -289,12 +311,15 @@
 			}
 			var Code_url = test_url + '/api/Agent/Code'
 
+			var once_read_time = true;
+
 			function dianji() {
+				var num = 60;
 				var phone = $('#content_tel').val();
 				var name = $('#content_name').val();
 				console.log(phone)
 				Code(Code_url, phone, name);
-				var num = 3
+
 				$('#btn_sp').hide()
 				$('#btn_sp_no').show()
 				var name = setInterval(function() {
@@ -306,6 +331,9 @@
 						$('#btn_sp').show()
 						$('#btn_sp_no').hide()
 						$('#btn_sp').text('获取验证码')
+						once_read_time = true
+					} else {
+						once_read_time = false
 					}
 				}, 1000);
 			}
@@ -317,7 +345,7 @@
 				} else {
 					content_tel_status = true;
 				}
-				if(content_tel_status == true && content_name_status == true) {
+				if(content_tel_status == true && content_name_status == true && once_read_time == true) {
 					$('#btn_sp').show()
 					$('#btn_sp_no').hide()
 				} else {
@@ -337,7 +365,7 @@
 				} else {
 					content_name_status = true;
 				}
-				if(content_tel_status == true && content_name_status == true) {
+				if(content_tel_status == true && content_name_status == true && once_read_time == true) {
 					$('#btn_sp').show()
 					$('#btn_sp_no').hide()
 				} else {

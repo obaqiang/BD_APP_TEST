@@ -115,6 +115,7 @@
 		var user_id = '';
 		var vip_id = GetQueryString('vip_id');
 		var member_id = GetQueryString('member_id');
+		
 		//		var token = GetQueryString('token')
 		var GetStoreTickets_url = test_url + '/api/Ticket/GetStoreTickets'
 
@@ -144,22 +145,24 @@
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
-					alert(JSON.stringify(data))
+//					alert(JSON.stringify(data))
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
 					console.log(vip_id)
 					console.log(member_id)
 					console.log(data);
-
+					vip_id=data.Data.vip_id;
 					for(var i = 0; i < data.Data.StoreTickets.length; i++) {
+//						alert(data.Data.StoreTickets[i].ticket_id)
 						var div =
-							'<div class="bl" onclick = jumpTo(' + data.Data.StoreTickets[i].ticket_id + ',' + data.Data.StoreTickets[i].Ticket_Num + ')>' +
+//							'<div class="bl" onclick = jumpTo(' + data.Data.StoreTickets[i].ticket_id + ',' + data.Data.StoreTickets[i].Ticket_Num + ')>' +
+							'<div class="bl" data_ticket_id="'+data.Data.StoreTickets[i].ticket_id +'" data_Ticket_Num="'+ data.Data.StoreTickets[i].Ticket_Num+'")>' +
 							'<div class="bl_in" style="background:' + data.Data.StoreTickets[i].ticket_color + ';">' +
 							'<img src="' + data.Data.StoreTickets[i].logo_img + '" class="class_1" alt="" />' +
 							'<span class="class_2">' + data.Data.StoreTickets[i].ticket_money + '</span>' +
-							'<span class="class_3">' +
-							data.Data.StoreTickets[i].condition_money + '</span>' +
+							'<span class="class_3">满' +
+							data.Data.StoreTickets[i].condition_money + '可用</span>' +
 							'</div>' +
 							'<img class="perfect" src="img/perfect.png" alt="" />' +
 							'<span class="class_4">' +
@@ -171,13 +174,22 @@
 							'</div>';
 						$('#div').append(div)
 					}
+					$('.bl').click(function (){
+						console.log(123)
+//						alert($(this).attr('data_ticket_id'))
+//						alert($(this).attr('data_Ticket_Num'))
+						ticket_id=$(this).attr('data_ticket_id')
+						num_limit = $(this).attr('data_Ticket_Num')
+						window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
+					})
+					
 
 				},
 				error: function(xhr, type, errorThrown) {
-					alert('报错')
-					alert(JSON.stringify(xhr))
-					alert(type)
-					alert(errorThrown)
+					alert('网络异常')
+//					alert(JSON.stringify(xhr))
+//					alert(type)
+//					alert(errorThrown)
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
@@ -190,10 +202,11 @@
 		}
 		GetStoreTickets(GetStoreTickets_url)
 
-		function jumpTo(ticket_id,num_limit) {
-			//			alert(ticket_id)
-			window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id+'&num_limit='+num_limit
-		}
+//		function jumpTo(ticket_id, num_limit) {
+//			alert(ticket_id)
+//			alert(num_limit)
+//			window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
+//		}
 	</script>
 	<script>
 		//各个屏幕大小适配

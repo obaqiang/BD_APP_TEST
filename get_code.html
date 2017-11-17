@@ -40,6 +40,7 @@
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data);
+//						alert(JSON.stringify(data))
 						//						alert('CheckUserHasFollowed_Extend接口开始')
 						////						
 						////						
@@ -47,12 +48,14 @@
 						window.location.href = data.Data.Data
 					},
 					error: function(xhr, type, errorThrown) {
+//						alert('报错')
 						//						alert('CheckUserHasFollowed_Extend接口出错')
 						//						alert(errorThrown)
 						//						alert(xhr)
 						console.log('需要的链接：' + CheckUserHasFollowed_Extend_url)
 						//异常处理；
 						console.log(type);
+						alert('网络异常')
 					}
 				});
 			}

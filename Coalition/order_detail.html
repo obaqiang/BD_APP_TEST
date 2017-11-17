@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 
 	<head>
@@ -39,16 +39,17 @@
 		<div class="body_text">
 			支付方式
 		</div>
-		<div class="pay_way">
+		<!--<div class="pay_way">
 			<img src="img/zhifubao.png" style="width: 0.15rem;" alt="" />
 			<span>支付宝支付</span>
 			<img src="img/no_hook.png" style="width: 0.15rem;float: right;margin-top: 0.1rem;margin-right: 0.1rem;" alt="" />
 
-		</div>
+		</div>-->
 		<div class="pay_way">
 			<img src="img/weixin.png" style="width: 0.15rem;" alt="" />
 			<span>微信支付</span>
-			<img src="img/no_hook.png" style="width: 0.15rem;float: right;margin-top: 0.1rem;margin-right: 0.1rem;" alt="" />
+			<!--<img src="img/no_hook.png" style="width: 0.15rem;float: right;margin-top: 0.1rem;margin-right: 0.1rem;" alt="" />-->
+			<img src="img/ok_hook.png" style="width: 0.15rem;float: right;margin-top: 0.1rem;margin-right: 0.1rem;" alt="" />
 
 		</div>
 		<div class="btn_bot">
@@ -90,7 +91,7 @@
 					},
 					error: function() {
 						// view("异常！");    
-						alert("异常！");
+						alert("网络异常！");
 					}
 
 				})
@@ -144,7 +145,8 @@
 
 							function(res) {
 								if(res.err_msg == "get_brand_wcpay_request:ok") {
-									alert('支付成功')
+//									alert('支付成功')
+									Alert('支付成功')
 									//									alert('需要的:'+prepayId)
 
 //									CheckOrder(CheckOrder_url, order_id, prepayId, 0)
@@ -163,7 +165,7 @@
 						console.log(open_id)
 						console.log(total_money)
 						console.log(errorThrown)
-						alert(errorThrown)
+						alert('网络异常')
 					}
 				});
 			}
@@ -192,4 +194,4 @@
 		})(document, window);
 	</script>
 
-</html>
+</html>-->

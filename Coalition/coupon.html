@@ -73,6 +73,7 @@
 	<script src="js/common/bdapp.js"></script>
 	<script>
 		var ticket_id = GetQueryString('ticket_id');
+//		alert(ticket_id)
 		var store_id = GetQueryString('store_id');
 		var open_id = GetQueryString('open_id');
 		var user_id = GetQueryString('user_id');
@@ -80,7 +81,7 @@
 		var member_id = GetQueryString('member_id');
 //		var lala = '监考老师发'
 //		lala = cutstr(lala,15)
-		console.log(lala)
+//		console.log(lala)
 		var num_limit = GetQueryString('num_limit');
 		num_limit -= 0
 		var num = num_limit;
@@ -106,7 +107,7 @@
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
-					alert(JSON.stringify(data))
+//					alert(JSON.stringify(data))
 					var ticket_money = data.Data.ticket_money
 					$('#ticket_money').text(ticket_money)
 					var condition_money = data.Data.condition_money
@@ -122,10 +123,10 @@
 
 				},
 				error: function(xhr, type, errorThrown) {
-					alert('报错')
-					alert(JSON.stringify(xhr))
-					alert(type)
-					alert(errorThrown)
+					alert('网络异常')
+//					alert(JSON.stringify(xhr))
+//					alert(type)
+//					alert(errorThrown)
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
@@ -167,7 +168,7 @@
 
 		function Minus() {
 
-			if(num > 0) {
+			if(num > 1) {
 				num -= 1
 			}
 			//			console.log(num)
@@ -183,7 +184,7 @@
 			ifcanChangenum()
 		}
 
-		function ConsumTickets(url) {
+		function ConsumTickets(url,store_id,open_id,vip_id,member_id) {
 			$.ajax({
 				url: url,
 				type: 'post',
@@ -199,18 +200,18 @@
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 //					alert(ticket_id)
-					alert(JSON.stringify(data))
+//					alert(JSON.stringify(data))
 					if(data.Data.IsError==false){
-						window.location.href='vocher.html'
+						window.location.href='vocher.html?store_id='+store_id+'&open_id='+open_id+'&vip_id='+vip_id+'&member_id='+member_id
 					}else{
 						Alert(data.Data.ErrorMessage)
 					}
 				},
 				error: function(xhr, type, errorThrown) {
-					alert('报错')
-					alert(JSON.stringify(xhr))
-					alert(type)
-					alert(errorThrown)
+					alert('网络异常')
+//					alert(JSON.stringify(xhr))
+//					alert(type)
+//					alert(errorThrown)
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
@@ -223,8 +224,12 @@
 		}
 		
 		function jumpTo(){
-			alert(num)
-			ConsumTickets(ConsumTickets_url)
+//			alert(num)
+//			alert(store_id)
+//			alert(open_id)
+//			alert(vip_id)
+//			alert(member_id)
+			ConsumTickets(ConsumTickets_url,store_id,open_id,vip_id,member_id)
 		}
 	</script>
 	<script>
