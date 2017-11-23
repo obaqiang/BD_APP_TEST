@@ -154,34 +154,30 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="address" style="display: none;">
 				收货地址
 				<img src="../../images/16px_26px_V.png" alt="" />
 			</div>
 			<div class="order_show" style="display: none;">
 				<div class="order_show_list" onclick="ordershowJump(0)" data_status="0">
-					<img src="../../sale/img/44px_44px_quanbudingdan.png" alt="" />
-					全部订单
+					<img src="../../sale/img/44px_44px_quanbudingdan.png" alt="" /> 全部订单
 				</div>
 				<div class="order_show_list" onclick="ordershowJump(1)" data_status="1">
-					<img src="../../sale/img/44px_44px_daifukuan.png" alt="" />
-					待付款
+					<img src="../../sale/img/44px_44px_daifukuan.png" alt="" /> 待付款
 				</div>
 				<div class="order_show_list" onclick="ordershowJump(2)" data_status="2">
-					<img src="../../sale/img/44px_44px_weiwancheng.png" alt="" />
-					未完成
+					<img src="../../sale/img/44px_44px_weiwancheng.png" alt="" /> 未完成
 				</div>
-				<div class="order_show_list" onclick="ordershowJump(3)"data_status="3">
-					<img src="../../sale/img/44px_44px_yiquhuo.png" alt="" />
-					已完成
+				<div class="order_show_list" onclick="ordershowJump(3)" data_status="3">
+					<img src="../../sale/img/44px_44px_yiquhuo.png" alt="" /> 已完成
 				</div>
 				<!--<div class="order_show_list">
 					<img src="../../sale/img/44px_44px_yishouhuo.png" alt="" />
 					已收货
 				</div>-->
 			</div>
-			
+
 			<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted mine_bg_list">
 				<li class="mui-table-view-cell" onclick="roundJump()">
 					<a class="mui-navigate-right mine_list_head">
@@ -213,7 +209,7 @@
 						<span>我要发卡</span>
 					</a>
 				</li>
-				
+
 			</ul>
 		</div>
 		<div class="mui-content index_main_setting" style="display: none;">
@@ -327,68 +323,70 @@
 				var storeid = GetQueryString('storeid');
 				var phone = GetQueryString('phone');
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
-				
-				var token = GetQueryString('token');
 
-//				function GetInfo(GetInfo_url, token) {
-//					mui.ajax(GetInfo_url, {
-//						data: {
-//							token: token,
-//						},
-//						dataType: 'json', //服务器返回json格式数据
-//						type: 'get', //HTTP请求类型
-//						timeout: 10000, //超时时间设置为10秒；
-//						async: false,
-//						success: function(data) {
-//
-//							//服务器返回响应，根据响应结果，分析是否登录成功；
-//							console.log(data);
-//							var phone = data.Data.Phone;
-//							var member_name = data.Data.member_name;
-//							var birthday = data.Data.birthday;
-//							birthday = birthday.slice(0, 10);
-//							var UserID = data.Data.UserID;
-//							member_id = UserID;
-//							var thumb = data.Data.thumb;
-//							if(thumb == "" || !thumb) {
-//								thumb = '../../images/146px_146px_moren.png';
-//							}
-//							$('#member_name').text(member_name);
-//							$('#phone').text(phone);
-//							$('#birthday').text(birthday);
-//							$('#thumb').attr('src', thumb);
-//							if(phone == 'null' || phone == '' || typeof(phone) == undefined || typeof(phone) == null) {
-//
-//								window.location.href = '../login/login_data.html?storeid=' + storeid + '&token=' + token;
-//							}
-//
-//						},
-//						error: function(xhr, type, errorThrown) {
-//							//异常处理；
-//							console.log(type);
-//						}
-//					});
-//
-//				};
-//				GetInfo(GetInfo_url, token);
-				
+				var token = GetQueryString('token');
+				var headers_in = {
+					'Content-Type': 'application/json',
+					'token': token,
+					Authorization: 'Bearer ' + token
+				};
+				//				function GetInfo(GetInfo_url, token) {
+				//					mui.ajax(GetInfo_url, {
+				//						data: {
+				//							token: token,
+				//						},
+				//						dataType: 'json', //服务器返回json格式数据
+				//						type: 'get', //HTTP请求类型
+				//						timeout: 10000, //超时时间设置为10秒；
+				//						async: false,
+				//						success: function(data) {
+				//
+				//							//服务器返回响应，根据响应结果，分析是否登录成功；
+				//							console.log(data);
+				//							var phone = data.Data.Phone;
+				//							var member_name = data.Data.member_name;
+				//							var birthday = data.Data.birthday;
+				//							birthday = birthday.slice(0, 10);
+				//							var UserID = data.Data.UserID;
+				//							member_id = UserID;
+				//							var thumb = data.Data.thumb;
+				//							if(thumb == "" || !thumb) {
+				//								thumb = '../../images/146px_146px_moren.png';
+				//							}
+				//							$('#member_name').text(member_name);
+				//							$('#phone').text(phone);
+				//							$('#birthday').text(birthday);
+				//							$('#thumb').attr('src', thumb);
+				//							if(phone == 'null' || phone == '' || typeof(phone) == undefined || typeof(phone) == null) {
+				//
+				//								window.location.href = '../login/login_data.html?storeid=' + storeid + '&token=' + token;
+				//							}
+				//
+				//						},
+				//						error: function(xhr, type, errorThrown) {
+				//							//异常处理；
+				//							console.log(type);
+				//						}
+				//					});
+				//
+				//				};
+				//				GetInfo(GetInfo_url, token);
+
 				var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
-				function GetMemberInfo(GetMemberInfo_url,token) {
+
+				function GetMemberInfo(GetMemberInfo_url, token) {
 					mui.ajax(GetMemberInfo_url, {
 						data: {
-							
+
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers:{
-							'Content-Type':'application/json',
-							'token':token
-						},
+						headers: headers_in,
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
-							console.log('需要的token：'+token);
+							console.log('需要的token：' + token);
 							console.log(data);
 							var MemberInfo = data.Data.MemberInfo;
 							member_id = MemberInfo.id;
@@ -397,15 +395,15 @@
 							var member_name = MemberInfo.member_name;
 							var birthday = MemberInfo.birthday;
 							birthday = birthday.slice(0, 10);
-							
+
 							var thumb = MemberInfo.thumb;
 							if(thumb == "" || !thumb) {
 								thumb = '../../images/146px_146px_moren.png';
 							}
 							$('#member_name').text(member_name);
-							
-							var phone_see = phone.substr(0,3)+"****"+phone.substr(7);  
-							
+
+							var phone_see = phone.substr(0, 3) + "****" + phone.substr(7);
+
 							$('#phone').text(phone);
 							$('#birthday').text(birthday);
 							$('#thumb').attr('src', thumb);
@@ -413,16 +411,16 @@
 
 								window.location.href = '../login/login_data.html?storeid=' + storeid + '&token=' + token;
 							}
-							
+
 						},
 						error: function(xhr, type, errorThrown) {
 							//异常处理；
-							console.log('需要的token：'+token);
+							console.log('需要的token：' + token);
 							console.log(type);
 						}
 					});
 				}
-				GetMemberInfo(GetMemberInfo_url,token);
+				GetMemberInfo(GetMemberInfo_url, token);
 
 				//				var member_id = GetQueryString('member_id');
 				//				var token = GetQueryString('token');
@@ -505,10 +503,8 @@
 				//修改手机号
 				document.getElementById('change_tel').addEventListener('tap', function() {
 
-					
-					window.location.href = 'index_main_mine/change_tel.html?token='+token;
+					window.location.href = 'index_main_mine/change_tel.html?token=' + token;
 				})
-
 
 				//			退出登陸
 				document.getElementById('setting_out').addEventListener('tap', function() {
@@ -572,17 +568,16 @@
 						window.location.href = 'index_main_setting.html?token=' + token;
 					}
 				});
-				
-				function ordershowJump(e){
-					var status=e
+
+				function ordershowJump(e) {
+					var status = e
 					console.log(status)
-					window.location.href='../../sale/order_show.html?token=' + token+'&open_id='+open_id+'&status='+status;
+					window.location.href = '../../sale/order_show.html?token=' + token + '&open_id=' + open_id + '&status=' + status;
 				}
-				
-				function roundJump(){
-					window.location.href = '../login/login_data.html?token='+token
+
+				function roundJump() {
+					window.location.href = '../login/login_data.html?token=' + token
 				}
-				
 
 			}
 		</script>

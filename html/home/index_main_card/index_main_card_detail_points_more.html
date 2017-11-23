@@ -89,6 +89,11 @@
 		if(navigator.userAgent.indexOf("Html5Plus") < 0) { //不支持5+ API
 			var Vip_id = GetQueryString('Vip_id');
 			var token = GetQueryString('token');
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var getvipintegralca_url = test_url + '/api/query/GetVipIntegralCA';
 			var page_num = 1;
 			var page_size = 20;
@@ -109,6 +114,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取积分明细接口接口返回数据:' + JSON.stringify(data));

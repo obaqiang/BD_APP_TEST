@@ -115,10 +115,10 @@
 					<span class="card_shop_prize_c">储值88.88元</span>
 					<img class="card_shop_tel_c" src="../../images/50px_50px_icon_P.png" alt="" />
 				</div>-->
-				<br />
-				<br />
-				<br />
-				<br />
+					<br />
+					<br />
+					<br />
+					<br />
 				</div>
 			</div>
 
@@ -217,6 +217,11 @@
 				}
 				var member_id;
 				var token = GetQueryString('token');
+				var headers_in = {
+					'Content-Type': 'application/json',
+					'token': token,
+					Authorization: 'Bearer ' + token
+				};
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 				//				function GetInfo(GetInfo_url, token) {
 				//					mui.ajax(GetInfo_url, {
@@ -260,11 +265,9 @@
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers: {
-							'Content-Type': 'application/json',
-							'token': token
-						},
+						headers: headers_in, 
 						success: function(data) {
+//							console.log(headers_in)
 							//服务器返回响应，根据响应结果，分析是否登录成功；
 							console.log('需要的token：' + token);
 							console.log(data);
@@ -303,7 +306,7 @@
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-
+						headers: headers_in, 
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
 
@@ -341,23 +344,23 @@
 
 				var getstoreshopinfo_url = test_url + '/api/Store/GetStoreShopInfo'
 
-				function GetStoreShopInfo(getstoreshopinfo_url, store_id, store_tel,token) {
+				function GetStoreShopInfo(getstoreshopinfo_url, store_id, store_tel, token) {
 					mui.ajax(getstoreshopinfo_url, {
 						data: {
 							store_id: store_id,
-							token:token
+							token: token
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: true,
-
+						headers: headers_in, 
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
-					
+
 							console.log(data);
 							if(data.Data.store_shop.length == 0) {
-							
+
 								if(store_tel == '') {
 									Alert('此商家无联系电话');
 								} else {
@@ -378,7 +381,7 @@
 									}
 
 								}
-							}else{
+							} else {
 								console.log(2222)
 								window.location.href = 'index_main_card/index_shop_message.html?token=' + token + '&store_id=' + store_id;
 							}
@@ -466,7 +469,6 @@
 							var store_id = $(this).parent().attr('store_id');
 							var store_tel = $(this).attr('store_tel');
 							GetStoreShopInfo(getstoreshopinfo_url, store_id, store_tel);
-			
 
 						})
 

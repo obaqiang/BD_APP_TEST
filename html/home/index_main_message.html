@@ -280,58 +280,61 @@
 				var member_id;
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 				var token = GetQueryString('token');
-//				function GetInfo(GetInfo_url, token) {
-//					mui.ajax(GetInfo_url, {
-//						data: {
-//							token: token,
-//						},
-//						dataType: 'json', //服务器返回json格式数据
-//						type: 'get', //HTTP请求类型
-//						timeout: 10000, //超时时间设置为10秒；
-//						async: false,
-//						success: function(data) {
-//
-//							//服务器返回响应，根据响应结果，分析是否登录成功；
-//							console.log(data);
-//							//							var Member = '';
-//							//							var phone = '';
-//							//							var thumb = '';
-//							//							var member_name = '';
-//							//							var birthday = '';
-//							var UserID = data.Data.UserID;
-//							member_id = UserID;
-//
-//						},
-//						error: function(xhr, type, errorThrown) {
-//							//异常处理；
-//							console.log(type);
-//						}
-//					});
-//
-//				};
-//				GetInfo(GetInfo_url, token);
-				
+				var headers_in = {
+					'Content-Type': 'application/json',
+					'token': token,
+					Authorization: 'Bearer ' + token
+				};
+				//				function GetInfo(GetInfo_url, token) {
+				//					mui.ajax(GetInfo_url, {
+				//						data: {
+				//							token: token,
+				//						},
+				//						dataType: 'json', //服务器返回json格式数据
+				//						type: 'get', //HTTP请求类型
+				//						timeout: 10000, //超时时间设置为10秒；
+				//						async: false,
+				//						success: function(data) {
+				//
+				//							//服务器返回响应，根据响应结果，分析是否登录成功；
+				//							console.log(data);
+				//							//							var Member = '';
+				//							//							var phone = '';
+				//							//							var thumb = '';
+				//							//							var member_name = '';
+				//							//							var birthday = '';
+				//							var UserID = data.Data.UserID;
+				//							member_id = UserID;
+				//
+				//						},
+				//						error: function(xhr, type, errorThrown) {
+				//							//异常处理；
+				//							console.log(type);
+				//						}
+				//					});
+				//
+				//				};
+				//				GetInfo(GetInfo_url, token);
+
 				var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
-				function GetMemberInfo(GetMemberInfo_url,token) {
+
+				function GetMemberInfo(GetMemberInfo_url, token) {
 					mui.ajax(GetMemberInfo_url, {
 						data: {
-							
+
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers:{
-							'Content-Type':'application/json',
-							'token':token
-						},
+						headers: headers_in,
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
-							console.log('需要的token：'+token);
+							console.log('需要的token：' + token);
 							console.log(data);
 							var MemberInfo = data.Data.MemberInfo;
 							member_id = MemberInfo.id;
-							
+
 						},
 						error: function(xhr, type, errorThrown) {
 							//异常处理；
@@ -339,7 +342,7 @@
 						}
 					});
 				}
-				GetMemberInfo(GetMemberInfo_url,token);
+				GetMemberInfo(GetMemberInfo_url, token);
 
 				//				var member_id = GetQueryString('member_id');
 				//				var token = GetQueryString('token');
@@ -391,6 +394,7 @@
 							member_id: member_id,
 							token: token
 						},
+						headers: headers_in,
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
@@ -527,10 +531,10 @@
 										if(data_type == '004') { //跳转充值详情
 											//										data_type=encodeURI(data_type);
 											console.log(data_type);
-											window.location.href = 'index_main_message/index_main_message_detail_charge.html?bill_id=' + bill_id + '&token=' + token  + '&type=' + data_type;
+											window.location.href = 'index_main_message/index_main_message_detail_charge.html?bill_id=' + bill_id + '&token=' + token + '&type=' + data_type;
 										} else if(data_type == '005') { //跳转结账详情
 											data_type = encodeURI(data_type);
-											window.location.href = 'index_main_message/index_main_message_detail.html?bill_id=' + bill_id + '&token=' + token  + '&type=' + data_type + '&store_id=' + store_id;
+											window.location.href = 'index_main_message/index_main_message_detail.html?bill_id=' + bill_id + '&token=' + token + '&type=' + data_type + '&store_id=' + store_id;
 										} else if(data_type == '008') { //开卡情况
 											$(this).children('.is_read_text').text('已读');
 										} else if(data_type == '009') { //积分兑换的消息
@@ -596,6 +600,7 @@
 											dataType: 'json', //服务器返回json格式数据
 											type: 'get', //HTTP请求类型
 											timeout: 10000, //超时时间设置为10秒；
+											headers: headers_in,
 											success: function(data) {
 												//服务器返回响应，根据响应结果，分析是否登录成功；
 												console.log(data);
@@ -661,19 +666,19 @@
 
 					var label_name = this.querySelector('.mui-tab-label').innerHTML;
 					if(label_name == '卡包') {
-//						window.location.href = 'index_main_card.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_card.html?token='+token;
-					
+						//						window.location.href = 'index_main_card.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
+						window.location.href = 'index_main_card.html?token=' + token;
+
 					} else if(label_name == '消息') {
 
 					} else if(label_name == '我的') {
-//						window.location.href = 'index_main_mine.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_mine.html?token='+token;
-					
+						//						window.location.href = 'index_main_mine.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
+						window.location.href = 'index_main_mine.html?token=' + token;
+
 					} else if(label_name == '设置') {
-						
-//						window.location.href = 'index_main_setting.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_setting.html?token='+token;
+
+						//						window.location.href = 'index_main_setting.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
+						window.location.href = 'index_main_setting.html?token=' + token;
 					}
 				});
 

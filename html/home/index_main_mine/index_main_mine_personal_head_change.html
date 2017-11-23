@@ -56,6 +56,11 @@
 				swipeBack: true //启用右滑关闭功能
 			});
 			var token = GetQueryString('token');
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var member_id = GetQueryString('member_id');
 			var phone = GetQueryString('phone');
 			var name = GetQueryString('name');
@@ -167,10 +172,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-					headers: {
-						'Content-Type': 'application/json',
-						'token': token
-					},
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						alert('里面的：' + member_id);
@@ -194,10 +196,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-					headers: {
-						'Content-Type': 'application/json',
-						'token': token
-					},
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log('获取上传图片接口返回数据:' + JSON.stringify(data));

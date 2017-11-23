@@ -133,7 +133,11 @@
 			var member_id;
 			var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 			var token = GetQueryString('token');
-
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			//			function GetInfo(GetInfo_url, token) {
 			//				mui.ajax(GetInfo_url, {
 			//					data: {
@@ -176,10 +180,7 @@
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: false,
-					headers: {
-						'Content-Type': 'application/json',
-						'token': token
-					},
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log('需要的token：' + token);
@@ -360,6 +361,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(JSON.stringify(data));
@@ -409,6 +411,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log(data);

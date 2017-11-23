@@ -87,6 +87,11 @@
 	<script>
 		var content_name_status = false;
 		var token = GetQueryString('token')
+		var headers_in = {
+			'Content-Type': 'application/json',
+			'token': token,
+			Authorization: 'Bearer ' + token
+		};
 		var phone;
 		var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 
@@ -107,6 +112,7 @@
 				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
 				async: false,
+				headers: headers_in,
 				success: function(data) {
 
 					//服务器返回响应，根据响应结果，分析是否登录成功；
@@ -166,6 +172,7 @@
 				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
 				async: false,
+				headers: headers_in,
 				success: function(data) {
 
 					//服务器返回响应，根据响应结果，分析是否登录成功；
@@ -220,7 +227,7 @@
 			console.log(sel_month)
 			console.log(sel_day)
 			member_name = $('#content_name').val();
-			
+
 			if(sel_month < 10) {
 				sel_month = '0' + sel_month;
 			}
@@ -242,7 +249,7 @@
 				Alert('请至少完善一项个人信息')
 			} else if(birth == '') {
 				UpdateVipInfo(UpdateVipInfo_url, phone, member_name, birth, token)
-			}else if(member_name == ''){
+			} else if(member_name == '') {
 				UpdateVipInfo(UpdateVipInfo_url, phone, member_name, birth, token)
 			} else {
 				setCookie('year', sel_year)

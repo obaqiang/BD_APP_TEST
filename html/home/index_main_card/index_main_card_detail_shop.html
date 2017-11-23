@@ -116,6 +116,11 @@
 
 			var vip_id = GetQueryString('vip_id');
 			var token = GetQueryString('token');
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var getvipinfo_url = test_url + '/api/member/getvipinfo';
 
 			function getvipinfo(getvipinfo_url, vip_id, token) {
@@ -128,6 +133,7 @@
 					type: 'get', //HTTP请求类型
 					crossDomain: true,
 					timeout: 10000, //超时时间设置为10秒；
+					headers:headers_in,
 					success: function(data) {
 						console.log(data);
 						var Store = data.Data.Store;

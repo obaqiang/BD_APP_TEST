@@ -88,6 +88,11 @@
 		var storeid = GetQueryString('storeid');
 		var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 		var token = GetQueryString('token');
+		var headers_in = {
+			'Content-Type': 'application/json',
+			'token': token,
+			Authorization: 'Bearer ' + token
+		};
 		var birthday;
 		var member_name;
 		var oldphone;
@@ -101,6 +106,7 @@
 				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
 				async: false,
+				headers: headers_in,
 				success: function(data) {
 
 					//服务器返回响应，根据响应结果，分析是否登录成功；
@@ -183,6 +189,7 @@
 				dataType: 'json', //服务器返回json格式数据
 				type: 'post', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
+				headers: headers_in,
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					console.log(data);
@@ -220,6 +227,7 @@
 				dataType: 'json', //服务器返回json格式数据
 				type: 'post', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
+				headers: headers_in,
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					console.log(data);
@@ -254,6 +262,7 @@
 				dataType: 'json', //服务器返回json格式数据
 				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
+				headers: headers_in,
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					console.log('oldphone:' + oldphone);
@@ -283,7 +292,7 @@
 		//		点击按钮验证码事件
 		$('#btn_ver').click(function() {
 
-			if(content_tel_status == true ) {
+			if(content_tel_status == true) {
 
 				if(ver_status == true) {
 					phone = $('#content_tel').val();

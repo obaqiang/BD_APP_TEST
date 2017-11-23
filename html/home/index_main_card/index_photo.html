@@ -148,7 +148,11 @@
 			var store_id = GetQueryString('store_id');
 			var vip_id = GetQueryString('vip_id');
 			var token = GetQueryString('token');
-
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var type = 1;
 			var page_num = 1;
 			var page_size = 10;
@@ -170,6 +174,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 //						console.log('store_id:' + store_id + 'vip_id:' + vip_id + 'type:' + type + 'page_num:' + page_num + 'page_size:' + page_size + 'hasitems:' + hasitems + 'token:' + token)

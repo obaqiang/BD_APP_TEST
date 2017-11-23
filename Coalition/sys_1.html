@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -10,36 +11,65 @@
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/sys_1.css" />
 	</head>
+
 	<body>
 		<img style="width: 100%;" src="img/tuhead.png" alt="" />
-		<div class="sys_bl">
+		<div class="sys_bl" onclick="JumpAdv(1)">
 			<img class="bl_img" src="img/tu_1.png" alt="" />
 			<span class="bl_1">扫码刷卡></span>
 			<span class="bl_2">扫码注册，抵用优惠</span>
 		</div>
-		<div class="sys_bl">
+		<div class="sys_bl" onclick="JumpAdv(2)">
 			<img class="bl_img" src="img/tu_2.png" alt="" />
-			<span class="bl_1">线上营销</span>
+			<span class="bl_1">线上营销></span>
 			<span class="bl_2">优惠券，红包，积分</span>
 		</div>
-		<div class="sys_bl">
+		<div class="sys_bl" onclick="JumpAdv(3)">
 			<img class="bl_img" src="img/tu_3.png" alt="" />
 			<span class="bl_1">移动支付></span>
 			<span class="bl_2">BD卡，微信，支付宝</span>
 		</div>
-		<div class="sys_bl">
+		<div class="sys_bl" onclick="JumpAdv(4)">
 			<img class="bl_img" src="img/tu_4.png" alt="" />
-			<span class="bl_1">手机报表</span>
+			<span class="bl_1">手机报表></span>
 			<span class="bl_2">充值，消费，盈利报表</span>
 		</div>
 		<img style="width: 100%;" src="img/tutu.png" alt="" />
-		<div class="btn_bottom">
+		<div class="btn_bottom" onclick="Jump()">
 			<div class="btn_in">
 				立即开通
 			</div>
-	
+
 		</div>
 	</body>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/config/web_config.js"></script>
+	<script src="js/common/bdapp.js"></script>
+	<script>
+		function Jump() {
+
+			var userAgent = navigator.userAgent.toLowerCase();
+			if(userAgent.match(/MicroMessenger/i) == "micromessenger") { //微信端打开
+				//									alert('微信')
+				window.location.href = "../get_code.html"
+			} else { //BD卡打开
+				//									alert('BD卡')
+				window.location.href = 'register.html'
+			}
+		}
+		function JumpAdv(data){
+			if(data==1){
+				window.location.href = 'adv_swipe.html'
+			}else if(data==2){
+				window.location.href = 'adv_online.html'
+			}else if(data==3){
+				window.location.href = 'adv_mobile.html'
+			}else{
+				window.location.href = 'adv_chart.html'
+			}
+		}
+	</script>
 	<script>
 		//各个屏幕大小适配
 		(function(doc, win) {
@@ -56,4 +86,5 @@
 			doc.addEventListener('DOMContentLoaded', recalc, false);
 		})(document, window);
 	</script>
+
 </html>

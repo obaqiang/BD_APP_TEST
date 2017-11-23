@@ -145,6 +145,12 @@
 			})
 			var getallgoodsclient_url = test_url + '/api/goods/GetAllGoodsClient';
 			var token = GetQueryString('token');
+			
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var store_id = GetQueryString('store_id');
 
 			//			获取所有商品接口
@@ -157,6 +163,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in, 
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取所有商品接口接口返回数据:' + JSON.stringify(data));
@@ -186,6 +193,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取商品页面搜索接口返回数据:' + JSON.stringify(data));

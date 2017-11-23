@@ -83,56 +83,60 @@
 
 	<script>
 		if(navigator.userAgent.indexOf("Html5Plus") < 0) { //不支持5+ API
-				mui.init({
-					swipeBack: true //启用右滑关闭功能
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+
+			var ticket_id = GetQueryString('ticket_id');
+			var token = GetQueryString('token');
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
+			var img_src = GetQueryString('img_src');
+			var getinfo_url = test_url + '/api/ticket/GetInfo';
+
+			function GetInfo(getinfo_url, ticket_id, token) {
+				mui.ajax(getinfo_url, {
+					data: {
+						ticket_id: ticket_id,
+						token: token
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						//							console.log('获取查看单个优惠券接口返回数据:' + JSON.stringify(data));
+						var Ticket = data.Data.Ticket;
+
+						var ticket_name = Ticket.ticket_name;
+						var ticket_money = Ticket.ticket_money;
+						var begin_time = Ticket.begin_time;
+						begin_time = getNowFormatDate(begin_time);
+						console.log(begin_time);
+						var end_time = Ticket.end_time;
+						end_time = getNowFormatDate(end_time);
+						console.log(end_time);
+						var condition_money = Ticket.condition_money;
+						$('#ticket_name').text(ticket_name);
+						$('#time').text('使用期限 ' + begin_time + '~' + end_time);
+						$('#condition_money').text('限定以下产品满￥' + condition_money + '可用');
+						$('#ticket_money').text('￥' + ticket_money);
+						$('#img_src').attr('src', img_src);
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
 				});
+			}
 
-				var ticket_id = GetQueryString('ticket_id');
-				var token = GetQueryString('token');
-				var img_src = GetQueryString('img_src');
-				var getinfo_url = test_url + '/api/ticket/GetInfo';
+			GetInfo(getinfo_url, ticket_id, token);
 
-				function GetInfo(getinfo_url, ticket_id, token) {
-					mui.ajax(getinfo_url, {
-						data: {
-							ticket_id: ticket_id,
-							token: token
-						},
-						dataType: 'json', //服务器返回json格式数据
-						type: 'get', //HTTP请求类型
-						timeout: 10000, //超时时间设置为10秒；
-						success: function(data) {
-							//服务器返回响应，根据响应结果，分析是否登录成功；
-//							console.log('获取查看单个优惠券接口返回数据:' + JSON.stringify(data));
-							var Ticket = data.Data.Ticket;
-
-							var ticket_name = Ticket.ticket_name;
-							var ticket_money = Ticket.ticket_money;
-							var begin_time = Ticket.begin_time;
-							begin_time=getNowFormatDate(begin_time);
-							console.log(begin_time);
-							var end_time = Ticket.end_time;
-							end_time = getNowFormatDate(end_time);
-							console.log(end_time);
-							var condition_money = Ticket.condition_money;
-							$('#ticket_name').text(ticket_name);
-							$('#time').text('使用期限 ' + begin_time + '~' + end_time);
-							$('#condition_money').text('限定以下产品满￥' + condition_money + '可用');
-							$('#ticket_money').text('￥' + ticket_money);
-							$('#img_src').attr('src', img_src);
-
-						},
-						error: function(xhr, type, errorThrown) {
-							//异常处理；
-							console.log(type);
-						}
-					});
-				}
-
-				GetInfo(getinfo_url, ticket_id, token);
-				
-				
-				
 		}
 	</script>
 

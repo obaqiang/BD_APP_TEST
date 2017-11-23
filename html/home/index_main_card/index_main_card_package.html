@@ -90,7 +90,11 @@
 			var store_id = GetQueryString('store_id');
 			var cardtype_id = GetQueryString('cardtype_id');
 			var token = GetQueryString('token');
-
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var getpacakges_url = test_url + '/api/recharge/GetPacakges';
 
 			function GetPacakges(getpacakges_url, store_id, cardtype_id, token) {
@@ -103,6 +107,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						$('#wait_time').hide();
 						//服务器返回响应，根据响应结果，分析是否登录成功；

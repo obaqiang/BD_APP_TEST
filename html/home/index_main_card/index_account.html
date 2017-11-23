@@ -24,6 +24,7 @@
 				font-size: 15px;
 			}
 		</style>
+		
 	</head>
 
 	<body>
@@ -116,6 +117,11 @@
 		if(navigator.userAgent.indexOf("Html5Plus") < 0) { //不支持5+ API
 			var vip_id = GetQueryString('vip_id');
 			var token = GetQueryString('token');
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var store_id = GetQueryString('store_id');
 			var prize = GetQueryString('prize');
 			$('.title_num').text(prize);
@@ -133,6 +139,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
+					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取余额接口接口返回数据:' + JSON.stringify(data));
@@ -170,16 +177,16 @@
 										var origin_price = Items[i].origin_price;
 										var type = Items[i].type;
 										var use_time_text = '';
-										if(type=='001'){
-											use_time_text ='(剩余'+Items[i].mayuse_qty+'次)'
+										if(type == '001') {
+											use_time_text = '(剩余' + Items[i].mayuse_qty + '次)'
 										}
-//										console.log(type)
-//										console.log(use_time_text)
+										//										console.log(type)
+										//										console.log(use_time_text)
 										div_in +=
 											"<div class=\"list_inner\" style=\"display:none;\">" +
 											"<div class=\"list_inner_left\">" +
 											"<div class=\"list_inner_left_name\">" +
-											goods_name +use_time_text+
+											goods_name + use_time_text +
 											"</div>" +
 											"<div class=\"list_inner_left_prize\">" +
 											"原价￥" + origin_price +

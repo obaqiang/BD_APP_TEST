@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -9,67 +10,101 @@
 		<meta name="format-detection" content="telephone=no">
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/sys_cho.css" />
+		<link rel="stylesheet" href="css/global.css" />
 	</head>
+
 	<body>
 		<div class="sys_bo">
 			<img src="img/sys_1.png" style="width: 1.5rem;" alt="" />
 		</div>
-		<div class="sys_bo">
+		<div class="sys_bo" onclick="Jump()">
 			<img style="width: 0.3rem;position: absolute;" src="img/bd_icon.png" alt="" />
 			<span class="sys_text">BD贵宾卡</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		
+
 		<div class="sys_bo" style="margin-top: 0.2rem;">
 			<img src="img/sys_4.png" style="width: 1.5rem;" alt="" />
+			<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>
 		</div>
-		<div class="sys_bo">
+		<div class="sys_bo" onclick="Jumplinshou()">
 			<img style="width: 0.3rem;position: absolute;" src="img/huazhuangpin.png" alt="" />
 			<span class="sys_text">化妆品</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo">
+		<div class="sys_bo" onclick="Jumplinshou()">
 			<img style="width: 0.3rem;position: absolute;" src="img/xiefu.png" alt="" />
 			<span class="sys_text">鞋服</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo">
+		<div class="sys_bo" onclick="Jumplinshou()">
 			<img style="width: 0.3rem;position: absolute;" src="img/shuiguo.png" alt="" />
 			<span class="sys_text">水果生鲜</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		
+
 		<div class="sys_bo" style="margin-top: 0.2rem;">
 			<img src="img/sys_3.png" style="width: 1.5rem;" alt="" />
+			<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>
 		</div>
-		
-		<div class="sys_bo">
+
+		<div class="sys_bo" onclick="Jumpcanyin()">
 			<img style="width: 0.3rem;position: absolute;" src="img/hongbei.png" alt="" />
 			<span class="sys_text">烘焙</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo">
+		<div class="sys_bo" onclick="Jumpcanyin()">
 			<img style="width: 0.3rem;position: absolute;" src="img/canyin.png" alt="" />
 			<span class="sys_text">餐饮美食</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		
+
 		<div class="sys_bo" style="margin-top: 0.2rem;">
-			<img src="img/sys_3.png" style="width: 1.5rem;" alt="" />
+			<img src="img/sys_2.png" style="width: 1.5rem;" alt="" />
+			<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>
 		</div>
-		
-		<div class="sys_bo">
+
+		<div class="sys_bo" onclick="Jumpfuwu()">
 			<img style="width: 0.3rem;position: absolute;" src="img/yuchang.png" alt="" />
 			<span class="sys_text">浴场足浴</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo">
+		<div class="sys_bo" onclick="Jumpfuwu()">
 			<img style="width: 0.3rem;position: absolute;" src="img/meifa.png" alt="" />
 			<span class="sys_text">美容美发</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		
+
 	</body>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/config/web_config.js"></script>
+	<script src="js/common/bdapp.js"></script>
+	<script>
+		function Jump() {
+			window.location.href='sys_1.html'
+//			var userAgent = navigator.userAgent.toLowerCase();
+//			if(userAgent.match(/MicroMessenger/i) == "micromessenger") { //微信端打开
+//				//									alert('微信')
+//				window.location.href = "../get_code.html"
+//			} else { //BD卡打开
+//				//									alert('BD卡')
+//				window.location.href = 'register.html'
+//			}
+		}
+
+		function Jumplinshou() {
+			Alert('零售系统暂未开放')
+		}
+
+		function Jumpcanyin() {
+			Alert('餐饮系统暂未开放')
+		}
+
+		function Jumpfuwu() {
+			Alert('服务业系统暂未开放')
+		}
+	</script>
 	<script>
 		//各个屏幕大小适配
 		(function(doc, win) {
@@ -86,4 +121,5 @@
 			doc.addEventListener('DOMContentLoaded', recalc, false);
 		})(document, window);
 	</script>
+
 </html>

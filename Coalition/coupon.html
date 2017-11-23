@@ -26,8 +26,10 @@
 		<div class="coupon_2" id="expire_in">
 			<!--2017.09.01 至 2018.10.01-->
 		</div>
-		<div class="coupon_3 boundle">
+		<div class="coupon_3 boundle" onclick="showModal()" style="display: none;">
 			<!--蛋糕类，奶茶类，饼干类-->
+			<span id="lala_1"></span>
+			<img style="display:inline-block;width: 0.1rem;float: right;margin-top: 0.03rem;margin-left: 0.1rem;" src="img/right_see.png" alt="" />
 		</div>
 		<div class="coupon_area">
 			<span class="area_1">抵用张数:</span>
@@ -46,26 +48,26 @@
 		<div class="coupon_modal" style="display: none;">
 			<div class="modal_head">
 				限定商品使用
-				<img class="cha" src="img/chacha.png" alt="" />
+				<img class="cha" src="img/chacha.png" onclick="hideModal()" alt="" />
 			</div>
 			<div class="modal_body">
 				<div class="classify">
 					<span class="classify_1">分类：</span>
-					<span class="classify_2 boundle" >
+					<span class="classify_2 boundle">
 						<!--蛋糕类，奶茶类，饼干类-->
 					</span>
 
 				</div>
 				<div class="product">
 					<span class="classify_1">产品：</span>
-					<span class="classify_2">
-						多伦多小吃，多伦多西饼，多伦多大饼，多伦多大饼 多伦多大饼，多伦多大饼，多伦多大饼，多伦多大饼 多伦多大饼，多伦多大饼，多伦多大饼，多伦多大饼
+					<span class="classify_2" id="lala">
+						<!--多伦多小吃，多伦多西饼，多伦多大饼，多伦多大饼 多伦多大饼，多伦多大饼，多伦多大饼，多伦多大饼 多伦多大饼，多伦多大饼，多伦多大饼，多伦多大饼-->
 					</span>
 
 				</div>
 			</div>
 		</div>
-		<div class="modal_mask" style="display: none;"></div>
+		<div class="modal_mask" onclick="hideModal()" style="display: none;"></div>
 	</body>
 	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
 	<script src="js/mui.min.js"></script>
@@ -73,22 +75,23 @@
 	<script src="js/common/bdapp.js"></script>
 	<script>
 		var ticket_id = GetQueryString('ticket_id');
-//		alert(ticket_id)
+		//		alert(ticket_id)
 		var store_id = GetQueryString('store_id');
 		var open_id = GetQueryString('open_id');
 		var user_id = GetQueryString('user_id');
 		var vip_id = GetQueryString('vip_id');
 		var member_id = GetQueryString('member_id');
-//		var lala = '监考老师发'
-//		lala = cutstr(lala,15)
-//		console.log(lala)
+		//		var lala = '监考老师发'
+		//		lala = cutstr(lala,15)
+		//		console.log(lala)
 		var num_limit = GetQueryString('num_limit');
 		num_limit -= 0
 		var num = num_limit;
 
 		$('#num').text(num)
 		var GetStoreTicket_url = test_url + '/api/Ticket/GetStoreTicket';
-		var ConsumTickets_url = test_url+'/api/Ticket/ConsumTickets';
+		var ConsumTickets_url = test_url + '/api/Ticket/ConsumTickets';
+
 		function GetStoreTicket(url) {
 			$.ajax({
 				url: url,
@@ -108,15 +111,19 @@
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 //					alert(JSON.stringify(data))
+					//					console.log(data)
 					var ticket_money = data.Data.ticket_money
 					$('#ticket_money').text(ticket_money)
 					var condition_money = data.Data.condition_money
 					$('#condition_money').text(condition_money)
 					var is_boundle = data.Data.is_boundle
 					if(is_boundle == true) {
+						$('.boundle').show()
 						var boundle = data.Data.boundle
-						boundle = cutstr(boundle,14)
-						$('.boundle').text(boundle)
+						boundle = cutstr(boundle, 30)
+						$('#lala_1').text(boundle)
+						$('#lala').text(data.Data.goods_name)
+						
 					}
 					var expire_in = data.Data.expire_in
 					$('#expire_in').text(expire_in)
@@ -124,9 +131,9 @@
 				},
 				error: function(xhr, type, errorThrown) {
 					alert('网络异常')
-//					alert(JSON.stringify(xhr))
-//					alert(type)
-//					alert(errorThrown)
+					//					alert(JSON.stringify(xhr))
+					//					alert(type)
+					//					alert(errorThrown)
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
@@ -184,7 +191,7 @@
 			ifcanChangenum()
 		}
 
-		function ConsumTickets(url,store_id,open_id,vip_id,member_id) {
+		function ConsumTickets(url, store_id, open_id, vip_id, member_id) {
 			$.ajax({
 				url: url,
 				type: 'post',
@@ -199,19 +206,19 @@
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
-//					alert(ticket_id)
-//					alert(JSON.stringify(data))
-					if(data.Data.IsError==false){
-						window.location.href='vocher.html?store_id='+store_id+'&open_id='+open_id+'&vip_id='+vip_id+'&member_id='+member_id
-					}else{
+					//					alert(ticket_id)
+					//					alert(JSON.stringify(data))
+					if(data.Data.IsError == false) {
+						window.location.href = 'vocher.html?store_id=' + store_id + '&open_id=' + open_id + '&vip_id=' + vip_id + '&member_id=' + member_id
+					} else {
 						Alert(data.Data.ErrorMessage)
 					}
 				},
 				error: function(xhr, type, errorThrown) {
 					alert('网络异常')
-//					alert(JSON.stringify(xhr))
-//					alert(type)
-//					alert(errorThrown)
+					//					alert(JSON.stringify(xhr))
+					//					alert(type)
+					//					alert(errorThrown)
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
@@ -222,14 +229,23 @@
 				}
 			});
 		}
+
+		function jumpTo() {
+			//			alert(num)
+			//			alert(store_id)
+			//			alert(open_id)
+			//			alert(vip_id)
+			//			alert(member_id)
+			ConsumTickets(ConsumTickets_url, store_id, open_id, vip_id, member_id)
+		}
 		
-		function jumpTo(){
-//			alert(num)
-//			alert(store_id)
-//			alert(open_id)
-//			alert(vip_id)
-//			alert(member_id)
-			ConsumTickets(ConsumTickets_url,store_id,open_id,vip_id,member_id)
+		function showModal(){
+			$('.coupon_modal').show()
+			$('.modal_mask').show()
+		}
+		function hideModal(){
+			$('.coupon_modal').hide()
+			$('.modal_mask').hide()
 		}
 	</script>
 	<script>

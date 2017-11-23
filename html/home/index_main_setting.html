@@ -296,59 +296,61 @@
 				var member_id;
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 				var token = GetQueryString('token');
+				var headers_in = {
+					'Content-Type': 'application/json',
+					'token': token,
+					Authorization: 'Bearer ' + token
+				};
+				//				function GetInfo(GetInfo_url, token) {
+				//					mui.ajax(GetInfo_url, {
+				//						data: {
+				//							token: token,
+				//						},
+				//						dataType: 'json', //服务器返回json格式数据
+				//						type: 'get', //HTTP请求类型
+				//						timeout: 10000, //超时时间设置为10秒；
+				//						async: false,
+				//						success: function(data) {
+				//
+				//							//服务器返回响应，根据响应结果，分析是否登录成功；
+				//							console.log(data);
+				//							//							var Member = '';
+				//							//							var phone = '';
+				//							//							var thumb = '';
+				//							//							var member_name = '';
+				//							//							var birthday = '';
+				//							var UserID = data.Data.UserID;
+				//							member_id = UserID;
+				//
+				//						},
+				//						error: function(xhr, type, errorThrown) {
+				//							//异常处理；
+				//							console.log(type);
+				//						}
+				//					});
+				//
+				//				};
+				//				GetInfo(GetInfo_url, token);
 
-//				function GetInfo(GetInfo_url, token) {
-//					mui.ajax(GetInfo_url, {
-//						data: {
-//							token: token,
-//						},
-//						dataType: 'json', //服务器返回json格式数据
-//						type: 'get', //HTTP请求类型
-//						timeout: 10000, //超时时间设置为10秒；
-//						async: false,
-//						success: function(data) {
-//
-//							//服务器返回响应，根据响应结果，分析是否登录成功；
-//							console.log(data);
-//							//							var Member = '';
-//							//							var phone = '';
-//							//							var thumb = '';
-//							//							var member_name = '';
-//							//							var birthday = '';
-//							var UserID = data.Data.UserID;
-//							member_id = UserID;
-//
-//						},
-//						error: function(xhr, type, errorThrown) {
-//							//异常处理；
-//							console.log(type);
-//						}
-//					});
-//
-//				};
-//				GetInfo(GetInfo_url, token);
-				
 				var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
-				function GetMemberInfo(GetMemberInfo_url,token) {
+
+				function GetMemberInfo(GetMemberInfo_url, token) {
 					mui.ajax(GetMemberInfo_url, {
 						data: {
-							
+
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers:{
-							'Content-Type':'application/json',
-							'token':token
-						},
+						headers: headers_in,
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
-							console.log('需要的token：'+token);
+							console.log('需要的token：' + token);
 							console.log(data);
 							var MemberInfo = data.Data.MemberInfo;
 							member_id = MemberInfo.id;
-							
+
 						},
 						error: function(xhr, type, errorThrown) {
 							//异常处理；
@@ -356,7 +358,7 @@
 						}
 					});
 				}
-				GetMemberInfo(GetMemberInfo_url,token);
+				GetMemberInfo(GetMemberInfo_url, token);
 
 				//				console.log(birthday);
 				var getvips_url = test_url + '/api/member/GetVips';

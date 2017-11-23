@@ -44,14 +44,16 @@
 }
 .area_2{
 	display: inline-block;
-	width: 0.2rem;
+	width: 0.25rem;
+	height: 0.25rem;
 	text-align: center;
 	background: #FFD11B;
 	border-radius: 0.05rem;
 }
 .area_2_no{
 	display: inline-block;
-	width: 0.2rem;
+	width: 0.25rem;
+	height: 0.25rem;
 	text-align: center;
 	background: #cccccc;
 	border-radius: 0.05rem;
@@ -63,14 +65,16 @@
 }
 .area_4{
 	display: inline-block;
-	width: 0.2rem;
+	width: 0.25rem;
+	height: 0.25rem;
 	text-align: center;
 	background: #FFD11B;
 	border-radius: 0.05rem;
 }
 .area_4_no{
 	display: inline-block;
-	width: 0.2rem;
+	width: 0.25rem;
+	height: 0.25rem;
 	text-align: center;
 	background: #cccccc;
 	border-radius: 0.05rem;

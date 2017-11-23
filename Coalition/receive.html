@@ -22,7 +22,7 @@
 		
 		.class_2 {
 			color: #fff;
-			font-size: 0.24rem;
+			font-size: 0.35rem;
 			position: absolute;
 			top: 0.2rem;
 			right: 0.2rem;
@@ -33,7 +33,7 @@
 			font-size: 0.2rem;
 			position: absolute;
 			right: 0.2rem;
-			top: 0.5rem;
+			top: 0.55rem;
 		}
 		
 		.class_4 {
@@ -53,9 +53,9 @@
 		}
 		
 		.class_6 {
-			background: #f9a249;
+			/*background: #f9a249;*/
 			padding: 0.05rem 0.15rem;
-			border-radius: 0.02rem;
+			border-radius: 0.04rem;
 			color: #fff;
 			position: absolute;
 			right: 0.35rem;
@@ -64,7 +64,8 @@
 		
 		.class_7 {
 			float: right;
-			margin: 0.3rem 0.1rem 0.1rem;
+			width: 0.1rem;
+			margin: 0.35rem 0.1rem 0.25rem;
 		}
 	</style>
 
@@ -73,7 +74,7 @@
 
 			<!--<div class="bl" onclick="jumpTo()">
 
-				<div class="bl_in">
+				<div class="bl_in" style="background: red;">
 					<img src="img/niunai.jpg" class="class_1" alt="" />
 					<span class="class_2">
 					￥100.00
@@ -115,7 +116,7 @@
 		var user_id = '';
 		var vip_id = GetQueryString('vip_id');
 		var member_id = GetQueryString('member_id');
-		
+
 		//		var token = GetQueryString('token')
 		var GetStoreTickets_url = test_url + '/api/Ticket/GetStoreTickets'
 
@@ -145,22 +146,22 @@
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
-//					alert(JSON.stringify(data))
+					//					alert(JSON.stringify(data))
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
 					console.log(vip_id)
 					console.log(member_id)
 					console.log(data);
-					vip_id=data.Data.vip_id;
+					vip_id = data.Data.vip_id;
 					for(var i = 0; i < data.Data.StoreTickets.length; i++) {
-//						alert(data.Data.StoreTickets[i].ticket_id)
+						//						alert(data.Data.StoreTickets[i].ticket_id)
 						var div =
-//							'<div class="bl" onclick = jumpTo(' + data.Data.StoreTickets[i].ticket_id + ',' + data.Data.StoreTickets[i].Ticket_Num + ')>' +
-							'<div class="bl" data_ticket_id="'+data.Data.StoreTickets[i].ticket_id +'" data_Ticket_Num="'+ data.Data.StoreTickets[i].Ticket_Num+'")>' +
+							//							'<div class="bl" onclick = jumpTo(' + data.Data.StoreTickets[i].ticket_id + ',' + data.Data.StoreTickets[i].Ticket_Num + ')>' +
+							'<div class="bl" data_ticket_id="' + data.Data.StoreTickets[i].ticket_id + '" data_Ticket_Num="' + data.Data.StoreTickets[i].Ticket_Num + '")>' +
 							'<div class="bl_in" style="background:' + data.Data.StoreTickets[i].ticket_color + ';">' +
 							'<img src="' + data.Data.StoreTickets[i].logo_img + '" class="class_1" alt="" />' +
-							'<span class="class_2">' + data.Data.StoreTickets[i].ticket_money + '</span>' +
+							'<span class="class_2"><span style="font-size:0.2rem;">￥</span>' + data.Data.StoreTickets[i].ticket_money + '</span>' +
 							'<span class="class_3">满' +
 							data.Data.StoreTickets[i].condition_money + '可用</span>' +
 							'</div>' +
@@ -168,28 +169,27 @@
 							'<span class="class_4">' +
 							data.Data.StoreTickets[i].store_name + '</span>' +
 							'<span class="class_5">' +
-							'有效期' + data.Data.StoreTickets[i].expire_in + '天 限定商品使用 ' + '</span>' +
-							'<span class="class_6">' + data.Data.StoreTickets[i].Ticket_Num + '张</span>' +
+							'·&nbsp;有效期' + data.Data.StoreTickets[i].expire_in + '天  &nbsp;&nbsp;&nbsp;·&nbsp;限定商品使用 ' + '</span>' +
+							'<span class="class_6" style="background:' + data.Data.StoreTickets[i].ticket_color + ';">' + data.Data.StoreTickets[i].Ticket_Num + '张</span>' +
 							'<img class="class_7" src="img/right_see.png" alt="" />' +
 							'</div>';
 						$('#div').append(div)
 					}
-					$('.bl').click(function (){
+					$('.bl').click(function() {
 						console.log(123)
-//						alert($(this).attr('data_ticket_id'))
-//						alert($(this).attr('data_Ticket_Num'))
-						ticket_id=$(this).attr('data_ticket_id')
+						//						alert($(this).attr('data_ticket_id'))
+						//						alert($(this).attr('data_Ticket_Num'))
+						ticket_id = $(this).attr('data_ticket_id')
 						num_limit = $(this).attr('data_Ticket_Num')
 						window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
 					})
-					
 
 				},
 				error: function(xhr, type, errorThrown) {
 					alert('网络异常')
-//					alert(JSON.stringify(xhr))
-//					alert(type)
-//					alert(errorThrown)
+					//					alert(JSON.stringify(xhr))
+					//					alert(type)
+					//					alert(errorThrown)
 					console.log(store_id)
 					console.log(open_id)
 					console.log(user_id)
@@ -202,11 +202,11 @@
 		}
 		GetStoreTickets(GetStoreTickets_url)
 
-//		function jumpTo(ticket_id, num_limit) {
-//			alert(ticket_id)
-//			alert(num_limit)
-//			window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
-//		}
+		//		function jumpTo(ticket_id, num_limit) {
+		//			alert(ticket_id)
+		//			alert(num_limit)
+		//			window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
+		//		}
 	</script>
 	<script>
 		//各个屏幕大小适配

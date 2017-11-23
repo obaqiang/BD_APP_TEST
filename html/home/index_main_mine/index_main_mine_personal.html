@@ -65,6 +65,11 @@
 			});
 
 			var token = GetQueryString('token');
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
 			var member_id = GetQueryString('member_id');
 
 			var phone = GetQueryString('phone');

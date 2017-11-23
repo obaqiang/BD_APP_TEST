@@ -1,4 +1,4 @@
-.bl{
+.bl {
 	position: relative;
 	width: 90%;
 	border-radius: 0.1rem;
@@ -6,12 +6,16 @@
 	border-radius: ;
 	overflow: hidden;
 	background: #fff;
+	box-shadow: 1px 1px 2px #999999;
+	
 }
-.bl_in{
+
+.bl_in {
 	/*background: #CB2920;*/
 	height: 1rem;
 }
-.perfect{
+
+.perfect {
 	position: absolute;
 	top: 0.98rem;
 	width: 100%;
