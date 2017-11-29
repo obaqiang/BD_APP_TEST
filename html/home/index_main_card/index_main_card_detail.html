@@ -23,6 +23,20 @@
 				color: #6d6d72;
 				font-size: 15px;
 			}
+			
+			.coupon_num {
+				position: absolute;
+				top: 0.1rem;
+				left: 0.6rem;
+				background: #CB2920;
+				color: #fff;
+				border-radius: 50%;
+				width: 0.15rem;
+				height: 0.15rem;
+				text-align: center;
+				font-size: 0.1rem;
+				line-height: 0.15rem;
+			}
 		</style>
 	</head>
 
@@ -92,6 +106,7 @@
 					<!--<a href="#">-->
 					<img src="../../../images/64px_youhuiquan.png" alt="" />
 					<div class="mui-media-body">优惠券</div>
+					<span class="coupon_num" style="display: none;"></span>
 					<!--</a>-->
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="red_packet">
@@ -278,7 +293,7 @@
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: true,
-					headers: headers_in,
+//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 
@@ -331,9 +346,14 @@
 					type: 'get', //HTTP请求类型
 					crossDomain: true,
 					timeout: 10000, //超时时间设置为10秒；
-					headers: headers_in,
+//					headers: headers_in,
 					success: function(data) {
 						console.log(data);
+						if(data.Data.ticketcount!=0){
+							$('.coupon_num').show()
+							$('.coupon_num').text(data.Data.ticketcount)
+						}
+						
 						var balance = '￥' + data.Data.Vip.end_money; //余额
 						var cardtype_id = data.Data.Vip.cardtype_id;
 						var points = data.Data.Vip.end_integral; //剩余积分
@@ -342,24 +362,22 @@
 						//						var tel_status = tel.indexOf('，');
 						var store_id = data.Data.Store.id;
 
-			
-
 						document.getElementById('tel').addEventListener('tap', function() {
 							GetStoreShopInfo(getstoreshopinfo_url, store_id, tel);
-//							if(tel_status > 0) { //此状态表示有两个号码
-//
-//								var see_tel = tel.split('，');
-//								showTel(see_tel);
-//								mui(".show_tel").on('tap', '.tel', function() {
-//									var tel_href = $(this).text();
-//									window.location.href = 'tel:' + tel_href;
-//								})
-//								document.getElementById('tel_cancel').addEventListener('tap', function() {
-//									$('.show_tel').hide();
-//								});
-//							} else {
-//								window.location.href = 'tel:' + tel;
-//							}
+							//							if(tel_status > 0) { //此状态表示有两个号码
+							//
+							//								var see_tel = tel.split('，');
+							//								showTel(see_tel);
+							//								mui(".show_tel").on('tap', '.tel', function() {
+							//									var tel_href = $(this).text();
+							//									window.location.href = 'tel:' + tel_href;
+							//								})
+							//								document.getElementById('tel_cancel').addEventListener('tap', function() {
+							//									$('.show_tel').hide();
+							//								});
+							//							} else {
+							//								window.location.href = 'tel:' + tel;
+							//							}
 						});
 						$('#balance').text(balance);
 						$('#points').text(points);
@@ -376,15 +394,15 @@
 						$('#address').text(address);
 						var location_lng = data.Data.Store.location_lng;
 						var location_lat = data.Data.Store.location_lat;
-						var map_url = 'http://api.map.baidu.com/marker?location='+location_lat+','+location_lng+'&title='+address+'&content='+address+'&output=html&src=苏州无线|yourAppName';
+						var map_url = 'http://api.map.baidu.com/marker?location=' + location_lat + ',' + location_lng + '&title=' + address + '&content=' + address + '&output=html&src=苏州无线|yourAppName';
 						document.getElementById('map').addEventListener('tap', function() {
 							console.log(map_url);
-							if(location_lat==0&&location_lng==0){
+							if(location_lat == 0 && location_lng == 0) {
 								Alert('商家暂未设置地址')
-							}else{
+							} else {
 								window.location.href = map_url;
 							}
-							
+
 						});
 						//					点击积分兑换事件
 						document.getElementById('points_exchange').addEventListener('tap', function() {
@@ -492,7 +510,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-					headers: headers_in,
+//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取载入会员卡优惠券显示接口接口返回数据:' + JSON.stringify(data));
