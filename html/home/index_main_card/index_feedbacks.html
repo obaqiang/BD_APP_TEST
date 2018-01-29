@@ -62,13 +62,13 @@
 			<form id="uploadForm">
 				<!--<input name='img_la' style="display: block;" type="file" accept="image/*" />
 				<input type="button" value="上传" onclick="doUpload()" />-->
-				<input id='one' type="text" name='member_id' />
-				<input id="two" type="text" name='store_id' />
-				<input id="three" type="text" name='device_info' />
-				<input id="four" type="text" name='type' value="0" />
-				<input id="five" name='img_la' class="input_img" type="file" accept="image/*" />
-				<input id="six" name='content' type="text" />
-				<input id="new_up_img" type="button" onclick="doUpload()" value="提交" style="display: none;" />
+			<input id='one' type="text" name='member_id' />
+			<input id="two" type="text" name='store_id' />
+			<input id="three" type="text" name='device_info' />
+			<input id="four" type="text" name='type' value="0" />
+			<input id="five" name='img_la' class="input_img" type="file" accept="image/*" />
+			<input id="six" name='content' type="text" />
+			<input id="new_up_img" type="button" onclick="doUpload()" value="提交" style="display: none;" />
 			</form>
 
 			<div class="feedbacks_div">
@@ -101,7 +101,36 @@
 			var logo_img = GetQueryString('logo_img');
 
 			var member_id;
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -192,7 +221,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log('获取意见反馈展示接口返回数据:' + JSON.stringify(data));

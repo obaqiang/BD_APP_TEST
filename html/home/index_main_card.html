@@ -25,6 +25,7 @@
 	</head>
 
 	<body>
+		
 		<div style="position: fixed;top: 200px;text-align: center;width: 100%;" id="wait_time">
 			页面加载中
 		</div>
@@ -172,6 +173,7 @@
 				/**
 				 * 下拉刷新具体业务实现
 				 */
+
 				function pulldownRefresh() {
 					setTimeout(function() {
 						page_num = 1;
@@ -216,12 +218,8 @@
 					}, 1500);
 				}
 				var member_id;
-				var token = GetQueryString('token');
-				var headers_in = {
-					'Content-Type': 'application/json',
-					'token': token,
-					Authorization: 'Bearer ' + token
-				};
+				var code = GetQueryString('token');
+				var token;
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 				//				function GetInfo(GetInfo_url, token) {
 				//					mui.ajax(GetInfo_url, {
@@ -254,6 +252,40 @@
 				//				}
 				//
 				//				GetInfo(GetInfo_url, token);
+				var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+				function GetToken(GetToken_url, code) {
+					mui.ajax(GetToken_url, {
+						data: {
+							code: code
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'get', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: false,
+						//						headers: headers_in,
+						success: function(data) {
+
+							console.log(data);
+							if(data.Data.IsError == false) {
+								token = data.Data.token;
+							} else {
+								window.location.href = 'loss.html'
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				}
+				GetToken(GetToken_url, code);
+				var headers_in = {
+					'Content-Type': 'application/json',
+					'token': token,
+					Authorization: 'Bearer ' + token
+				};
 				var GetMemberInfo_url = test_url + '/api/aliwx/GetMemberInfo';
 
 				function GetMemberInfo(GetMemberInfo_url, token) {
@@ -265,9 +297,10 @@
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers: headers_in, 
+						headers: headers_in,
 						success: function(data) {
-//							console.log(headers_in)
+							console.log(headers_in)
+							//							console.log(headers_in)
 							//服务器返回响应，根据响应结果，分析是否登录成功；
 							console.log('需要的token：' + token);
 							console.log(data);
@@ -306,7 +339,7 @@
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: false,
-						headers: headers_in, 
+						headers: headers_in,
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
 
@@ -354,7 +387,7 @@
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						async: true,
-						headers: headers_in, 
+						//						headers: headers_in, 
 						success: function(data) {
 							//服务器返回响应，根据响应结果，分析是否登录成功；
 
@@ -383,7 +416,7 @@
 								}
 							} else {
 								console.log(2222)
-								window.location.href = 'index_main_card/index_shop_message.html?token=' + token + '&store_id=' + store_id;
+								window.location.href = 'index_main_card/index_shop_message.html?token=' + code + '&store_id=' + store_id;
 							}
 
 						},
@@ -405,7 +438,7 @@
 
 				//				付款码
 				document.getElementById('main_head_pay').addEventListener('tap', function() {
-					window.location.href = 'index_main_mine/index_main_mine_payment.html?token=' + token;
+					window.location.href = 'index_main_mine/index_main_mine_payment.html?token=' + code;
 				})
 
 				function main_pinjie(data) {
@@ -459,7 +492,7 @@
 							mui(".card_area").on('tap', '.card_in,.card_out,.card_out_c,.card_in_c', function() {
 								var vip_id = $(this).parent().attr('vip_id');
 								var store_id = $(this).parent().attr('store_id');
-								window.location.href = 'index_main_card/index_main_card_detail.html?token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id;
+								window.location.href = 'index_main_card/index_main_card_detail.html?token=' + code + '&vip_id=' + vip_id + '&store_id=' + store_id;
 
 							});
 
@@ -531,16 +564,16 @@
 					} else if(label_name == '消息') {
 						//						window.location.href = 'index_main_message.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday='+birthday;
 						//						window.location.href = 'index_main_message.html?member_id=' + member_id + '&token=' + token + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_message.html?token=' + token;
+						window.location.href = 'index_main_message.html?token=' + code;
 					} else if(label_name == '我的') {
 						//						window.location.href = 'index_main_mine.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday='+birthday;
 						//						window.location.href = 'index_main_mine.html?member_id=' + member_id + '&token=' + token + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday+'&storeid='+storeid;
-						window.location.href = 'index_main_mine.html?token=' + token;
+						window.location.href = 'index_main_mine.html?token=' + code;
 
 					} else if(label_name == '设置') {
 						//						window.location.href = 'index_main_setting.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday='+birthday;
 						//						window.location.href = 'index_main_setting.html?member_id=' + member_id + '&token=' + token + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_setting.html?token=' + token;
+						window.location.href = 'index_main_setting.html?token=' + code;
 					}
 				});
 
@@ -578,6 +611,7 @@
 			win.addEventListener(resizeEvt, recalc, false);
 			doc.addEventListener('DOMContentLoaded', recalc, false);
 		})(document, window);
+		
 	</script>
 
 </html>

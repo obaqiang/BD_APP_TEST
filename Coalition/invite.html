@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>BD贵宾卡</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/global.css" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/register.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</head>
+	<style type="text/css">
+		body {
+			background: #fff;
+		}
+		
+		.text_head {
+			color: #1c1c1c;
+			font-size: 0.14rem;
+			position: absolute;
+			top: 1.3rem;
+			left: 0.2rem;
+			font-weight: bold;
+		}
+		
+		.text_body {
+			font-size: 0.12rem;
+			color: #3e3e3e;
+			width: 90%;
+			position: absolute;
+			top: 1.5rem;
+			left: 0.2rem;
+			text-indent: 25px;
+		}
+		
+		.shop_name {
+			font-size: 0.12rem;
+			position: absolute;
+			right: 0.2rem;
+			top: 2.5rem;
+		}
+		
+		.shop_name_1 {
+			color: #131313;
+		}
+		
+		.shop_name_2 {
+			color: #ff4444;
+		}
+		
+		.shop_address {
+			position: absolute;
+			top: 2.7rem;
+			right: 0.2rem;
+			font-size: 0.12rem;
+			color: #131313;
+		}
+		
+		.line_area {
+			text-align: center;
+			position: relative;
+			margin-top: 0.2rem;
+			height: 0.5rem;
+		}
+		
+		.line {
+			background: #eaaa34;
+			width: 90%;
+			height: 0.01rem;
+			position: absolute;
+			left: 5%;
+			top: 0.1rem;
+		}
+		
+		.line_head {
+			position: absolute;
+			display: inline-block;
+			background: #fff;
+			padding: 0 0.2rem;
+			width: 40%;
+			z-index: 2;
+			left: 30%;
+			color: #EAAA34;
+			font-size: 0.18rem;
+		}
+		
+		.que {
+			font-size: 0.15rem;
+			overflow: hidden;
+			padding: 0 0.2rem;
+			color: #2f2f2f;
+		}
+		
+		.que_in {
+			float: right;
+			color: #EAAA34;
+		}
+		
+		.ans {
+			font-size: 0.15rem;
+			line-height: 0.4rem;
+			color: #EAAA34;
+			padding: 0 0.45rem;
+			color: #2f2f2f;
+		}
+		
+		.ans_more {
+			color: #2f2f2f;
+			font-size: 0.15rem;
+			padding: 0 0.45rem;
+		}
+		
+		.see_shop_detail {
+			color: #EAAA34;
+			padding: 0 0.45rem;
+			line-height: 0.4rem;
+		}
+		
+		.inv_btn {
+			position: fixed;
+			border-top: 1px solid #ddd;
+			width: 100%;
+			bottom: 0;
+		}
+		
+		.btn_left {
+			background: #EAAA34;
+			width: 45%;
+			text-align: center;
+			font-size: 0.14rem;
+			line-height: 0.4rem;
+			color: #fff;
+			float: left;
+			margin: 0.1rem;
+		}
+		
+		.btn_right {
+			background: #FF4444;
+			width: 45%;
+			text-align: center;
+			font-size: 0.14rem;
+			line-height: 0.4rem;
+			color: #fff;
+			float: right;
+			margin-right: 0.1rem;
+			margin-top: 0.1rem;
+		}
+		
+		.mask {
+			width: 100%;
+			background: #000000;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			opacity: 0.2;
+			z-index: 3;
+		}
+		
+		.show_cor {
+			position: absolute;
+			width: 80%;
+			top: 20%;
+			left: 10%;
+			z-index: 4;
+			background: #ffffff;
+			border-radius: 0.1rem;
+			text-align: center;
+		}
+		
+		.show_cor img {
+			width: 70%;
+			margin-top: 0.5rem;
+		}
+		
+		.show_cor div {
+			font-size: 0.16rem;
+			color: #353535;
+			margin: 0.2rem auto 0.2rem;
+		}
+		
+		.alert_area {
+			position: absolute;
+			width: 80%;
+			top: 30%;
+			left: 10%;
+			z-index: 4;
+			background: #ffffff;
+			border-radius: 0.1rem;
+			text-align: center;
+		}
+		
+		.al_1 {
+			font-size: 0.17rem;
+			color: #121212;
+			margin-top: 0.2rem;
+		}
+		
+		.al_2 {
+			font-size: 0.13rem;
+			color: #121212;
+			width: 70%;
+			text-align: left;
+			margin: auto;
+		}
+		
+		.al_3 {
+			margin-top: 0.2rem;
+			font-size: 0.16rem;
+		}
+		
+		.al_3 span {
+			display: inline-block;
+			text-align: center;
+			width: 50%;
+			float: left;
+			line-height: 0.4rem;
+			color: #007AFF;
+			border-top: 1px solid #ddd;
+		}
+		
+		.al_3 span:nth-child(2) {
+			border-left: 1px solid #ddd;
+		}
+	</style>
+
+	<body>
+		<img style="width: 100%;" src="img/invite.png" alt="" />
+		<div class="text_head">
+			尊敬的“麦田香草紫竹路店”贵宾：
+		</div>
+		<div class="text_body">
+			非常感谢您对本店的认可和支持。＂一个好汉三个帮＂如果您也是开店做生意的话，欢迎关注我店*欢乐盟*的合作规则，我们可以利用移动互联网技术拓展关系，用更加优质的服务回馈客户，共同开发巿场，一起壮大。
+		</div>
+		<div class="shop_name">
+			<span class="shop_name_1">麦田香草紫竹路店</span>
+			<span class="shop_name_2">烘焙</span>
+		</div>
+		<div class="shop_address">
+			昆山市紫竹路88号
+		</div>
+		<div class="line_area">
+			<div class="line"></div>
+			<div class="line_head ">
+				联盟条件
+			</div>
+		</div>
+
+		<div class="que">
+			1、如果您的店铺在
+			<span class="que_in">>>了解商盟</span>
+		</div>
+		<div class="ans">
+			昆山市
+		</div>
+		<div class="que">
+			2、您的店铺行业是
+
+		</div>
+		<div class="ans">
+			异业
+		</div>
+		<div class="ans_more">希望您成为我们的商业盟友，共同发展！</div>
+
+		<div class="see_shop_detail">
+			>>麦田香草紫竹路店详情
+		</div>
+		<div class="inv_btn">
+			<div class="btn_left">
+				我不是商家
+			</div>
+			<div class="btn_right">
+				同意结盟
+			</div>
+		</div>
+		<div class="mask"></div>
+		<div class="show_cor" style="display: none;">
+			<img src="img/cor.png" alt="图片丢失" />
+			<div>
+				希望有机会可以合作哦
+			</div>
+		</div>
+		<div class="alert_area">
+			<div class="al_1">
+				提示
+			</div>
+			<div class="al_2">
+				请先开通BD贵宾卡商家，才能进行商业联盟
+			</div>
+			<div class="al_3">
+				<span>取消</span>
+				<span>开通</span>
+			</div>
+		</div>
+		<script src="js/mui.min.js "></script>
+		<script src="js/config/web_config.js "></script>
+		<script src="js/common/bdapp.js "></script>
+
+		<script type="text/javascript ">
+			var invitation_id = GetQueryString('invitation_id')
+			var GetInvitationCard_url = test_url+'/api/Friends/GetInvitationCard'
+			function GetInvitationCard() {
+				$.ajax({
+					url: GetInvitationCard_url,
+					type: 'post',
+					dataType: 'json',
+					async: false,
+					
+					data: {
+						invitation_id:invitation_id
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log(data);
+
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log('需要的链接：' + DoCheckUserFollow_url)
+						Alert('网络异常')
+						console.log(type);
+
+					}
+				});
+			}
+			GetInvitationCard()
+		</script>
+
+	</body>
+
+</html>

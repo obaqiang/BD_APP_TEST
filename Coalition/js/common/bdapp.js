@@ -425,3 +425,22 @@ function getNowFormatDate(newDate) {
 function goBack() {
 	history.go(-1)
 }
+
+function randNum(minnum, maxnum) { //取随机数
+	return Math.floor(minnum + Math.random() * (maxnum - minnum));
+}
+
+function returnFloat(value) {//保留2位小数方法
+	var value = Math.round(parseFloat(value) * 100) / 100;
+	var xsd = value.toString().split(".");
+	if(xsd.length == 1) {
+		value = value.toString() + ".00";
+		return value;
+	}
+	if(xsd.length > 1) {
+		if(xsd[1].length < 2) {
+			value = value.toString() + "0";
+		}
+		return value;
+	}
+}

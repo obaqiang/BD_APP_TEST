@@ -79,12 +79,12 @@
 							<img src="../../../images/140px_120px_background.png" />
 						</div>
 					</div>
-				<!-- Add Pagination -->
-				<!--<div class="swiper-pagination"></div>-->
-				<!--</div>-->
-			</div>
+					<!-- Add Pagination -->
+					<!--<div class="swiper-pagination"></div>-->
+					<!--</div>-->
+				</div>
 
-		</div>
+			</div>
 
 	</body>
 	<script src="../../../js/mui.min.js"></script>
@@ -147,7 +147,36 @@
 
 			var store_id = GetQueryString('store_id');
 			var vip_id = GetQueryString('vip_id');
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -174,11 +203,11 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
-//						console.log('store_id:' + store_id + 'vip_id:' + vip_id + 'type:' + type + 'page_num:' + page_num + 'page_size:' + page_size + 'hasitems:' + hasitems + 'token:' + token)
-//						console.log('获取交易拍照记录接口返回数据:' + JSON.stringify(data));
+						//						console.log('store_id:' + store_id + 'vip_id:' + vip_id + 'type:' + type + 'page_num:' + page_num + 'page_size:' + page_size + 'hasitems:' + hasitems + 'token:' + token)
+						//						console.log('获取交易拍照记录接口返回数据:' + JSON.stringify(data));
 						console.log(data)
 						if(page_num == 1) {
 							$('.mui-scroll').empty();
@@ -196,7 +225,7 @@
 							type_text = '已取消';
 							confirm_text = 'confirm_cancel';
 						}
-						if(TradePhotos==''&& page_num==1){
+						if(TradePhotos == '' && page_num == 1) {
 							var no_data_div =
 								'<div class="no_data">暂无数据</div>';
 							$('.mui-scroll').append(no_data_div);
@@ -277,7 +306,7 @@
 							//										vip_id: vip_id
 							//									}
 							//								});
-							window.location.href = 'index_photo_confirm.html?tradephoto_id=' + tradephoto_id + '&token=' + token + '&type=' + type + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_photo_confirm.html?tradephoto_id=' + tradephoto_id + '&token=' + code + '&type=' + type + '&store_id=' + store_id + '&vip_id=' + vip_id;
 
 						})
 

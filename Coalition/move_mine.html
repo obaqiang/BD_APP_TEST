@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/coupon.css" />
+	</head>
+	<style type="text/css">
+		body {
+			background: #fff;
+		}
+		
+		.key {
+			width: 0.11rem;
+			position: absolute;
+			top: 4.78rem;
+			left: 1.25rem;
+		}
+		
+		.move_gif {
+			position: absolute;
+			width: 100%;
+			text-align: center;
+			top: 4.6rem;
+		}
+		
+		.move_gif img {
+			width: 1.43rem;
+		}
+	</style>
+
+	<body>
+		<img id="move" src="img/bg_move.png" style="width: 100%;" alt="" />
+		<!--<img id="div1" class="key" src="img/key.png" alt="" />
+		<img id="div2" class="key" src="img/key.png" alt="" />-->
+		<div id="move_gif" class="move_gif">
+			<img id="move_1" src="img/move_1.png" alt="" />
+			<img id="move_2" style="display: none;" src="img/move_2.gif" alt="" />
+			<img id="move_3" style="display: none;" src="img/move_3.png" alt="" />
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/config/web_config.js"></script>
+	<script src="js/common/bdapp.js"></script>
+
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+	<script>
+		function move_over() {
+			$('#move_1').hide()
+			$('#move_2').hide()
+			$('#move_3').show()
+		}
+
+		$("body").on("touchstart", function(e) {　　　　
+			e.preventDefault();　　　　
+			startX = e.originalEvent.changedTouches[0].pageX, 　　　　startY = e.originalEvent.changedTouches[0].pageY;　　
+		});　　
+		$("#move_gif").on("touchmove", function(e) {　
+			//			alert(2)　　　
+			e.preventDefault();　　　　
+			moveEndX = e.originalEvent.changedTouches[0].pageX, 　　　　moveEndY = e.originalEvent.changedTouches[0].pageY, 　　　　X = moveEndX - startX, 　　　　Y = moveEndY - startY;
+
+			　　　　
+			if(Math.abs(X) > Math.abs(Y) && X > 0) {　　　　　　　
+				$('#move_1').hide()
+				$('#move_2').show()
+				$('#move_3').hide()
+				var t2 = window.setTimeout("move_over()", 2000);
+			}　　　　
+			else if(Math.abs(X) > Math.abs(Y) && X < 0) {　　　　　　
+				//				alert("right 2 left");　　　　
+			}　　　　
+			else if(Math.abs(Y) > Math.abs(X) && Y > 0) {　　　　　　
+				//				alert("top 2 bottom");　　　　
+			}　　　　
+			else if(Math.abs(Y) > Math.abs(X) && Y < 0) {　　　　　　
+				//				alert("bottom 2 top");　　　　
+			}　　　　
+			else {　　　　　　
+				//				alert("just touch");　　
+			}　　
+
+		});
+		var windowHeight = $(window).height(),
+			　　$body = $("body");　　 // console.log($(window).height()); //627
+		　　 // console.log($('body').height()); //0
+		　　
+		$body.css("height", windowHeight);
+	</script>
+
+</html>

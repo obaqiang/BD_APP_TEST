@@ -15,3 +15,7 @@ var test_url = 'https://testapi.ks12580.net';
 //正式
 //var yehongbing_url = 'https://api.bdvip.net';
 //var test_url = 'https://api.bdvip.net';
+
+//新服务器
+//var yehongbing_url = 'http://api.bdvip01.com';
+//var test_url = 'http://api.bdvip01.com';

@@ -56,7 +56,36 @@
 		if(navigator.userAgent.indexOf("Html5Plus") < 0) { //不支持5+ API
 
 			var store_id = GetQueryString('store_id');
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -73,7 +102,7 @@
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: false,
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 
@@ -85,13 +114,13 @@
 							var shop_tel = store_shop[i].shop_tel;
 							var shop_div = '<div class="shop_list">' +
 								'<div class="list_1">分店</div>' +
-								'<div class="list_2">联系电话:'+shop_tel+'</div>' +
-								'<div class="list_3">'+shop_address+'</div>' +
-								'<img class="list_5" data-tel='+shop_tel+' src="../../../images/52px_52px_dianhua.png" alt="" />' +
+								'<div class="list_2">联系电话:' + shop_tel + '</div>' +
+								'<div class="list_3">' + shop_address + '</div>' +
+								'<img class="list_5" data-tel=' + shop_tel + ' src="../../../images/52px_52px_dianhua.png" alt="" />' +
 								'</div>';
 							$('.shop_area').append(shop_div)
 						}
-						$('.list_5').click(function(){
+						$('.list_5').click(function() {
 							var shop_tel = $(this).attr('data-tel');
 							console.log(shop_tel)
 							window.location.href = 'tel:' + shop_tel;

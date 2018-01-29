@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+
+		<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+		<script>
+			//各个屏幕大小适配
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</head>
+	<style type="text/css">
+		.head_area {
+			background: #FF4F57;
+			height: 1rem;
+			text-align: center;
+		}
+		
+		.head_area_img {
+			width: 0.5rem;
+			margin: 0.1rem auto 0.05rem;
+		}
+		
+		.head_area_text {
+			color: #fff;
+			font-size: 0.13rem;
+		}
+		
+		.friends_today {
+			text-align: center;
+			line-height: 0.5rem;
+			background: #fff;
+		}
+		
+		.friends_today img {
+			width: 1rem;
+		}
+		
+		.shop_area {
+			overflow: hidden;
+			height: 0.7rem;
+			background: #fff;
+			border-top: 1px solid #ddd;
+		}
+		
+		.shop_area img {
+			width: 0.5rem;
+			height: 0.5rem;
+			border-radius: 50%;
+			float: left;
+			margin: 0.1rem;
+		}
+		
+		.shop_area span {
+			font-size: 0.16rem;
+			float: left;
+			margin: 0.25rem 0rem;
+		}
+		
+		.act_area {
+			margin-top: 0.05rem;
+		}
+		
+		.act_list {
+			background: #fff;
+			border-bottom: 1px solid #ddd;
+			position: relative;
+		}
+		
+		.act_list_icon {
+			width: 0.18rem;
+			position: absolute;
+			top: 0.1rem;
+			left: 0.1rem;
+		}
+		
+		.act_list_text {
+			line-height: 0.4rem;
+			margin-left: 0.4rem;
+		}
+		
+		.act_list_h {
+			position: absolute;
+			width: 0.22rem;
+			right: 0.2rem;
+			top: 0;
+		}
+		
+		.act_list_text_more {
+			color: #FB676B;
+			line-height: 0.25rem;
+			margin-left: 0.4rem;
+		}
+		
+		.coupon_area {
+			background: #fff;
+			margin-top: 0.05rem;
+		}
+		
+		.coupon_list {
+			border-bottom: 1px solid #ddd;
+			position: relative;
+		}
+		
+		.img_bl {
+			position: relative;
+			text-align: center;
+			display: inline-block;
+			width: 1.11rem;
+			margin: 0.1rem 0.03rem;
+		}
+		
+		.img_bl_img {
+			width: 1.11rem;
+		}
+		
+		.img_bl_text {
+			position: absolute;
+			top: 0.5rem;
+			left: 0;
+			width: 1.1rem;
+			font-size: 0.1rem;
+			color: #323131;
+		}
+		
+		.img_bl_price {
+			font-size: 0.24rem;
+			color: #fff;
+			position: absolute;
+			top: 0.1rem;
+			left: 0;
+			width: 1.1rem;
+			text-align: center;
+		}
+		
+		.img_bl_price_h {
+			font-size: 0.11rem;
+		}
+		
+		.no_act {
+			width: 1.1rem;
+			margin: 1rem auto 0;
+			display: block;
+		}
+		
+		.no_act_text {
+			font-size: 0.14rem;
+			text-align: center;
+			color: #FB7C5A;
+			margin: 0.1rem;
+		}
+		
+		.friends_store {
+			margin-top: 0.1rem;
+		}
+		
+		.sign_area {
+			height: 100%;
+			width: 100%;
+			background: #fff;
+			position: fixed;
+			top: 0;
+		}
+	</style>
+
+	<body>
+
+		<div class="head_area">
+			<img class="head_area_img" src="img/sign.png" onclick="StaffSignIn()" alt="" />
+			<div class="head_area_text">
+				<!--当前没有人在岗-->
+			</div>
+		</div>
+
+		<div class="no_act_area" style="display: none;">
+			<img class="no_act" src="img/no_act.png" alt="" />
+			<div class="no_act_text">
+				今天暂无活动， <br /> 快把台牌领取码收起来，以免顾客误扫哦~
+			</div>
+		</div>
+
+		<div class="my_store">
+			<!--<div class="friends_today">
+				<img src="img/my_today.png" alt="" />
+			</div>
+
+			<div class="shop_area">
+				<img src="img/niunai.jpg" alt="" />
+				<span>小时候私房菜</span>
+			</div>
+			<div class="act_area">
+				<div class="act_list">
+					<img class="act_list_icon" src="img/bao.png" alt="" />
+					<div class="act_list_text">恭喜发财,大吉大利</div>
+					<img class="act_list_h" src="img/newest.png" alt="" />
+					<div class="act_list_text_more">红包</div>
+				</div>
+				<div class="act_list">
+					<img class="act_list_icon" src="img/bao.png" alt="" />
+					<div class="act_list_text">恭喜发财,大吉大利</div>
+					<img class="act_list_h" src="img/newest.png" alt="" />
+					<div class="act_list_text_more">红包</div>
+				</div>
+				<div class="act_list">
+					<img class="act_list_icon" src="img/bao.png" alt="" />
+					<div class="act_list_text">恭喜发财,大吉大利</div>
+					<img class="act_list_h" src="img/newest.png" alt="" />
+					<div class="act_list_text_more">红包</div>
+				</div>
+			</div>
+			<div class="coupon_area">
+				<div class="coupon_list">
+					<img class="act_list_icon" src="img/quan.png" alt="" />
+					<div class="act_list_text">优惠券</div>
+				</div>
+				<div class="img_bl">
+					<img class="img_bl_img" src="img/green.png" alt="" />
+					<span class="img_bl_price">
+				<span class="img_bl_price_h">￥</span>100
+					</span>
+					<span class="img_bl_text">满298可用</span>
+				</div>
+				<div class="img_bl">
+					<img class="img_bl_img" src="img/green.png" alt="" />
+					<span class="img_bl_price">
+				<span class="img_bl_price_h">￥</span>100
+					</span>
+					<span class="img_bl_text">满298可用</span>
+				</div>
+				<div class="img_bl">
+					<img class="img_bl_img" src="img/green.png" alt="" />
+					<span class="img_bl_price">
+				<span class="img_bl_price_h">￥</span>100
+					</span>
+					<span class="img_bl_text">满298可用</span>
+				</div>
+			</div>-->
+		</div>
+
+		<div class="friends_store">
+			<!--<div class="friends_today">
+				<img src="img/friends_today.png" alt="" />
+			</div>
+
+			<div class="shop_area">
+				<img src="img/niunai.jpg" alt="" />
+				<span>小时候私房菜</span>
+			</div>
+			<div class="act_area">
+				<div class="act_list">
+					<img class="act_list_icon" src="img/bao.png" alt="" />
+					<div class="act_list_text">恭喜发财,大吉大利</div>
+					<img class="act_list_h" src="img/newest.png" alt="" />
+					<div class="act_list_text_more">红包</div>
+				</div>
+				<div class="act_list">
+					<img class="act_list_icon" src="img/bao.png" alt="" />
+					<div class="act_list_text">恭喜发财,大吉大利</div>
+					<img class="act_list_h" src="img/newest.png" alt="" />
+					<div class="act_list_text_more">红包</div>
+				</div>
+				<div class="act_list">
+					<img class="act_list_icon" src="img/bao.png" alt="" />
+					<div class="act_list_text">恭喜发财,大吉大利</div>
+					<img class="act_list_h" src="img/newest.png" alt="" />
+					<div class="act_list_text_more">红包</div>
+				</div>
+			</div>
+			<div class="coupon_area">
+				<div class="coupon_list">
+					<img class="act_list_icon" src="img/quan.png" alt="" />
+					<div class="act_list_text">优惠券</div>
+				</div>
+				<div class="img_bl">
+					<img class="img_bl_img" src="img/green.png" alt="" />
+					<span class="img_bl_price">
+				<span class="img_bl_price_h">￥</span>100
+					</span>
+					<span class="img_bl_text">满298可用</span>
+				</div>
+				<div class="img_bl">
+					<img class="img_bl_img" src="img/green.png" alt="" />
+					<span class="img_bl_price">
+				<span class="img_bl_price_h">￥</span>100
+					</span>
+					<span class="img_bl_text">满298可用</span>
+				</div>
+				<div class="img_bl">
+					<img class="img_bl_img" src="img/green.png" alt="" />
+					<span class="img_bl_price">
+				<span class="img_bl_price_h">￥</span>100
+					</span>
+					<span class="img_bl_text">满298可用</span>
+				</div>
+			</div>-->
+		</div>
+		<div class="sign_area" style="display: none;">
+			<img id="sign_img" onclick="hideSign()" src="img/sign_1.gif" style="width: 100%;" alt="" />
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/config/web_config.js"></script>
+		<script src="js/common/bdapp.js"></script>
+		<script>
+			var code = GetQueryString('code')
+			var staff_id = GetQueryString('staff_id')
+			var machine_code = GetQueryString('machine_code')
+			if(!machine_code || typeof(machine_code) == 'undefined' || typeof(machine_code) == 'null') {
+				machine_code = ''
+
+			}
+			var store_id = GetQueryString('store_id')
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../html/home/loss.html'
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url);
+			var headers_in = {
+				'Content-Type': 'application/json',
+				'token': token,
+				Authorization: 'Bearer ' + token
+			};
+			var GetPrintStatus_url = test_url + '/api/store/GetPrintStatus'
+
+			function GetPrintStatus() {
+				mui.ajax(GetPrintStatus_url, {
+					data: {
+						staff_id: staff_id,
+						machine_code: machine_code,
+						store_id: store_id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.isNotActivity == true) {
+//							$('.head_area').hide()
+							$('.my_store').hide()
+							$('.friends_store').hide()
+							$('.no_act_area').show()
+						}
+						var head_name = data.Data.head_name
+						$('.head_area_text').text(head_name)
+						var Mystore = data.Data.Mystore
+
+						var mystoreimg = Mystore.store_img
+						var mystoretickets = Mystore.Tickets
+						var mystorename = Mystore.store_name
+						if(mystoretickets==''||typeof(mystoretickets)=='undefined'||typeof(mystoretickets)=='null'){
+							$('.my_store').hide()
+						}
+						var mystore_div =
+							'<div class="friends_today">' +
+							'<img src="img/my_today.png" alt="" />' +
+							'</div>' +
+							'<div class="shop_area">' +
+							'<img src="' + mystoreimg + '" alt="" />' +
+							'<span>' + mystorename + '</span>' +
+							'</div>' +
+							'<div class="act_area" id="mystoreact">' +
+							'</div>' +
+							'<div class="coupon_area" id="mystore">' +
+							'</div>';
+						$('.my_store').append(mystore_div)
+
+						for(var i = 0; i < mystoretickets.length; i++) {
+							var condition_money = mystoretickets[i].condition_money
+							var is_storearea = mystoretickets[i].is_storearea
+							var ticket_money = mystoretickets[i].ticket_money
+							var ticket_name = mystoretickets[i].ticket_name
+							var mystoretickets_div =
+								'<div class="img_bl">' +
+								'<img class="img_bl_img" src="img/green.png" alt="" />' +
+								'<span class="img_bl_price">' +
+								'<span class="img_bl_price_h">￥</span>' + ticket_money + '</span>' +
+								'<span class="img_bl_text">满' + condition_money + '可用</span></div>';
+							$('#mystore').append(mystoretickets_div)
+						}
+						var store_lottery = Mystore.store_lottery
+						var store_redEnvelope = Mystore.store_redEnvelope
+						for(var i = 0; i < store_lottery.length; i++) {
+							var div =
+								'<div class="act_list">' +
+								'<img class="act_list_icon" src="img/bao.png" alt="" />' +
+								'<div class="act_list_text">' + store_redEnvelope[i] + '</div>' +
+								//								'<img class="act_list_h" src="img/newest.png" alt="" />' +
+								'<div class="act_list_text_more">红包</div>' +
+								'</div>';
+							$('#mystoreact').append(div)
+						}
+						for(var i = 0; i < store_lottery.length; i++) {
+							var div =
+								'<div class="act_list">' +
+								'<img class="act_list_icon" src="img/jiang.png" alt="" />' +
+								'<div class="act_list_text">' + store_lottery[i] + '</div>' +
+								//								'<img class="act_list_h" src="img/newest.png" alt="" />' +
+								'<div class="act_list_text_more">转盘抽奖</div>' +
+								'</div>';
+							$('#mystoreact').append(div)
+						}
+
+						//盟友活动
+						var friendsStore = data.Data.friendsStore
+						for(var i = 0; i < friendsStore.length; i++) {
+
+							var store_name = friendsStore[i].store_name
+							var store_img = friendsStore[i].store_img
+							var store_redEnvelope = friendsStore[i].store_redEnvelope
+							var store_lottery = friendsStore[i].store_lottery
+							var store_redEnvelope_div = ''
+
+							for(var j = 0; j < store_redEnvelope.length; j++) {
+								store_redEnvelope_div +=
+									'<div class="act_list">' +
+									'<img class="act_list_icon" src="img/jiang.png" alt="" />' +
+									'<div class="act_list_text">' + store_redEnvelope[j] + '</div>' +
+									//								'<img class="act_list_h" src="img/newest.png" alt="" />' +
+									'<div class="act_list_text_more">转盘抽奖</div>' +
+									'</div>';
+							}
+
+							var store_lottery_div = ''
+							for(var j = 0; j < store_lottery.length; j++) {
+								store_lottery_div +=
+									'<div class="act_list">' +
+									'<img class="act_list_icon" src="img/jiang.png" alt="" />' +
+									'<div class="act_list_text">' + store_lottery[j] + '</div>' +
+									//								'<img class="act_list_h" src="img/newest.png" alt="" />' +
+									'<div class="act_list_text_more">转盘抽奖</div>' +
+									'</div>';
+							}
+							div_in = store_redEnvelope_div + store_lottery_div;
+
+							var Tickets = friendsStore[i].Tickets
+							var coupon_div = ''
+							var a = randNum(0, 3)
+							var img_src = ''
+							if(a == 0) {
+								img_src = 'img/green.png'
+							} else if(a == 1) {
+								img_src = 'img/yellow.png'
+							} else if(a == 2) {
+								img_src = 'img/purple.png'
+							}
+							for(var j = 0; j < Tickets.length; j++) {
+								coupon_div +=
+									'<div class="img_bl">' +
+									'<img class="img_bl_img" src="' + img_src + '" alt="" />' +
+									'<span class="img_bl_price ">' +
+									'<span class="img_bl_price_h">￥</span>100' +
+									'</span>' +
+									'<span class="img_bl_text">满298可用</span>' +
+									'</div>';
+
+							}
+
+							var div_big =
+								'<div class="friends_today">' +
+								'<img src="img/friends_today.png" alt="" />' +
+								'</div>' +
+								'<div class="shop_area">' +
+								'<img src="' + store_img + '" alt="" />' +
+								'<span>' + store_name + '</span>' +
+								'</div>' +
+								'<div class="act_area">' +
+								div_in +
+								'</div>' +
+								'<div class="coupon_area">' +
+								'<div class="coupon_list">' +
+								'<img class="act_list_icon" src="img/quan.png" alt="" />' +
+								'<div class="act_list_text">优惠券</div>' +
+								'</div>' +
+								coupon_div +
+								'</div>';
+							$('.friends_store').append(div_big)
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetPrintStatus()
+
+			var StaffSignIn_url = test_url + '/api/store/StaffSignIn'
+
+			function StaffSignIn() {
+				mui.ajax(StaffSignIn_url, {
+					data: {
+						staff_id: staff_id,
+						machine_code: machine_code,
+						store_id: store_id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+
+							if(data.Data.status == 1) {
+								var a = randNum(0, 3)
+								$('#sign_img').attr('src', '')
+								if(a % 2 == 0) {
+									$('#sign_img').attr('src', 'img/sign_1.gif')
+								} else {
+									$('#sign_img').attr('src', 'img/sign_2.gif')
+								}
+							} else {
+								var a = randNum(0, 3)
+								$('#sign_img').attr('src', '')
+								if(a == 0) {
+									$('#sign_img').attr('src', 'img/sign_3.gif')
+								} else {
+									$('#sign_img').attr('src', 'img/sign_4.gif')
+								}
+							}
+							$('.sign_area').show()
+
+							//							window.location.reload()
+
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+
+			function hideSign() {
+				$('.sign_area').hide()
+				window.location.reload()
+			}
+			$('img').each(function() {
+				$("img").error(function() {
+					//				alert(123)
+					this.src = 'img/c.png';
+
+				});
+			});
+		</script>
+	</body>
+
+</html>

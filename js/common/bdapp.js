@@ -1,3 +1,12 @@
+var sc_head = '<script>';
+var sc_foot = "<\/script>";
+var need = '!(function(c,b,d,a){c[a]||(c[a]={});c[a].config={pid:"duc02kvxpe@374c6e950ff5362",imgUrl:"https://arms-retcode.aliyuncs.com/r.png?"};with(b)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("crossorigin","",src=d)})(window,document,"https://retcode.alicdn.com/retcode/bl.js","__bl");';
+//var js_need = sc_head + '!(function(c,b,d,a){c[a]||(c[a]={});c[a].config={pid:"duc02kvxpe@374c6e950ff5362",imgUrl:"https://arms-retcode.aliyuncs.com/r.png?"};with(b)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("crossorigin","",src=d)})(window,document,"https://retcode.alicdn.com/retcode/bl.js","__bl");' + sc_foot
+var divObj = document.createElement("script");
+divObj.innerHTML = need;
+var first = document.body.firstChild; //得到页面的第一个元素
+document.body.insertBefore(divObj, first); //在得到的第一个元素之前插入
+
 $('title').text('BD贵宾卡');
 
 function isOnline() {
@@ -424,4 +433,8 @@ function getNowFormatDate(newDate) {
 
 function goBack() {
 	history.go(-1)
+}
+
+function randNum(minnum, maxnum) { //取随机数
+	return Math.floor(minnum + Math.random() * (maxnum - minnum));
 }

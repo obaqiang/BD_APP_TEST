@@ -87,7 +87,36 @@
 		var member_id;
 		var storeid = GetQueryString('storeid');
 		var GetInfo_url = test_url + '/api/aliwx/GetInfo';
-		var token = GetQueryString('token');
+		var code = GetQueryString('token');
+		var token;
+		var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+		function GetToken(GetToken_url, code) {
+			mui.ajax(GetToken_url, {
+				data: {
+					code: code
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				async: false,
+				//						headers: headers_in,
+				success: function(data) {
+
+					console.log(data);
+					if(data.Data.IsError == false) {
+						token = data.Data.token;
+					} else {
+						window.location.href = '../loss.html'
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log(type);
+				}
+			});
+		}
+		GetToken(GetToken_url, code);
 		var headers_in = {
 			'Content-Type': 'application/json',
 			'token': token,
@@ -106,7 +135,7 @@
 				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
 				async: false,
-//				headers: headers_in,
+				//				headers: headers_in,
 				success: function(data) {
 
 					//服务器返回响应，根据响应结果，分析是否登录成功；
@@ -235,7 +264,7 @@
 						Alert('信息完善成功');
 						var member_name = encodeURI(username);
 						$('#btn_sure').unbind();
-						window.location.href = '../home/index_main_mine.html?token=' + token + '&phone=' + phone + '&birthday=' + birth + '&member_name=' + member_name;
+						window.location.href = '../home/index_main_mine.html?token=' + code + '&phone=' + phone + '&birthday=' + birth + '&member_name=' + member_name;
 					} else {
 						var ErrorMessage = data.Data.ErrorMessage;
 						Alert(ErrorMessage);
@@ -262,7 +291,7 @@
 				dataType: 'json', //服务器返回json格式数据
 				type: 'get', //HTTP请求类型
 				timeout: 10000, //超时时间设置为10秒；
-//				headers: headers_in,
+				//				headers: headers_in,
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					console.log('oldphone:' + oldphone);
@@ -275,7 +304,7 @@
 						Alert('手机号码修改成功');
 						var member_name = encodeURI(member_name);
 						$('#btn_sure').unbind();
-						window.location.href = '../index_main_mine.html?token=' + token;
+						window.location.href = '../index_main_mine.html?token=' + code;
 					} else {
 						var ErrorMessage = data.ErrorMessage;
 						Alert(ErrorMessage);

@@ -8,6 +8,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" type="text/css" href="css/global.css" />
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/coupon.css" />
 	</head>
@@ -74,7 +75,27 @@
 	<script src="js/config/web_config.js"></script>
 	<script src="js/common/bdapp.js"></script>
 	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+	<script>
 		var ticket_id = GetQueryString('ticket_id');
+		var machine_code = GetQueryString('machine_code')
+		if(!machine_code || typeof(machine_code) == 'undefined' || typeof(machine_code) == 'null') {
+			machine_code = ''
+		}
 		//		alert(ticket_id)
 		var store_id = GetQueryString('store_id');
 		var open_id = GetQueryString('open_id');
@@ -86,8 +107,8 @@
 		//		console.log(lala)
 		var num_limit = GetQueryString('num_limit');
 		num_limit -= 0
-		var num = num_limit;
-
+		var num = 1;
+		ifcanChangenum()
 		$('#num').text(num)
 		var GetStoreTicket_url = test_url + '/api/Ticket/GetStoreTicket';
 		var ConsumTickets_url = test_url + '/api/Ticket/ConsumTickets';
@@ -106,11 +127,12 @@
 					open_id: open_id,
 					user_id: user_id,
 					vip_id: vip_id,
-					member_id: member_id
+					member_id: member_id,
+					machine_code: machine_code
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
-//					alert(JSON.stringify(data))
+					//					alert(JSON.stringify(data))
 					//					console.log(data)
 					var ticket_money = data.Data.ticket_money
 					$('#ticket_money').text(ticket_money)
@@ -123,7 +145,7 @@
 						boundle = cutstr(boundle, 30)
 						$('#lala_1').text(boundle)
 						$('#lala').text(data.Data.goods_name)
-						
+
 					}
 					var expire_in = data.Data.expire_in
 					$('#expire_in').text(expire_in)
@@ -171,6 +193,10 @@
 				$('.area_4').hide()
 			}
 			$('#num').text(num)
+			if($('#num').text()==1){
+				$('.area_2_no').show()
+				$('.area_2').hide()
+			}
 		}
 
 		function Minus() {
@@ -202,16 +228,22 @@
 					ticket_id: ticket_id,
 					store_id: store_id,
 					vip_id: vip_id,
-					ticket_num: num
+					ticket_num: num,
+					machine_code: machine_code
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
 					//					alert(ticket_id)
 					//					alert(JSON.stringify(data))
 					if(data.Data.IsError == false) {
-						window.location.href = 'vocher.html?store_id=' + store_id + '&open_id=' + open_id + '&vip_id=' + vip_id + '&member_id=' + member_id
-					} else {
-						Alert(data.Data.ErrorMessage)
+						window.location.href = 'vocher.html?store_id=' + store_id + '&open_id=' + open_id + '&vip_id=' + vip_id + '&member_id=' + member_id+'&machine_code='+machine_code
+					}else {
+						if(data.Data.ErrorCode==35){
+							window.location.href='no_on.html'
+						}else{
+							Alert(data.Data.ErrorMessage)
+						}
+						
 					}
 				},
 				error: function(xhr, type, errorThrown) {
@@ -238,31 +270,16 @@
 			//			alert(member_id)
 			ConsumTickets(ConsumTickets_url, store_id, open_id, vip_id, member_id)
 		}
-		
-		function showModal(){
+
+		function showModal() {
 			$('.coupon_modal').show()
 			$('.modal_mask').show()
 		}
-		function hideModal(){
+
+		function hideModal() {
 			$('.coupon_modal').hide()
 			$('.modal_mask').hide()
 		}
-	</script>
-	<script>
-		//各个屏幕大小适配
-		(function(doc, win) {
-			var docEl = doc.documentElement,
-				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-				recalc = function() {
-					var clientWidth = docEl.clientWidth;
-					if(!clientWidth) return;
-					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
-				};
-
-			if(!doc.addEventListener) return;
-			win.addEventListener(resizeEvt, recalc, false);
-			doc.addEventListener('DOMContentLoaded', recalc, false);
-		})(document, window);
 	</script>
 
 </html>

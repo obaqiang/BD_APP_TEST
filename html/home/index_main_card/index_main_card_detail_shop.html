@@ -115,7 +115,36 @@
 			});
 
 			var vip_id = GetQueryString('vip_id');
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -133,7 +162,7 @@
 					type: 'get', //HTTP请求类型
 					crossDomain: true,
 					timeout: 10000, //超时时间设置为10秒；
-//					headers:headers_in,
+					//					headers:headers_in,
 					success: function(data) {
 						console.log(data);
 						var Store = data.Data.Store;
@@ -144,7 +173,7 @@
 						var Images = data.Data.Images;
 						for(var i = 0; i < Images.length; i++) {
 							var thumb_url = Images[i].thumb_url;
-							var image_div = '<img data-index="'+i+'" src="' + thumb_url + '" alt="" />';
+							var image_div = '<img data-index="' + i + '" src="' + thumb_url + '" alt="" />';
 
 							var image_div_2 = '<div class="swiper-slide" style="text-align: center;">' +
 								'<img style="width: 80%;height:300px;" src="' + thumb_url + '" alt="" />' +
@@ -162,11 +191,11 @@
 						$('#image_div img').click(function() {
 							$('#img_big').show();
 							var index = $(this).attr('data-index');
-//							console.log($(this).attr('data-index'));
-//							console.log(index)
+							//							console.log($(this).attr('data-index'));
+							//							console.log(index)
 							swiper_2.slideTo(index, 1000, false);
 						})
-						$('#img_big_bg').click(function(){
+						$('#img_big_bg').click(function() {
 							$('#img_big').hide();
 						})
 

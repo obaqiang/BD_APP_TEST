@@ -25,6 +25,7 @@
 	</head>
 
 	<body>
+		
 		<div style="position: fixed;top: 200px;text-align: center;width: 100%;" id="wait_time">
 			页面加载中
 		</div>
@@ -279,7 +280,36 @@
 				}
 				var member_id;
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
-				var token = GetQueryString('token');
+				var code = GetQueryString('token');
+				var token;
+				var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+				function GetToken(GetToken_url, code) {
+					mui.ajax(GetToken_url, {
+						data: {
+							code: code
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'get', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: false,
+						//						headers: headers_in,
+						success: function(data) {
+
+							console.log(data);
+							if(data.Data.IsError == false) {
+								token = data.Data.token;
+							} else {
+								window.location.href = 'loss.html'
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				}
+				GetToken(GetToken_url, code);
 				var headers_in = {
 					'Content-Type': 'application/json',
 					'token': token,
@@ -394,7 +424,7 @@
 							member_id: member_id,
 							token: token
 						},
-//						headers: headers_in,
+						//						headers: headers_in,
 						dataType: 'json', //服务器返回json格式数据
 						type: 'get', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
@@ -531,14 +561,14 @@
 										if(data_type == '004') { //跳转充值详情
 											//										data_type=encodeURI(data_type);
 											console.log(data_type);
-											window.location.href = 'index_main_message/index_main_message_detail_charge.html?bill_id=' + bill_id + '&token=' + token + '&type=' + data_type;
+											window.location.href = 'index_main_message/index_main_message_detail_charge.html?bill_id=' + bill_id + '&token=' + code + '&type=' + data_type;
 										} else if(data_type == '005') { //跳转结账详情
 											data_type = encodeURI(data_type);
-											window.location.href = 'index_main_message/index_main_message_detail.html?bill_id=' + bill_id + '&token=' + token + '&type=' + data_type + '&store_id=' + store_id;
+											window.location.href = 'index_main_message/index_main_message_detail.html?bill_id=' + bill_id + '&token=' + code + '&type=' + data_type + '&store_id=' + store_id;
 										} else if(data_type == '008') { //开卡情况
 											$(this).children('.is_read_text').text('已读');
 										} else if(data_type == '009') { //积分兑换的消息
-											window.location.href = 'index_main_card/index_main_card_detail_points_detail.html?exchange_id=' + bill_id + '&token=' + token;
+											window.location.href = 'index_main_card/index_main_card_detail_points_detail.html?exchange_id=' + bill_id + '&token=' + code;
 										}
 									} else if(type == '002') { //活动页面跳转
 
@@ -600,7 +630,7 @@
 											dataType: 'json', //服务器返回json格式数据
 											type: 'get', //HTTP请求类型
 											timeout: 10000, //超时时间设置为10秒；
-//											headers: headers_in,
+											//											headers: headers_in,
 											success: function(data) {
 												//服务器返回响应，根据响应结果，分析是否登录成功；
 												console.log(data);
@@ -667,18 +697,18 @@
 					var label_name = this.querySelector('.mui-tab-label').innerHTML;
 					if(label_name == '卡包') {
 						//						window.location.href = 'index_main_card.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_card.html?token=' + token;
+						window.location.href = 'index_main_card.html?token=' + code;
 
 					} else if(label_name == '消息') {
 
 					} else if(label_name == '我的') {
 						//						window.location.href = 'index_main_mine.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_mine.html?token=' + token;
+						window.location.href = 'index_main_mine.html?token=' + code;
 
 					} else if(label_name == '设置') {
 
 						//						window.location.href = 'index_main_setting.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_setting.html?token=' + token;
+						window.location.href = 'index_main_setting.html?token=' + code;
 					}
 				});
 

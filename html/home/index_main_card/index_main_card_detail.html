@@ -37,6 +37,23 @@
 				font-size: 0.1rem;
 				line-height: 0.15rem;
 			}
+			
+			.btn_bot {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				background: #fff;
+				text-align: center;
+				padding: 0.1rem;
+			}
+			
+			.btn_open {
+				background: #CB2920;
+				font-size: 0.15rem;
+				color: #fff;
+				line-height: 0.4rem;
+				border-radius: 0.05rem;
+			}
 		</style>
 	</head>
 
@@ -197,6 +214,11 @@
 			<span>13032119695</span>
 			<span>取消</span>
 		</div>-->
+		<div class="btn_bot">
+			<div class="btn_open" onclick="openBd()">
+				打开卡包
+			</div>
+		</div>
 
 	</body>
 	<script src="../../../js/mui.js"></script>
@@ -206,7 +228,22 @@
 	<script src="../../../js/common/bdapp.js"></script>
 	<script src="../../../js/config/web_config.js"></script>
 	<!--<script src="../../../js/no_h5_plus/index_main_card_detail.js"></script>-->
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
 
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
 	<script>
 		if(navigator.userAgent.indexOf("Html5Plus") < 0) { //不支持5+ API
 
@@ -214,7 +251,36 @@
 			var store_id = GetQueryString('store_id');
 
 			var member_id;
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -293,7 +359,7 @@
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					async: true,
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 
@@ -322,7 +388,7 @@
 							}
 						} else {
 							console.log(2222)
-							window.location.href = 'index_shop_message.html?token=' + token + '&store_id=' + store_id;
+							window.location.href = 'index_shop_message.html?token=' + code + '&store_id=' + store_id;
 						}
 
 					},
@@ -346,14 +412,14 @@
 					type: 'get', //HTTP请求类型
 					crossDomain: true,
 					timeout: 10000, //超时时间设置为10秒；
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						console.log(data);
-						if(data.Data.ticketcount!=0){
+						if(data.Data.ticketcount != 0) {
 							$('.coupon_num').show()
 							$('.coupon_num').text(data.Data.ticketcount)
 						}
-						
+
 						var balance = '￥' + data.Data.Vip.end_money; //余额
 						var cardtype_id = data.Data.Vip.cardtype_id;
 						var points = data.Data.Vip.end_integral; //剩余积分
@@ -408,70 +474,70 @@
 						document.getElementById('points_exchange').addEventListener('tap', function() {
 							var points = $('#points_exchange').text();
 							points = points.replace(/[^0-9]/ig, "");
-							window.location.href = 'index_main_card_detail_points.html?points=' + points + '&token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id;
+							window.location.href = 'index_main_card_detail_points.html?points=' + points + '&token=' + code + '&vip_id=' + vip_id + '&store_id=' + store_id;
 						});
 						//					点击余额事件
 						document.getElementById('account').addEventListener('tap', function() {
 							isOnline();
 							var prize = data.Data.Vip.end_money;
-							window.location.href = 'index_account.html?token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id + '&prize=' + prize;
+							window.location.href = 'index_account.html?token=' + code + '&vip_id=' + vip_id + '&store_id=' + store_id + '&prize=' + prize;
 						})
 						//					点击全部商品事件
 						document.getElementById('products_all').addEventListener('tap', function() {
-							window.location.href = 'index_main_card_products.html?token=' + token + '&store_id=' + store_id;
+							window.location.href = 'index_main_card_products.html?token=' + code + '&store_id=' + store_id;
 						})
 
 						//					套餐充值
 						document.getElementById('package_charge').addEventListener('tap', function() {
-							window.location.href = 'index_main_card_package.html?token=' + token + '&store_id=' + store_id + '&cardtype_id=' + cardtype_id;
+							window.location.href = 'index_main_card_package.html?token=' + code + '&store_id=' + store_id + '&cardtype_id=' + cardtype_id;
 						})
 
 						//					点击活动事件
 						document.getElementById('index_action').addEventListener('tap', function() {
-							window.location.href = 'index_action.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_action.html?token=' + code + '&store_id=' + store_id + '&vip_id=' + vip_id;
 						})
 
 						//					优惠券
 						document.getElementById('index_coupon').addEventListener('tap', function() {
-							window.location.href = 'index_coupon.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_coupon.html?token=' + code + '&store_id=' + store_id + '&vip_id=' + vip_id;
 						})
 						//					红包
 						document.getElementById('red_packet').addEventListener('tap', function() {
-							window.location.href = 'index_red_packets.html?token=' + token + '&vip_id=' + vip_id;
+							window.location.href = 'index_red_packets.html?token=' + code + '&vip_id=' + vip_id;
 						})
 						//					奖品
 						document.getElementById('index_prize_list').addEventListener('tap', function() {
-							window.location.href = 'index_prize_list.html?token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id;
+							window.location.href = 'index_prize_list.html?token=' + code + '&vip_id=' + vip_id + '&store_id=' + store_id;
 						})
 						//					充值记录
 						document.getElementById('index_recharge').addEventListener('tap', function() {
-							window.location.href = 'index_recharge.html?token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id;
+							window.location.href = 'index_recharge.html?token=' + code + '&vip_id=' + vip_id + '&store_id=' + store_id;
 						})
 						//						消费记录
 						document.getElementById('purchase_history').addEventListener('tap', function() {
-							window.location.href = 'index_purchase_history.html?token=' + token + '&vip_id=' + vip_id + '&store_id=' + store_id;
+							window.location.href = 'index_purchase_history.html?token=' + code + '&vip_id=' + vip_id + '&store_id=' + store_id;
 						})
 						//					账单
 						document.getElementById('bill').addEventListener('tap', function() {
-							window.location.href = 'index_bill.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_bill.html?token=' + code + '&store_id=' + store_id + '&vip_id=' + vip_id;
 						})
 
 						//					托管
 						document.getElementById('index_deposit').addEventListener('tap', function() {
-							window.location.href = 'index_deposit.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_deposit.html?token=' + code + '&store_id=' + store_id + '&vip_id=' + vip_id;
 						})
 						//					交易拍照
 						document.getElementById('index_photo').addEventListener('tap', function() {
-							window.location.href = 'index_photo.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_photo.html?token=' + code + '&store_id=' + store_id + '&vip_id=' + vip_id;
 						})
 						//					签单
 						document.getElementById('index_sign_statics').addEventListener('tap', function() {
-							window.location.href = 'index_sign_statics.html?token=' + token + '&store_id=' + store_id + '&vip_id=' + vip_id;
+							window.location.href = 'index_sign_statics.html?token=' + code + '&store_id=' + store_id + '&vip_id=' + vip_id;
 
 						})
 						//						商家简介
 						document.getElementById('see_shop_detail').addEventListener('tap', function() {
-							window.location.href = 'index_main_card_detail_shop.html?vip_id=' + vip_id + '&token' + token;
+							window.location.href = 'index_main_card_detail_shop.html?vip_id=' + vip_id + '&token' + code;
 						})
 						//						意见反馈
 						document.getElementById('feedbacks').addEventListener('tap', function() {
@@ -486,7 +552,7 @@
 							//									logo_img: logo_img
 							//								},
 							//							});
-							window.location.href = 'index_feedbacks.html?store_id=' + store_id + '&token=' + token;
+							window.location.href = 'index_feedbacks.html?store_id=' + store_id + '&token=' + code;
 						})
 
 					},
@@ -510,7 +576,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						//						console.log('获取载入会员卡优惠券显示接口接口返回数据:' + JSON.stringify(data));
@@ -618,24 +684,49 @@
 
 			})
 
+			//			function isInstalled() {
+			//				var isFromApp = GetQueryString("isFromApp");
+			//				if(isFromApp != null && isFromApp.toString().length > 1 && isFromApp != "app") {
+			//					window.location.href = "bdvip://"; //打开bd客户端
+			//					setTimeout(function() {
+			//						// 未唤醒客户端
+			//						var hidden = document.hidden || document.webkitHidden;
+			//						if(!hidden) {
+			//							window.location.href = "http://t.cn/RtRnBVp"; //如果超时就跳转到app下载页
+			//						}
+			//					}, 1000);
+			//				} else {
+			//					window.location.href = "http://t.cn/RtRnBVp";
+			//				}
+			//			}
+			function openBd() {
+				//				var ua = navigator.userAgent.toLowerCase();
+				//				alert(ua)
+				//				if(/iphone|ipad|ipod/.test(ua)) {
+				//					alert(ios)
+				//					window.location.href = "iOSDevTip://com.szwx.bdnewapp"; //打开bd客户端	
+				//				} else if(/android/.test(ua)) {
+				//					window.location.href = "bdvip://"; //打开bd客户端
+				//				}
+				var u = navigator.userAgent;
+				var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+				var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+				if(isiOS) {
+					//					alert('ios')
+					window.location.href = "iOSDevTip://com.szwx.bdnewapp";
+				} else if(isAndroid) {
+					window.location.href = "wxshandroid://wxsh.cards/xx";
+				}
+				setTimeout(function() {
+					// 未唤醒客户端
+					var hidden = document.hidden || document.webkitHidden;
+					if(!hidden) {
+						window.location.href = "http://t.cn/RtRnBVp"; //如果超时就跳转到app下载页
+					}
+				}, 1000);
+			}
+
 		}
-	</script>
-
-	<script>
-		//各个屏幕大小适配
-		(function(doc, win) {
-			var docEl = doc.documentElement,
-				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-				recalc = function() {
-					var clientWidth = docEl.clientWidth;
-					if(!clientWidth) return;
-					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
-				};
-
-			if(!doc.addEventListener) return;
-			win.addEventListener(resizeEvt, recalc, false);
-			doc.addEventListener('DOMContentLoaded', recalc, false);
-		})(document, window);
 	</script>
 
 </html>

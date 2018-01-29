@@ -324,7 +324,36 @@
 				var phone = GetQueryString('phone');
 				var GetInfo_url = test_url + '/api/aliwx/GetInfo';
 
-				var token = GetQueryString('token');
+				var code = GetQueryString('token');
+				var token;
+				var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+				function GetToken(GetToken_url, code) {
+					mui.ajax(GetToken_url, {
+						data: {
+							code: code
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'get', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: false,
+						//						headers: headers_in,
+						success: function(data) {
+
+							console.log(data);
+							if(data.Data.IsError == false) {
+								token = data.Data.token;
+							} else {
+								window.location.href = 'loss.html'
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				}
+				GetToken(GetToken_url, code);
 				var headers_in = {
 					'Content-Type': 'application/json',
 					'token': token,
@@ -409,7 +438,7 @@
 							$('#thumb').attr('src', thumb);
 							if(phone == 'null' || phone == '' || typeof(phone) == undefined || typeof(phone) == null) {
 
-								window.location.href = '../login/login_data.html?storeid=' + storeid + '&token=' + token;
+								window.location.href = '../login/login_data.html?storeid=' + storeid + '&token=' + code;
 							}
 
 						},
@@ -486,7 +515,7 @@
 					//						},
 					//						createNew: true
 					//					});
-					window.location.href = 'index_main_mine/index_main_mine_payment.html?token=' + token;
+					window.location.href = 'index_main_mine/index_main_mine_payment.html?token=' + code;
 				})
 
 				//			我要发卡
@@ -503,7 +532,7 @@
 				//修改手机号
 				document.getElementById('change_tel').addEventListener('tap', function() {
 
-					window.location.href = 'index_main_mine/change_tel.html?token=' + token;
+					window.location.href = 'index_main_mine/change_tel.html?token=' + code;
 				})
 
 				//			退出登陸
@@ -557,26 +586,26 @@
 					var label_name = this.querySelector('.mui-tab-label').innerHTML;
 					if(label_name == '卡包') {
 						//						window.location.href = 'index_main_card.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_card.html?token=' + token;
+						window.location.href = 'index_main_card.html?token=' + code;
 					} else if(label_name == '消息') {
 						//						window.location.href = 'index_main_message.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_message.html?token=' + token;
+						window.location.href = 'index_main_message.html?token=' + code;
 					} else if(label_name == '我的') {
 
 					} else if(label_name == '设置') {
 						//						window.location.href = 'index_main_setting.html?member_id=' + member_id + '&token=' + token + '&Member=' + Member + '&phone=' + phone + '&thumb=' + thumb + '&member_name=' + member_name + '&birthday=' + birthday;
-						window.location.href = 'index_main_setting.html?token=' + token;
+						window.location.href = 'index_main_setting.html?token=' + code;
 					}
 				});
 
 				function ordershowJump(e) {
 					var status = e
 					console.log(status)
-					window.location.href = '../../sale/order_show.html?token=' + token + '&open_id=' + open_id + '&status=' + status;
+					window.location.href = '../../sale/order_show.html?token=' + code + '&open_id=' + open_id + '&status=' + status;
 				}
 
 				function roundJump() {
-					window.location.href = '../login/login_data.html?token=' + token
+					window.location.href = '../login/login_data.html?token=' + code
 				}
 
 			}

@@ -64,7 +64,36 @@
 				swipeBack: true //启用右滑关闭功能
 			});
 
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -95,7 +124,7 @@
 				//						}
 				//					});
 				name = encodeURI(name);
-				window.location.href = 'index_main_mine_personal_head_change.html?member_id=' + member_id + '&name=' + name + '&phone=' + phone + '&token=' + token + '&thumb=' + thumb;
+				window.location.href = 'index_main_mine_personal_head_change.html?member_id=' + member_id + '&name=' + name + '&phone=' + phone + '&token=' + code + '&thumb=' + thumb;
 			})
 
 			document.getElementById('name').addEventListener('tap', function() {
@@ -109,7 +138,7 @@
 				//						}
 				//					});
 				name = encodeURI(name);
-				window.location.href = 'index_main_mine_personal_change.html?member_id=' + member_id + '&name=' + name + '&phone=' + phone + '&token=' + token;
+				window.location.href = 'index_main_mine_personal_change.html?member_id=' + member_id + '&name=' + name + '&phone=' + phone + '&token=' + code;
 			})
 
 			document.getElementById('phone').addEventListener('tap', function() {
@@ -122,7 +151,7 @@
 				//							token: token
 				//						}
 				//					});
-				window.location.href = 'index_main_mine_personal_phone.html?member_id=' + member_id + '&name=' + name + '&phone=' + phone + '&token=' + token;
+				window.location.href = 'index_main_mine_personal_phone.html?member_id=' + member_id + '&name=' + name + '&phone=' + phone + '&token=' + code;
 
 			})
 		}

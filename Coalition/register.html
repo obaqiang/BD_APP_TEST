@@ -93,7 +93,7 @@
 			<span class="attention_text" onclick="getHook()">我已阅读并同意</span>
 			<span class="attention_text_b">电子协议</span>
 		</div>
-
+		<br /><br /><br />
 		<div class="btn_bot">
 			<div class="btn_bot_text" id="btn_bot_text">
 				提交订单
@@ -106,6 +106,7 @@
 		<script src="js/mui.min.js"></script>
 		<script src="js/config/web_config.js"></script>
 		<script src="js/common/bdapp.js"></script>
+		<script src="js/jquery.Hz2Py.js"></script>
 		<script type="text/javascript">
 			var StoreParam_url = test_url + '/api/Agent/StoreParam'
 			var code = GetQueryString('code')
@@ -273,19 +274,21 @@
 							if(data.IsError == false) {
 								var userAgent = navigator.userAgent.toLowerCase();
 								if(userAgent.match(/MicroMessenger/i) == "micromessenger") { //微信端打开
-//									alert('微信')
+									//									alert('微信')
 									name = encodeURI(name)
 									window.location.href = '../order_detail.html?name=' + name + '&phone=' + phone + '&package_name=' + package_name + '&price=' + price + '&open_id=' + open_id + '&token=' + token + '&id=' + id
 
 								} else { //BD卡打开
-//									alert('BD卡')
+									//									alert('BD卡')
+									var store_sn = makePy(name)
 									var str = {
 										name: name,
 										phone: phone,
 										package_name: package_name,
 										price: price,
 										token: token,
-										id: id
+										id: id,
+										store_sn:store_sn
 									}
 									console.log(str)
 									var json = JSON.stringify(str);
@@ -408,6 +411,9 @@
 				if(content_tel_status == true && content_name_status == true && content_code_status == true && if_Read == true) {
 					$('#btn_bot_text').hide();
 					$('#btn_bot_text_ok').show();
+				} else {
+					$('#btn_bot_text').show();
+					$('#btn_bot_text_ok').hide();
 				}
 			}
 

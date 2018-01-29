@@ -106,7 +106,36 @@
 			var store_id = GetQueryString('store_id');
 
 			var member_id;
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -191,7 +220,7 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-//					headers: headers_in,
+					//					headers: headers_in,
 					success: function(data) {
 						//服务器返回响应，根据响应结果，分析是否登录成功；
 						console.log(data);
@@ -245,7 +274,7 @@
 							//									member_id: member_id
 							//								}
 							//							});
-							window.location.href = 'index_main_card_detail_points_detail.html?token=' + token + '&exchange_id=' + exchange_id;
+							window.location.href = 'index_main_card_detail_points_detail.html?token=' + code + '&exchange_id=' + exchange_id;
 
 						})
 

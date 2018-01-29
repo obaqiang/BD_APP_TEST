@@ -8,8 +8,10 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" type="text/css" href="css/global.css" />
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/receive.css" />
+
 	</head>
 	<style type="text/css">
 		.class_1 {
@@ -117,6 +119,7 @@
 		var user_id = '';
 		var vip_id = GetQueryString('vip_id');
 		var member_id = GetQueryString('member_id');
+		var machine_code = GetQueryString('machine_code')
 
 		//		var token = GetQueryString('token')
 		var GetStoreTickets_url = test_url + '/api/Ticket/GetStoreTickets'
@@ -143,7 +146,8 @@
 					open_id: open_id,
 					user_id: user_id,
 					vip_id: vip_id,
-					member_id: member_id
+					member_id: member_id,
+
 				},
 				success: function(data) {
 					//服务器返回响应，根据响应结果，分析是否登录成功；
@@ -156,6 +160,7 @@
 					console.log(data);
 					vip_id = data.Data.vip_id;
 					for(var i = 0; i < data.Data.StoreTickets.length; i++) {
+//						alert(data.Data.StoreTickets[i].logo_img)
 						//						alert(data.Data.StoreTickets[i].ticket_id)
 						var div =
 							//							'<div class="bl" onclick = jumpTo(' + data.Data.StoreTickets[i].ticket_id + ',' + data.Data.StoreTickets[i].Ticket_Num + ')>' +
@@ -176,13 +181,14 @@
 							'</div>';
 						$('#div').append(div)
 					}
+
 					$('.bl').click(function() {
 						console.log(123)
 						//						alert($(this).attr('data_ticket_id'))
 						//						alert($(this).attr('data_Ticket_Num'))
 						ticket_id = $(this).attr('data_ticket_id')
 						num_limit = $(this).attr('data_Ticket_Num')
-						window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
+						window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit + '&machine_code=' + machine_code;
 					})
 
 				},
@@ -208,6 +214,13 @@
 		//			alert(num_limit)
 		//			window.location.href = 'coupon.html?ticket_id=' + ticket_id + "&store_id=" + store_id + '&open_id=' + open_id + '&user_id=' + user_id + '&vip_id=' + vip_id + "&member_id=" + member_id + '&num_limit=' + num_limit
 		//		}
+		$('img').each(function() {
+			$("img").error(function() {
+//				alert(123)
+				this.src = 'img/c.png';
+
+			});
+		});
 	</script>
 	<script>
 		//各个屏幕大小适配

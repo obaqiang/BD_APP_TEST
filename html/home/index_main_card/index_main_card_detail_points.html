@@ -99,7 +99,36 @@
 			var points = GetQueryString('points');
 			var Vip_id = GetQueryString('vip_id');
 			var member_id;
-			var token = GetQueryString('token');
+			var code = GetQueryString('token');
+			var token;
+			var GetToken_url = test_url + '/api/Member/GetTokenByCode';
+
+			function GetToken(GetToken_url, code) {
+				mui.ajax(GetToken_url, {
+					data: {
+						code: code
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					async: false,
+					//						headers: headers_in,
+					success: function(data) {
+
+						console.log(data);
+						if(data.Data.IsError == false) {
+							token = data.Data.token;
+						} else {
+							window.location.href = '../loss.html'
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			GetToken(GetToken_url, code);
 			var headers_in = {
 				'Content-Type': 'application/json',
 				'token': token,
@@ -187,8 +216,8 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'get', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
-					
-//					headers: headers_in,
+
+					//					headers: headers_in,
 					success: function(data) {
 						$('#wait_time').hide();
 						//服务器返回响应，根据响应结果，分析是否登录成功；
@@ -234,7 +263,7 @@
 
 			//			积分明细
 			document.getElementById('points_exchange').addEventListener('tap', function() {
-				window.location.href = 'index_main_card_detail_points_more.html?token=' + token + '&Vip_id=' + Vip_id;
+				window.location.href = 'index_main_card_detail_points_more.html?token=' + code + '&Vip_id=' + Vip_id;
 
 			});
 
@@ -249,7 +278,7 @@
 				//						member_id: member_id
 				//					}
 				//				});
-				window.location.href = 'index_main_card_detail_points_record.html?token=' + token + '&Vip_id=' + Vip_id + '&store_id=' + store_id;
+				window.location.href = 'index_main_card_detail_points_record.html?token=' + code + '&Vip_id=' + Vip_id + '&store_id=' + store_id;
 
 			});
 

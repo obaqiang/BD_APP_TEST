@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/coupon.css" />
+	</head>
+	<style type="text/css">
+		body{
+			background: #fff;
+		}
+		.lala{
+			text-align: center;
+			
+			position: absolute;
+			width: 100%;
+			top: 0.3rem;
+			font-size: 0.2rem;
+			color: #CB2920;
+			line-height: 0.3rem;
+		}
+		.btn_f{
+			text-align: center;
+		}
+		.btn_in_f{
+			color: #CB2920;
+			display: inline-block;
+			border: 1px solid #CB2920 ;
+			border-radius: 0.2rem;
+			line-height: 0.35rem;
+			padding: 0rem 0.25rem;
+			font-size: 0.15rem;
+		}
+	</style>
+	<body>
+		
+		<img src="img/new_fuck_1.png" style="width: 100%;" alt="" />
+		<div class="lala">
+			您有<span style="color: #000000">5</span>张优惠券可以领取<br />
+			<span style="font-size: 0.25rem;">总计<span style="color: #000000;">336</span>元</span>
+		</div>
+		<div class="btn_f">
+			<span class="btn_in_f">点击领取</span>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/config/web_config.js"></script>
+	<script src="js/common/bdapp.js"></script>
+
+	<script>
+		//各个屏幕大小适配
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+</html>

@@ -7,12 +7,66 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<meta name="format-detection" content="telephone=no">
+		<!--<meta name="format-detection" content="telephone=no">-->
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/sys_cho.css" />
 		<link rel="stylesheet" href="css/global.css" />
 	</head>
+	<style type="text/css">
+		.modal_mask{
+			position: fixed;
+			height: 100%;
+			background: #000000;
+			opacity: 0.2;
+			width: 100%;
+			top: 0;
 
+		}
+		.modal{
+			text-align: center;
+			width: 100%;
+			position: fixed;
+			top: 2rem;
+			z-index: 2;
+		}
+		.modal_in{
+			background: #fff;
+			width: 60%;
+			margin: auto;
+			border-radius: 0.1rem;
+			overflow: hidden;
+		}
+		.modal_in_1{
+			font-size: 0.15rem;
+			margin: 0.2rem auto;
+		}
+		.modal_in_2{
+			font-size: 0.15rem;
+		}
+		.modal_in_3{
+			color: #007AFF;
+			font-size: 0.15rem;
+			line-height: 0.3rem;
+		}
+		.modal_in_4{
+			color: #007AFF;
+			border-top: 1px solid #ddd;
+			font-size: 0.15rem;
+			line-height: 0.4rem;
+		}
+		.modal_left{
+			display: inline-block;
+			width: 50%;
+			float: left;
+			
+		}
+		.modal_right{
+			display: inline-block;
+			width: 50%;
+			float: left;
+			border-left: 1px solid #ddd;
+		}
+	</style>
 	<body>
 		<div class="sys_bo">
 			<img src="img/sys_1.png" style="width: 1.5rem;" alt="" />
@@ -25,19 +79,19 @@
 
 		<div class="sys_bo" style="margin-top: 0.2rem;">
 			<img src="img/sys_4.png" style="width: 1.5rem;" alt="" />
-			<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>
+			<!--<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>-->
 		</div>
-		<div class="sys_bo" onclick="Jumplinshou()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/huazhuangpin.png" alt="" />
 			<span class="sys_text">化妆品</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo" onclick="Jumplinshou()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/xiefu.png" alt="" />
 			<span class="sys_text">鞋服</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo" onclick="Jumplinshou()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/shuiguo.png" alt="" />
 			<span class="sys_text">水果生鲜</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
@@ -45,15 +99,15 @@
 
 		<div class="sys_bo" style="margin-top: 0.2rem;">
 			<img src="img/sys_3.png" style="width: 1.5rem;" alt="" />
-			<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>
+			<!--<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>-->
 		</div>
 
-		<div class="sys_bo" onclick="Jumpcanyin()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/hongbei.png" alt="" />
 			<span class="sys_text">烘焙</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo" onclick="Jumpcanyin()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/canyin.png" alt="" />
 			<span class="sys_text">餐饮美食</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
@@ -61,20 +115,38 @@
 
 		<div class="sys_bo" style="margin-top: 0.2rem;">
 			<img src="img/sys_2.png" style="width: 1.5rem;" alt="" />
-			<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>
+			<!--<span style="color: #888888;font-size: 0.12rem;float: right;line-height: 0.3rem;">功能暂未开放</span>-->
 		</div>
 
-		<div class="sys_bo" onclick="Jumpfuwu()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/yuchang.png" alt="" />
 			<span class="sys_text">浴场足浴</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-		<div class="sys_bo" onclick="Jumpfuwu()">
+		<div class="sys_bo" onclick="showModal()">
 			<img style="width: 0.3rem;position: absolute;" src="img/meifa.png" alt="" />
 			<span class="sys_text">美容美发</span>
 			<img style="position: absolute;right: 0.1rem;width: 0.1rem;top: 0.2rem;" src="img/right_see.png" alt="" />
 		</div>
-
+		<div class="modal" style="display: none;">
+			<div class="modal_in">
+				
+				<div class="modal_in_1">
+					BD提示
+				</div>
+				<div class="modal_in_2">
+					系统暂未开放，如需开通，详询
+				</div>
+				<div class="modal_in_3">
+					15995666777
+				</div>
+				<div class="modal_in_4">
+					<div class="modal_left" onclick="hideModal()">取消</div>
+					<div class="modal_right" onclick="telModal()">拨打</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal_mask" onclick="hideModal()" style="display: none;"></div>
 	</body>
 	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
 	<script src="js/mui.min.js"></script>
@@ -92,18 +164,30 @@
 //				window.location.href = 'register.html'
 //			}
 		}
-
-		function Jumplinshou() {
-			Alert('零售系统暂未开放')
+		function showModal(){
+			$('.modal').show();
+			$('.modal_mask').show();
+		}
+		function hideModal(){
+			$('.modal').hide();
+			$('.modal_mask').hide();
+		}
+		function telModal(){
+			window.location.href = 'tel:15995666777';
+			hideModal();
 		}
 
-		function Jumpcanyin() {
-			Alert('餐饮系统暂未开放')
-		}
-
-		function Jumpfuwu() {
-			Alert('服务业系统暂未开放')
-		}
+//		function Jumplinshou() {
+//			Alert('零售系统暂未开放')
+//		}
+//
+//		function Jumpcanyin() {
+//			Alert('餐饮系统暂未开放')
+//		}
+//
+//		function Jumpfuwu() {
+//			Alert('服务业系统暂未开放')
+//		}
 	</script>
 	<script>
 		//各个屏幕大小适配
